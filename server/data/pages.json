@@ -1,0 +1,206 @@
+{
+  "home": {
+    "slug": "home",
+    "pageTitle": "Rahul Tanwar | Founder & Entrepreneur | UAE and India",
+    "metaTitle": "Rahul Tanwar | Founder & Entrepreneur | UAE and India",
+    "metaDescription": "Rahul Tanwar is a Dubai-based founder who builds businesses across gaming, beverages, apparel and consumer brands with operations spanning the UAE and India. Explore his ventures, journey and investment ecosystem.",
+    "canonicalUrl": "https://rahultanwar.com/",
+    "ogTitle": "Rahul Tanwar | Founder & Entrepreneur | UAE and India",
+    "ogDescription": "Rahul Tanwar is a Dubai-based founder who builds businesses across gaming, beverages, apparel and consumer brands with operations spanning the UAE and India.",
+    "ogImage": "https://rahultanwar.com/images/rahul-tanwar-portrait.jpg",
+    "heroHeading": "Entrepreneur and Founder",
+    "heroSubheading": "Rahul Tanwar is a Dubai-based founder who builds businesses across gaming, beverages, apparel and consumer brands with operations spanning the UAE and India. Explore his ventures, journey and investment ecosystem.",
+    "heroCtaText": "Explore the ventures",
+    "heroCtaLink": "#ventures",
+    "sectionHeadings": {},
+    "sectionDescriptions": {},
+    "imageUrls": {},
+    "imageAltTags": {},
+    "footerText": "Building ventures across gaming, beverages, apparel, manufacturing and consumer brands between UAE and India.",
+    "contactEmail": "hello@rahultanwar.com",
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/in/rahul-tanwar-350a13279/",
+      "whatsapp": ""
+    },
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "privacy": {
+    "slug": "privacy",
+    "pageTitle": "Privacy Policy | Rahul Tanwar",
+    "metaTitle": "Privacy Policy | Rahul Tanwar",
+    "metaDescription": "Privacy policy for Rahul Tanwar's official website and enquiry forms.",
+    "canonicalUrl": "https://rahultanwar.com/privacy",
+    "ogTitle": "Privacy Policy | Rahul Tanwar",
+    "ogDescription": "How this website handles enquiries, analytics, chatbot interactions and contact details.",
+    "ogImage": "",
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "sr18-gaming": {
+    "slug": "sr18-gaming",
+    "pageTitle": "SR18 Gaming - Real-Money Skill Gaming Platform | UAE and India",
+    "metaTitle": "SR18 Gaming - Real-Money Skill Gaming Platform | UAE and India",
+    "metaDescription": "SR18 Gaming is Rahul Tanwar's online gaming venture offering real-money skill-based experiences for the South Asian diaspora. Operating across UAE and India since 2025.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/sr18-gaming",
+    "ogTitle": "SR18 Gaming - Real-Money Skill Gaming Platform",
+    "ogDescription": "A next-generation gaming platform built for the South Asian diaspora. Real-money skill experiences across UAE and India.",
+    "ogImage": "https://rahultanwar.com/assets/sr18-gaming-og.jpg",
+    "ogUrl": "https://rahultanwar.com/ventures/sr18-gaming",
+    "ogType": "website",
+    "twitterTitle": "SR18 Gaming - Real-Money Skill Gaming Platform",
+    "twitterDescription": "Real-money skill gaming for the South Asian diaspora. Operating across UAE and India since 2025.",
+    "twitterImage": "https://rahultanwar.com/assets/sr18-gaming-og.jpg",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "SR18 Gaming",
+        "url": "https://rahultanwar.com/ventures/sr18-gaming",
+        "foundingDate": "2025",
+        "founder": {
+          "@type": "Person",
+          "name": "Rahul Tanwar",
+          "url": "https://rahultanwar.com"
+        },
+        "description": "SR18 Gaming is a next-generation online gaming platform offering real-money skill-based experiences for the South Asian diaspora operating across UAE and India.",
+        "areaServed": [
+          {
+            "@type": "Country",
+            "name": "United Arab Emirates"
+          },
+          {
+            "@type": "Country",
+            "name": "India"
+          }
+        ]
+      }
+    ],
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "delhi-6": {
+    "slug": "delhi-6",
+    "pageTitle": "Delhi 6 - Craft Beer House Inspired by Old Delhi",
+    "metaTitle": "Delhi 6 - Craft Beer House Inspired by Old Delhi",
+    "metaDescription": "Delhi 6 is an Indian craft beer house honouring the flavour, romance and chaos of Old Delhi - brewed and bottled for a new generation. A Rahul Tanwar venture. Est. 2023.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/delhi-6",
+    "ogTitle": "Delhi 6 - Craft Beer House Inspired by Old Delhi",
+    "ogDescription": "Craft beer honouring the flavour, romance and chaos of Old Delhi - bottled for a new generation of Indian beer drinkers.",
+    "ogImage": "https://rahultanwar.com/assets/delhi-6-og.jpg",
+    "ogUrl": "https://rahultanwar.com/ventures/delhi-6",
+    "ogType": "website",
+    "twitterTitle": "Delhi 6 - Craft Beer House Inspired by Old Delhi",
+    "twitterDescription": "Craft beer honouring the flavour, romance and chaos of Old Delhi - bottled for a new generation of Indian beer drinkers.",
+    "twitterImage": "https://rahultanwar.com/assets/delhi-6-og.jpg",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Delhi 6",
+        "foundingDate": "2023",
+        "founder": {
+          "@type": "Person",
+          "name": "Rahul Tanwar",
+          "url": "https://rahultanwar.com"
+        },
+        "description": "Delhi 6 is an Indian craft beer house honouring the flavour, romance and chaos of Old Delhi - brewed and bottled for a new generation.",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "industry": "Craft Beer"
+      }
+    ],
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "masai": {
+    "slug": "masai",
+    "pageTitle": "Masai — Brewing Innovation Studio for Indian Fermentation | India",
+    "metaTitle": "Masai — Brewing Innovation Studio for Indian Fermentation | India",
+    "metaDescription": "Masai is an Indian brewing innovation studio pioneering new fermentation processes and craft beverage experiences built for Indian palates. A Rahul Tanwar venture. Est. 2024.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/masai",
+    "ogTitle": "Masai — Brewing Innovation Studio | India",
+    "ogDescription": "An Indian brewing innovation studio pioneering new fermentation processes built for Indian palates. Operating since 2024.",
+    "ogImage": "https://rahultanwar.com/assets/masai-og.jpg",
+    "ogUrl": "https://rahultanwar.com/ventures/masai",
+    "ogType": "website",
+    "twitterTitle": "Masai — Brewing Innovation Studio | India",
+    "twitterDescription": "An Indian brewing innovation studio pioneering new fermentation processes built for Indian palates. Operating since 2024.",
+    "twitterImage": "https://rahultanwar.com/assets/masai-og.jpg",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Masai",
+        "foundingDate": "2024",
+        "founder": {
+          "@type": "Person",
+          "name": "Rahul Tanwar",
+          "url": "https://rahultanwar.com"
+        },
+        "description": "Masai is an Indian brewing innovation studio pioneering new fermentation processes and craft beverage experiences built specifically for Indian palates.",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "industry": "Brewing Innovation"
+      }
+    ],
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "adatto": {
+    "slug": "adatto",
+    "pageTitle": "Adatto — Performance Athleisure Brand Designed in Jaipur | India",
+    "metaTitle": "Adatto — Performance Athleisure Brand Designed in Jaipur | India",
+    "metaDescription": "Adatto is a performance-grade athleisure brand built from technical fabrics, designed in Jaipur and worn worldwide. A Rahul Tanwar venture. Est. 2024.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/adatto",
+    "ogTitle": "Adatto — Performance Athleisure Brand | Designed in Jaipur",
+    "ogDescription": "Performance-grade athleisure built from technical fabrics — designed in Jaipur, worn worldwide. Est. 2024.",
+    "ogImage": "https://rahultanwar.com/assets/adatto-og.jpg",
+    "ogUrl": "https://rahultanwar.com/ventures/adatto",
+    "ogType": "website",
+    "twitterTitle": "Adatto — Performance Athleisure Brand | Designed in Jaipur",
+    "twitterDescription": "Performance-grade athleisure built from technical fabrics — designed in Jaipur, worn worldwide. Est. 2024.",
+    "twitterImage": "https://rahultanwar.com/assets/adatto-og.jpg",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Adatto",
+        "foundingDate": "2024",
+        "founder": {
+          "@type": "Person",
+          "name": "Rahul Tanwar",
+          "url": "https://rahultanwar.com"
+        },
+        "description": "Adatto is a performance-grade athleisure brand built from technical fabrics, designed in Jaipur and worn worldwide.",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "industry": "Athleisure"
+      }
+    ],
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "volt-50000": {
+    "slug": "volt-50000",
+    "pageTitle": "Volt 50000 | Functional Beverage | Rahul Tanwar",
+    "metaTitle": "Volt 50000 | Functional Beverage | Rahul Tanwar",
+    "metaDescription": "Volt 50000 is a functional beverage venture developed for performance-led lifestyles in the UAE and GCC.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/volt-50000",
+    "ogTitle": "Volt 50000 | Functional Beverage | Rahul Tanwar",
+    "ogDescription": "Volt 50000 is a functional beverage venture developed for performance-led lifestyles in the UAE and GCC.",
+    "ogImage": "https://rahultanwar.com/images/rahul-tanwar-portrait.jpg",
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  },
+  "arnika-textiles": {
+    "slug": "arnika-textiles",
+    "pageTitle": "Arnika Textiles | Textile Manufacturing | Rahul Tanwar",
+    "metaTitle": "Arnika Textiles | Textile Manufacturing | Rahul Tanwar",
+    "metaDescription": "Arnika Textiles is a vertically integrated Indian textile manufacturing venture focused on precision production and supply-chain control.",
+    "canonicalUrl": "https://rahultanwar.com/ventures/arnika-textiles",
+    "ogTitle": "Arnika Textiles | Textile Manufacturing | Rahul Tanwar",
+    "ogDescription": "Arnika Textiles is a vertically integrated Indian textile manufacturing venture focused on precision production and supply-chain control.",
+    "ogImage": "https://rahultanwar.com/assets/arnika-textiles-og.jpg",
+    "updatedAt": "2026-10-12T00:00:00.000Z"
+  }
+}
