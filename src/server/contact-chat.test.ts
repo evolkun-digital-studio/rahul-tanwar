@@ -41,10 +41,15 @@ describe("POST /api/contact", () => {
     expect(res.status).toBe(201);
     expect(await res.json()).toEqual({ success: true });
     expect(sendMail).toHaveBeenCalledOnce();
-    expect(sendMail.mock.calls[0][0]).toMatchObject({ to: "to@example.com", replyTo: "ada@example.com" });
+    expect(sendMail.mock.calls[0][0]).toMatchObject({
+      to: "to@example.com",
+      replyTo: "ada@example.com",
+    });
   });
   it("silently succeeds for honeypot submissions without sending", async () => {
-    const res = await contact(post("/api/contact", JSON.stringify({ ...valid, website: "http://spam" })));
+    const res = await contact(
+      post("/api/contact", JSON.stringify({ ...valid, website: "http://spam" })),
+    );
     expect(res.status).toBe(200);
     expect(sendMail).not.toHaveBeenCalled();
   });
@@ -71,7 +76,8 @@ describe("POST /api/contact", () => {
   });
   it("rate limits the 6th request from one IP within the window", async () => {
     let status = 0;
-    for (let i = 0; i < 6; i++) status = (await contact(post("/api/contact", JSON.stringify(valid)))).status;
+    for (let i = 0; i < 6; i++)
+      status = (await contact(post("/api/contact", JSON.stringify(valid)))).status;
     expect(status).toBe(429);
   });
 });
@@ -90,7 +96,9 @@ describe("POST /api/chat", () => {
   });
   it("returns 400 for invalid or oversized messages and malformed JSON", async () => {
     expect((await chat(post("/api/chat", JSON.stringify({ message: "x" })))).status).toBe(400);
-    expect((await chat(post("/api/chat", JSON.stringify({ message: "x".repeat(1001) })))).status).toBe(400);
+    expect(
+      (await chat(post("/api/chat", JSON.stringify({ message: "x".repeat(1001) })))).status,
+    ).toBe(400);
     expect((await chat(post("/api/chat", "{oops"))).status).toBe(400);
   });
   it("returns 503 when OPENAI_API_KEY is missing", async () => {

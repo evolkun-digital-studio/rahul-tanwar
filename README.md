@@ -1,10 +1,16 @@
 # Rahul Tanwar — founder portfolio · V6 library motion edition
 
-React 19 + Vite portfolio. V6 rebuilds the homepage hero and animates every story section with
-components ported from **React Bits**, **Animate UI**, **Inspira UI** and **motion-primitives**
-(the motion library listed on 21st.dev), running on **GSAP**, **Motion (framer-motion)**,
-**anime.js v4**, **three.js** and **Lenis**. CMS, Express API, admin, venture pages, contact form
-and SEO are unchanged.
+Next.js (App Router) + React 19 + Tailwind CSS v4 portfolio. V6 rebuilds the homepage hero and animates every
+story section with components ported from **React Bits**, **Animate UI**, **Inspira UI** and **motion-primitives**,
+running on **GSAP**, **Motion (framer-motion)**, **anime.js v4**, **three.js** and **Lenis**. The CMS, admin, contact form,
+chat and SEO now run as Next.js route handlers and metadata (no separate Express server). See `DEPLOY.md` to deploy to Vercel or cPanel.
+
+```
+npm install
+npm run dev        # http://localhost:3000
+npm test           # server logic tests (Vitest)
+npm run build && npm start
+```
 
 ## What each section uses
 
@@ -26,8 +32,7 @@ Section components live in `src/components/home/`.
 ### Notes on the choices
 
 - **Barba.js** swaps server-rendered HTML containers, which would fight React's renderer, so the same
-  leave/enter pattern is implemented in `src/lib/pageTransition.ts` with GSAP. The curtain markup sits in
-  `index.html` so it covers the first paint; it resets on back/forward cache restores.
+  leave/enter pattern is implemented in `src/lib/pageTransition.ts` with GSAP. The curtain markup sits in `app/layout.tsx` (`PageCurtain`) so it covers the first paint; it resets on back/forward cache restores.
 - **Inspira UI** is a Vue library — World Map, Tracing Beam and Text Generate Effect were ported to React.
 - **three.js** is code-split: the portrait renders as a normal `<img>` first (LCP/SEO) and the WebGL layer
   loads afterwards on desktop with a mouse only. Touch, reduced motion and no-WebGL keep the photo.
@@ -46,8 +51,7 @@ Node 20.19+ or 22.12+:
 ```bash
 npm install
 cp .env.example .env
-npm run dev          # http://localhost:5173  (add /?intro=1 to replay the preloader)
-npm run server       # Express API + admin CMS (needs .env)
+npm run dev          # http://localhost:3000  (add /?intro=1 to replay the preloader)
 ```
 
 Before deploying:

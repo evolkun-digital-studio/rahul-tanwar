@@ -5,7 +5,10 @@ import { getStore } from "@/server/store";
 
 export const revalidate = 3600;
 
-const META: Record<string, { path: string; changeFrequency: "weekly" | "monthly" | "yearly"; priority: number }> = {
+const META: Record<
+  string,
+  { path: string; changeFrequency: "weekly" | "monthly" | "yearly"; priority: number }
+> = {
   home: { path: "/", changeFrequency: "weekly", priority: 1 },
   privacy: { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
 };
@@ -19,7 +22,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("[sitemap] storage unavailable, using defaults", error);
   }
   return PAGE_SLUGS.map((slug) => {
-    const meta = META[slug] ?? { path: `/ventures/${slug}`, changeFrequency: "monthly" as const, priority: 0.8 };
+    const meta = META[slug] ?? {
+      path: `/ventures/${slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    };
     const page = Object.hasOwn(pages, slug) ? pages[slug] : undefined;
     const updated = typeof page?.updatedAt === "string" ? new Date(page.updatedAt) : new Date();
     return {

@@ -58,9 +58,15 @@ describe("public pages", () => {
 
 describe("admin login", () => {
   const req = (body: BodyInit) =>
-    new Request("http://x/api/admin/login", { method: "POST", body, headers: { "x-forwarded-for": "7.7.7.7" } });
+    new Request("http://x/api/admin/login", {
+      method: "POST",
+      body,
+      headers: { "x-forwarded-for": "7.7.7.7" },
+    });
   it("returns a token for correct credentials", async () => {
-    const res = await login(req(JSON.stringify({ email: "admin@example.com", password: "correct horse" })));
+    const res = await login(
+      req(JSON.stringify({ email: "admin@example.com", password: "correct horse" })),
+    );
     expect(res.status).toBe(200);
     expect(typeof (await res.json()).token).toBe("string");
   });
@@ -93,7 +99,9 @@ describe("admin auth guard", () => {
     const anon = (p: string, m = "GET") => new Request(`http://x${p}`, { method: m });
     expect((await dashboard(anon("/api/admin/dashboard"))).status).toBe(401);
     expect((await adminGetPage(anon("/api/admin/pages/home"), ctx("home"))).status).toBe(401);
-    expect((await adminPutPage(anon("/api/admin/pages/home", "PUT"), ctx("home"))).status).toBe(401);
+    expect((await adminPutPage(anon("/api/admin/pages/home", "PUT"), ctx("home"))).status).toBe(
+      401,
+    );
     expect((await mediaGet(anon("/api/admin/media"))).status).toBe(401);
     expect((await mediaPost(anon("/api/admin/media", "POST"))).status).toBe(401);
     expect((await settingsGet(anon("/api/admin/settings"))).status).toBe(401);
@@ -118,13 +126,19 @@ describe("admin pages", () => {
   });
   it("PUT rejects unknown or dangerous slugs with 400", async () => {
     for (const slug of ["nope", "__proto__", "constructor"]) {
-      const res = await adminPutPage(await authed(`/api/admin/pages/${slug}`, "PUT", { a: 1 }), ctx(slug));
+      const res = await adminPutPage(
+        await authed(`/api/admin/pages/${slug}`, "PUT", { a: 1 }),
+        ctx(slug),
+      );
       expect(res.status).toBe(400);
     }
   });
   it("PUT rejects non-object bodies with 400", async () => {
     for (const body of [[], null, "x", 5]) {
-      const res = await adminPutPage(await authed("/api/admin/pages/home", "PUT", body), ctx("home"));
+      const res = await adminPutPage(
+        await authed("/api/admin/pages/home", "PUT", body),
+        ctx("home"),
+      );
       expect(res.status).toBe(400);
     }
   });
@@ -138,7 +152,10 @@ describe("admin pages", () => {
   it("PUT returns 503 on Vercel without Redis, and GET still works", async () => {
     process.env.VERCEL = "1";
     resetStoreForTests();
-    const put = await adminPutPage(await authed("/api/admin/pages/home", "PUT", { pageTitle: "x" }), ctx("home"));
+    const put = await adminPutPage(
+      await authed("/api/admin/pages/home", "PUT", { pageTitle: "x" }),
+      ctx("home"),
+    );
     expect(put.status).toBe(503);
     expect((await put.json()).error).toMatch(/storage/i);
     const get = await publicPage(new Request("http://x"), ctx("home"));
@@ -156,7 +173,9 @@ describe("admin dashboard, media, settings", () => {
   it("media POST validates the url and stores newest first", async () => {
     const bad = await mediaPost(await authed("/api/admin/media", "POST", { url: "not a url" }));
     expect(bad.status).toBe(400);
-    const ok = await mediaPost(await authed("/api/admin/media", "POST", { url: "https://x.test/a.jpg", altText: "A" }));
+    const ok = await mediaPost(
+      await authed("/api/admin/media", "POST", { url: "https://x.test/a.jpg", altText: "A" }),
+    );
     expect(ok.status).toBe(201);
     const { asset } = await ok.json();
     expect(asset.id).toBeTruthy();
@@ -164,7 +183,9 @@ describe("admin dashboard, media, settings", () => {
     expect(list.assets[0].url).toBe("https://x.test/a.jpg");
   });
   it("settings PUT replaces the document and stamps updatedAt", async () => {
-    const res = await settingsPut(await authed("/api/admin/settings", "PUT", { companyEmail: "new@example.com" }));
+    const res = await settingsPut(
+      await authed("/api/admin/settings", "PUT", { companyEmail: "new@example.com" }),
+    );
     const { settings } = await res.json();
     expect(settings.companyEmail).toBe("new@example.com");
     expect(settings.updatedAt).toBeTruthy();

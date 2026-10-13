@@ -98,7 +98,9 @@ describe("store", () => {
       },
       set: async () => {},
     };
-    await expect(createStore(broken, seed).readPages({ strict: true })).rejects.toThrow("redis down");
+    await expect(createStore(broken, seed).readPages({ strict: true })).rejects.toThrow(
+      "redis down",
+    );
   });
 
   it("serves the seed but refuses writes when no backend is configured", async () => {

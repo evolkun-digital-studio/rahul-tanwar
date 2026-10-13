@@ -1,6 +1,12 @@
 import { SignJWT } from "jose";
 import { describe, expect, it } from "vitest";
-import { checkCredentials, requireAdmin, safeEqual, signAdminToken, verifyAdminToken } from "./auth";
+import {
+  checkCredentials,
+  requireAdmin,
+  safeEqual,
+  signAdminToken,
+  verifyAdminToken,
+} from "./auth";
 
 const secret = "a-test-secret-that-is-long-enough";
 
@@ -23,7 +29,9 @@ describe("tokens", () => {
     expect(await verifyAdminToken(await signAdminToken("a@b.co", secret), secret)).toBe(true);
   });
   it("rejects a token signed with another secret", async () => {
-    expect(await verifyAdminToken(await signAdminToken("a@b.co", "other-secret-other-secret"), secret)).toBe(false);
+    expect(
+      await verifyAdminToken(await signAdminToken("a@b.co", "other-secret-other-secret"), secret),
+    ).toBe(false);
   });
   it("rejects an expired token", async () => {
     const expired = await new SignJWT({})
@@ -51,7 +59,9 @@ describe("requireAdmin", () => {
     process.env.ADMIN_PASSWORD = "x";
     const token = await signAdminToken("a@b.co", secret);
     const res = await requireAdmin(
-      new Request("http://x/api/admin/pages/home", { headers: { authorization: `Bearer ${token}` } }),
+      new Request("http://x/api/admin/pages/home", {
+        headers: { authorization: `Bearer ${token}` },
+      }),
     );
     expect(res).toBeNull();
   });

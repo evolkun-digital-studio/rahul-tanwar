@@ -19,7 +19,10 @@ export function createMemoryLimiter({
       const recent = (hits.get(key) ?? []).filter((time) => time > t - windowMs);
       if (recent.length >= limit) {
         hits.set(key, recent);
-        return { success: false, retryAfter: Math.max(1, Math.ceil((recent[0] + windowMs - t) / 1000)) };
+        return {
+          success: false,
+          retryAfter: Math.max(1, Math.ceil((recent[0] + windowMs - t) / 1000)),
+        };
       }
       recent.push(t);
       hits.set(key, recent);
@@ -58,7 +61,9 @@ export function getLimiter(name: Name): Limiter {
           const result = await remote.limit(key);
           return {
             success: result.success,
-            retryAfter: result.success ? 0 : Math.max(1, Math.ceil((result.reset - Date.now()) / 1000)),
+            retryAfter: result.success
+              ? 0
+              : Math.max(1, Math.ceil((result.reset - Date.now()) / 1000)),
           };
         } catch (error) {
           console.error("[ratelimit] redis unavailable, allowing request", error);

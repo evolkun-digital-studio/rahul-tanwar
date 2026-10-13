@@ -8,7 +8,10 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
     const { slug } = await ctx.params;
     const pages = await getStore().readPages();
     const page = Object.hasOwn(pages, slug) ? pages[slug] : null;
-    return json({ page }, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } });
+    return json(
+      { page },
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } },
+    );
   } catch (error) {
     return handleError(error);
   }

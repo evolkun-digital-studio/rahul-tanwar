@@ -27,14 +27,16 @@ export async function readJsonBody(
   maxBytes = 1_000_000,
 ): Promise<{ ok: true; data: unknown } | { ok: false; response: Response }> {
   const declared = Number(req.headers.get("content-length") || 0);
-  if (declared > maxBytes) return { ok: false, response: json({ error: "Request too large" }, 413) };
+  if (declared > maxBytes)
+    return { ok: false, response: json({ error: "Request too large" }, 413) };
   let text = "";
   try {
     text = await req.text();
   } catch {
     return { ok: false, response: json({ error: "Invalid request body" }, 400) };
   }
-  if (text.length > maxBytes) return { ok: false, response: json({ error: "Request too large" }, 413) };
+  if (text.length > maxBytes)
+    return { ok: false, response: json({ error: "Request too large" }, 413) };
   try {
     return { ok: true, data: JSON.parse(text) };
   } catch {
