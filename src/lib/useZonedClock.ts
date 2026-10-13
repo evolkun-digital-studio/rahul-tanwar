@@ -15,7 +15,9 @@ function read(timeZone: string): ZonedTime {
 
 /** Live wall-clock time for a city, updated on the minute boundary. */
 export function useZonedClock(timeZone: string) {
-  const [time, setTime] = useState<ZonedTime>(() => read(timeZone));
+  // Static/SSR output cannot know the visitor's current time: start from a fixed
+  // value so hydration matches, then jump to the real time in the effect below.
+  const [time, setTime] = useState<ZonedTime>({ hours: 0, minutes: 0 });
   useEffect(() => {
     let timer = 0;
     const schedule = () => {
