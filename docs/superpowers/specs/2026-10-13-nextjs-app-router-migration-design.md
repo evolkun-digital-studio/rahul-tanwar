@@ -63,7 +63,8 @@ content/                      seed pages.json / settings.json / media.json (move
 - **Tailwind:** `@tailwindcss/postcss` + `postcss.config.mjs` replace `@tailwindcss/vite`.
   `@source` in `styles.css` is repointed at the new layout.
 - **Rendering:** page routes are server components that load CMS content through the store
-  (cached, tagged `cms`), merge it with the in-code defaults (`mergeContent` in `src/lib/cms.ts`),
+  (public reads go through `unstable_cache`, 60 s, tag `cms`, so pages stay static/ISR even with the Redis
+  client's `no-store` fetch; admin saves call `revalidatePath` and `revalidateTag("cms")`), merge it with the in-code defaults (`mergeContent` in `src/lib/cms.ts`),
   and pass it to client sections. `usePageContent` and its `fetch("/api/public/pages/…")` effect
   are removed; the client-side `applyPageSeo` DOM patching is replaced by `generateMetadata`.
 - **Route components:** route page components stay client components (`src/views/*`) receiving `content` as a prop; `app/**/page.tsx` are server components that fetch content and render metadata/JSON-LD.
