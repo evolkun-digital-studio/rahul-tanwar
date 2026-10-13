@@ -21,15 +21,46 @@ describe("memory limiter", () => {
 });
 
 describe("clientIp", () => {
-  it("uses the first x-forwarded-for entry", () => {
-    expect(
-      clientIp(new Request("http://x", { headers: { "x-forwarded-for": "1.2.3.4, 5.6.7.8" } })),
-    ).toBe("1.2.3.4");
+  const req = (headers: Record<string, string> = {}) => new Request("http://x", { headers });
+
+  it("uses the rightmost x-forwarded-for entry by default (trusted proxy appended it)", () => {
+    expect(clientIp(req({ "x-forwarded-for": "1.2.3.4, 5.6.7.8" }), {})).toBe("5.6.7.8");
   });
-  it("falls back to x-real-ip then 'unknown'", () => {
-    expect(clientIp(new Request("http://x", { headers: { "x-real-ip": "9.9.9.9" } }))).toBe(
+  it("ignores a spoofed leftmost value", () => {
+    expect(clientIp(req({ "x-forwarded-for": "6.6.6.6, 203.0.113.9" }), {})).toBe("203.0.113.9");
+    expect(clientIp(req({ "x-forwarded-for": "6.6.6.6" }), {})).toBe("6.6.6.6");
+  });
+  it("honours TRUST_PROXY_HOPS as the Nth entry from the right", () => {
+    const headers = { "x-forwarded-for": "6.6.6.6, 203.0.113.9, 10.0.0.1" };
+    expect(clientIp(req(headers), { TRUST_PROXY_HOPS: "2" })).toBe("203.0.113.9");
+    expect(clientIp(req(headers), { TRUST_PROXY_HOPS: "3" })).toBe("6.6.6.6");
+  });
+  it("falls back to the leftmost entry when there are fewer entries than hops", () => {
+    expect(clientIp(req({ "x-forwarded-for": "1.1.1.1" }), { TRUST_PROXY_HOPS: "2" })).toBe(
+      "1.1.1.1",
+    );
+  });
+  it("TRUST_PROXY_HOPS=0 ignores x-forwarded-for and uses x-real-ip then 'unknown'", () => {
+    const env = { TRUST_PROXY_HOPS: "0" };
+    expect(clientIp(req({ "x-forwarded-for": "6.6.6.6", "x-real-ip": "9.9.9.9" }), env)).toBe(
       "9.9.9.9",
     );
-    expect(clientIp(new Request("http://x"))).toBe("unknown");
+    expect(clientIp(req({ "x-forwarded-for": "6.6.6.6" }), env)).toBe("unknown");
+  });
+  it("treats an invalid TRUST_PROXY_HOPS as the default of 1", () => {
+    expect(
+      clientIp(req({ "x-forwarded-for": "1.1.1.1, 2.2.2.2" }), { TRUST_PROXY_HOPS: "abc" }),
+    ).toBe("2.2.2.2");
+  });
+  it("on Vercel prefers x-real-ip, then the rightmost x-forwarded-for entry", () => {
+    const env = { VERCEL: "1" };
+    expect(
+      clientIp(req({ "x-forwarded-for": "6.6.6.6, 7.7.7.7", "x-real-ip": "9.9.9.9" }), env),
+    ).toBe("9.9.9.9");
+    expect(clientIp(req({ "x-forwarded-for": "6.6.6.6, 7.7.7.7" }), env)).toBe("7.7.7.7");
+  });
+  it("falls back to x-real-ip when x-forwarded-for is absent, then 'unknown'", () => {
+    expect(clientIp(req({ "x-real-ip": "9.9.9.9" }), {})).toBe("9.9.9.9");
+    expect(clientIp(req(), {})).toBe("unknown");
   });
 });

@@ -25,6 +25,7 @@ Copy `.env.example` to `.env` for local work. In production set them in the host
 | `KV_REST_API_URL` | Vercel: yes for admin saves | Vercel | Injected by the Upstash Redis integration. `UPSTASH_REDIS_REST_URL` is also accepted. |
 | `KV_REST_API_TOKEN` | Vercel: yes for admin saves | Vercel | Injected by the Upstash Redis integration. `UPSTASH_REDIS_REST_TOKEN` is also accepted. |
 | `DATA_DIR` | No | cPanel | Folder for CMS JSON files. Default `./data` (relative to the app root). Used only when Redis is not configured and not on Vercel. |
+| `TRUST_PROXY_HOPS` | No | cPanel, other hosts | Number of trusted reverse proxies in front of the app, used to pick the client IP for rate limiting from `X-Forwarded-For` (Nth entry from the right). Default `1` (the rightmost entry, i.e. what the one proxy appended). `0` ignores `X-Forwarded-For` and uses `X-Real-IP`. Ignored on Vercel, which uses `x-real-ip`. **On cPanel, confirm what Apache/Passenger actually sends** (e.g. `curl -s -H 'X-Forwarded-For: 6.6.6.6' https://<domain>/api/...` and check which header carries the real address); if the proxy adds no `X-Forwarded-For`, every visitor shares one rate-limit bucket. |
 
 ## 2. Vercel
 

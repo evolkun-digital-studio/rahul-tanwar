@@ -78,10 +78,29 @@ export function getLimiter(name: Name): Limiter {
   return limiter;
 }
 
-export function clientIp(req: Request) {
-  const forwarded = req.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim() || "unknown";
-  return req.headers.get("x-real-ip")?.trim() || "unknown";
+/**
+ * Resolve the client address used as the rate-limit key.
+ *
+ * A client can send any X-Forwarded-For it likes and Next keeps it, so the leftmost entry is
+ * attacker-controlled. Only entries appended by proxies we operate can be trusted, and those
+ * sit at the right-hand end. On Vercel the platform sets x-real-ip itself. Elsewhere,
+ * TRUST_PROXY_HOPS says how many trusted proxies sit in front of the app (default 1 = the
+ * rightmost entry); 0 ignores X-Forwarded-For entirely.
+ */
+export function clientIp(req: Request, env: Record<string, string | undefined> = process.env) {
+  const realIp = req.headers.get("x-real-ip")?.trim() || "";
+  const forwarded = (req.headers.get("x-forwarded-for") || "")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (env.VERCEL) return realIp || forwarded[forwarded.length - 1] || "unknown";
+
+  const parsed = Number.parseInt(env.TRUST_PROXY_HOPS ?? "", 10);
+  const hops = Number.isFinite(parsed) && parsed >= 0 ? parsed : 1;
+  if (hops === 0) return realIp || "unknown";
+  if (forwarded.length) return forwarded[Math.max(0, forwarded.length - hops)];
+  return realIp || "unknown";
 }
 
 export function resetLimitersForTests() {
