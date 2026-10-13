@@ -94,7 +94,11 @@ function leave(href: string, label: string) {
     );
 }
 
+let initialised = false;
+
 export function initPageTransitions() {
+  if (initialised) return;
+  initialised = true;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // Lift the curtain once React has painted the destination.
   requestAnimationFrame(() => requestAnimationFrame(() => enter(reduced)));
