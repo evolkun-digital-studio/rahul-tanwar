@@ -1,10 +1,12 @@
+"use client";
+
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { EditorialHeader } from "@/components/site/EditorialHeader";
 import { EditorialFooter } from "@/components/site/EditorialFooter";
 import { EditorialMotion } from "@/components/site/EditorialMotion";
 import { EditorialVisual, toEditorialVenture } from "@/components/site/EditorialVisual";
 import { VENTURES } from "@/lib/data";
-import { usePageContent } from "@/lib/cms";
+import type { PageCmsContent } from "@/lib/cms";
 
 const detailFallback: Record<
   string,
@@ -46,8 +48,7 @@ type DetailContent = {
   highlights: string[];
 };
 
-export function VentureDetailPage({ slug }: { slug: string }) {
-  const content = usePageContent(slug);
+export function VentureView({ slug, content }: { slug: string; content: PageCmsContent }) {
   const ventures = VENTURES.map(toEditorialVenture);
   const index = ventures.findIndex((item) => item.slug === slug);
   const venture = ventures[index];

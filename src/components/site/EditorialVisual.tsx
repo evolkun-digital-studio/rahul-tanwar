@@ -1,10 +1,19 @@
 import { VENTURES, type Venture } from "@/lib/data";
 import type { CmsImage, PageCmsContent } from "@/lib/cms";
-import adattoPhoto from "@/assets/adatto.avif";
-import sr18Photo from "@/assets/sr18.avif";
-import voltPhoto from "@/assets/volt.avif";
-import textilePhoto from "@/assets/textile.avif";
-import delhi6Photo from "@/assets/delhi6.jpeg";
+import adattoImage from "@/assets/adatto.avif";
+import sr18Image from "@/assets/sr18.avif";
+import voltImage from "@/assets/volt.avif";
+import textileImage from "@/assets/textile.avif";
+import delhi6Image from "@/assets/delhi6.jpeg";
+
+const url = (image: unknown): string =>
+  typeof image === "string" ? image : ((image as { src?: string })?.src ?? "");
+
+const adattoPhoto = url(adattoImage);
+const sr18Photo = url(sr18Image);
+const voltPhoto = url(voltImage);
+const textilePhoto = url(textileImage);
+const delhi6Photo = url(delhi6Image);
 
 export type VentureEditorial = Venture & {
   slug: string;

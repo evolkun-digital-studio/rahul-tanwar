@@ -1,9 +1,21 @@
-import founder from "@/assets/founder-provided.png";
-import factory from "@/assets/factory.jpg";
-import beverage from "@/assets/beverage.jpg";
-import gaming from "@/assets/gaming.jpg";
-import apparel from "@/assets/apparel.jpg";
-import dubai from "@/assets/dubai.jpg";
+import founderImage from "@/assets/founder-provided.png";
+import factoryImage from "@/assets/factory.jpg";
+import beverageImage from "@/assets/beverage.jpg";
+import gamingImage from "@/assets/gaming.jpg";
+import apparelImage from "@/assets/apparel.jpg";
+import dubaiImage from "@/assets/dubai.jpg";
+
+// Next.js static imports are objects ({ src, width, height }); the site only needs the URL.
+// Under Vitest (Vite) the import is already a URL string, so fall back to it.
+const url = (image: unknown): string =>
+  typeof image === "string" ? image : ((image as { src?: string })?.src ?? "");
+
+const founder = url(founderImage);
+const factory = url(factoryImage);
+const beverage = url(beverageImage);
+const gaming = url(gamingImage);
+const apparel = url(apparelImage);
+const dubai = url(dubaiImage);
 
 export const IMG = { founder, factory, beverage, gaming, apparel, dubai };
 

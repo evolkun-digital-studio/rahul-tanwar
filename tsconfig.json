@@ -17,14 +17,5 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "dist-cpanel",
-    "server",
-    "src/routes",
-    "src/main.tsx",
-    "src/router.tsx",
-    "src/routeTree.gen.ts"
-  ]
+  "exclude": ["node_modules", ".next", "dist-cpanel", "server"]
 }

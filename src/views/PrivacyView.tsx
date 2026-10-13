@@ -1,9 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+"use client";
+
 import { EditorialHeader } from "@/components/site/EditorialHeader";
 import { EditorialFooter } from "@/components/site/EditorialFooter";
-import { usePageContent } from "@/lib/cms";
-
-export const Route = createFileRoute("/privacy")({ component: PrivacyPage });
+import type { PageCmsContent } from "@/lib/cms";
 
 type PrivacySection = {
   eyebrow: string;
@@ -14,8 +13,7 @@ type PrivacySection = {
   blocks: Array<{ title: string; body: string }>;
 };
 
-export function PrivacyPage() {
-  const content = usePageContent("privacy");
+export function PrivacyView({ content }: { content: PageCmsContent }) {
   const privacy = content.sections.privacy as PrivacySection;
   return (
     <div className="min-h-svh bg-[#f9f8f5] text-[#141715]" id="top">

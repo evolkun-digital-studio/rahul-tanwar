@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+"use client";
+
 import { useState, type FormEvent } from "react";
 import { ArrowRight, ArrowUpRight, Linkedin } from "lucide-react";
 import { EditorialFooter } from "@/components/site/EditorialFooter";
@@ -10,13 +11,11 @@ import { Ecosystem } from "@/components/home/Ecosystem";
 import { Corridor } from "@/components/home/Corridor";
 import { Founder } from "@/components/home/Founder";
 import { Milestones } from "@/components/home/Milestones";
-import { BUSINESS_PHILOSOPHY_QUOTE, usePageContent, type PageCmsContent } from "@/lib/cms";
+import { BUSINESS_PHILOSOPHY_QUOTE, type PageCmsContent } from "@/lib/cms";
 import "@/home-redesign.css";
 import "@/home-v4.css";
 import "@/home-v5.css";
 import "@/home-v6.css";
-
-export const Route = createFileRoute("/")({ component: Index });
 
 function Philosophy({ content }: { content: PageCmsContent }) {
   const philosophy = content.sections.philosophy as {
@@ -251,8 +250,7 @@ function Contact({ content }: { content: PageCmsContent }) {
   );
 }
 
-export function Index() {
-  const content = usePageContent("home");
+export function HomeView({ content }: { content: PageCmsContent }) {
   return (
     <div className="rt-home min-h-svh overflow-x-clip bg-[#f4f1eb] text-[#161916]">
       <EditorialMotion intro introName={content.header.brand || "Rahul Tanwar"} />
