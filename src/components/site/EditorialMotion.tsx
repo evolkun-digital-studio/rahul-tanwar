@@ -262,12 +262,18 @@ export function EditorialMotion({
     // Arriving on /#section (for example from "All ventures"): the browser's native
     // jump and Lenis's own anchor scroll are both cancelled by the ScrollTrigger
     // refreshes below, so settle on the target once layout has stopped moving.
-    const hashId = deepLink ? decodeURIComponent(window.location.hash.slice(1)) : "";
+    const rawHash = deepLink ? window.location.hash.slice(1) : "";
+    let hashId = rawHash;
+    try {
+      hashId = decodeURIComponent(rawHash);
+    } catch {
+      /* Malformed escape such as "#%": fall back to the raw hash. */
+    }
     const toHash = () => {
       const target = hashId ? document.getElementById(hashId) : null;
       if (!running || !target) return;
       if (lenis) lenis.scrollTo(target, { immediate: true });
-      else target.scrollIntoView();
+      else target.scrollIntoView({ behavior: "instant" });
     };
     const refresh = () => {
       ScrollTrigger.refresh();
