@@ -1,4 +1,4 @@
-import type { Venture } from "@/lib/data";
+import { VENTURES, type Venture } from "@/lib/data";
 import type { CmsImage, PageCmsContent } from "@/lib/cms";
 import adattoPhoto from "@/assets/adatto.avif";
 import sr18Photo from "@/assets/sr18.avif";
@@ -72,33 +72,33 @@ export function ventureImage(venture: VentureEditorial, content: PageCmsContent)
   const rootPhotos: Record<string, CmsImage> = {
     delhi6: {
       url: delhi6Photo,
-      alt: "Delhi 6 beer bottle with its yellow and black label.",
-      title: "Delhi 6",
+      alt: VENTURES.find((venture) => venture.id === "delhi6")!.alt,
+      title: VENTURES.find((venture) => venture.id === "delhi6")!.title,
     },
     masai: {
       url: "/assets/masai-og.jpg",
-      alt: "Masai brewing and beverage photo.",
-      title: "Masai",
+      alt: VENTURES.find((venture) => venture.id === "masai")!.alt,
+      title: VENTURES.find((venture) => venture.id === "masai")!.title,
     },
     adatto: {
       url: adattoPhoto,
-      alt: "Adatto apparel and athleisure campaign photo.",
-      title: "Adatto",
+      alt: VENTURES.find((venture) => venture.id === "adatto")!.alt,
+      title: VENTURES.find((venture) => venture.id === "adatto")!.title,
     },
     sr18: {
       url: sr18Photo,
-      alt: "SR18 real estate venture photo.",
-      title: "SR18",
+      alt: VENTURES.find((venture) => venture.id === "sr18")!.alt,
+      title: VENTURES.find((venture) => venture.id === "sr18")!.title,
     },
     volt50000: {
       url: voltPhoto,
-      alt: "Volt 50000 venture photo.",
-      title: "Volt 50000",
+      alt: VENTURES.find((venture) => venture.id === "volt50000")!.alt,
+      title: VENTURES.find((venture) => venture.id === "volt50000")!.title,
     },
     arnika: {
       url: textilePhoto,
-      alt: "Arnika Textiles manufacturing photo.",
-      title: "Arnika Textiles",
+      alt: VENTURES.find((venture) => venture.id === "arnika")!.alt,
+      title: VENTURES.find((venture) => venture.id === "arnika")!.title,
     },
   };
   if (rootPhotos[venture.id]) return rootPhotos[venture.id];

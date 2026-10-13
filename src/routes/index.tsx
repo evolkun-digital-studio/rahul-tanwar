@@ -10,7 +10,7 @@ import { Ecosystem } from "@/components/home/Ecosystem";
 import { Corridor } from "@/components/home/Corridor";
 import { Founder } from "@/components/home/Founder";
 import { Milestones } from "@/components/home/Milestones";
-import { usePageContent, type PageCmsContent } from "@/lib/cms";
+import { BUSINESS_PHILOSOPHY_QUOTE, usePageContent, type PageCmsContent } from "@/lib/cms";
 import "@/home-redesign.css";
 import "@/home-v4.css";
 import "@/home-v5.css";
@@ -24,8 +24,7 @@ function Philosophy({ content }: { content: PageCmsContent }) {
     quote?: string;
     attribution?: string;
   };
-  const quote =
-    philosophy?.quote || "Good businesses are built in the details. Then proved over time.";
+  const quote = philosophy?.quote || BUSINESS_PHILOSOPHY_QUOTE;
   return (
     <section
       className="rt-belief rt-surface-sheet"

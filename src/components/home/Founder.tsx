@@ -42,13 +42,13 @@ export function Founder({ content }: { content: PageCmsContent }) {
     >
       <div className="rt-shell">
         <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{about?.eyebrow || "The Man Behind The Brand"}</span>
+          <span className="rt-eyebrow">{about?.eyebrow || "The Man Behind The Brands"}</span>
           {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
           <span className="rt-caption-aside">The founder</span>
         </div>
         <h2 className="rt-section-title rt-founder-title" id="rt-founder-title">
           <SplitText
-            text="Behind the brands,"
+            text="A builder. An operator."
             className="rt-split-heading"
             splitType="lines, chars"
             mask="lines"
@@ -58,7 +58,7 @@ export function Founder({ content }: { content: PageCmsContent }) {
             duration={1.2}
           />
           <SplitText
-            text="there is a builder."
+            text="An owner."
             className="rt-split-heading rt-type-muted"
             splitType="lines, words"
             mask="lines"
@@ -98,7 +98,7 @@ export function Founder({ content }: { content: PageCmsContent }) {
                 end="bottom 60%"
               />
             </p>
-            {paragraphs.slice(0, 3).map((paragraph, index) => (
+            {paragraphs.map((paragraph, index) => (
               <TextEffect
                 key={`${index}-${paragraph.slice(0, 12)}`}
                 className="rt-founder-paragraph"

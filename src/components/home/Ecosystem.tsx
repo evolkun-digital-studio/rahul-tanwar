@@ -39,7 +39,7 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
         .map(toEditorialVenture),
     [ecosystem?.ventures],
   );
-  const headingLines = (ecosystem?.heading || "Different ventures.|One way of building.")
+  const headingLines = (ecosystem?.heading || "Six Ventures. One Operating Philosophy.")
     .split("|")
     .map((line) => line.trim());
 

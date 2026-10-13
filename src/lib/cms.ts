@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { IMG, VENTURES } from "@/lib/data";
 
+export const BUSINESS_PHILOSOPHY_QUOTE =
+  "Great companies are not built by chasing trends. They are built by solving real problems consistently over decades.";
+
 export type CmsImage = {
   url: string;
   alt: string;
@@ -102,12 +105,12 @@ export const defaultHomeContent: PageCmsContent = {
   },
   sections: {
     hero: {
-      eyebrow: "Founder & entrepreneur",
+      eyebrow: "Entrepreneur · Founder · Multi-Industry Builder · Dubai",
       heading: "Rahul Tanwar",
       manifestoLead: "",
       manifestoEmphasis: "",
       subheading:
-        "Building ventures across gaming, beverages, apparel and manufacturing in the UAE and India.",
+        "Rahul Tanwar is a Dubai-based founder who builds businesses across gaming, beverages, apparel and consumer brands with operations spanning the UAE and India. Explore his ventures, journey and investment ecosystem.",
       ctaText: "Explore the ventures",
       ctaLink: "#ventures",
     },
@@ -120,24 +123,25 @@ export const defaultHomeContent: PageCmsContent = {
     },
     ecosystem: {
       eyebrow: "The Ecosystem — Rahul Tanwar Ventures",
-      heading: "Different ventures.|One way of building.",
+      heading: "Six Ventures. One Operating Philosophy.",
       description:
-        "A portfolio spanning gaming, brewing, consumer beverages, apparel and textiles. Each business has its own market and purpose.",
+        "Each venture is built from first principles and connected by one obsession: quality, speed, and long-term value creation in every market Rahul enters.",
       ventures: VENTURES,
     },
     philosophy: {
-      eyebrow: "Business philosophy",
-      quote:
-        "Good businesses are built in the details. Then proved over time.",
-      attribution: "A long-term view",
+      eyebrow: "Rahul Tanwar — Business Philosophy",
+      quote: BUSINESS_PHILOSOPHY_QUOTE,
+      attribution: "— Rahul Tanwar, Founder and Entrepreneur | Dubai, UAE",
     },
     manBehind: {
-      eyebrow: "The Man Behind The Brand",
-      introduction: "Rahul Tanwar is a Dubai-based founder with businesses across the UAE and India.",
+      eyebrow: "The Man Behind The Brands",
+      introduction:
+        "Rahul Tanwar moves through the day the way a craftsman moves through a workshop — sleeves rolled, attention sharp, the next problem already half-solved before the meeting ends.",
       paragraphs: [
-        "His portfolio spans gaming, brewing, beverages, apparel and manufacturing. Different categories, with the same focus on product and execution.",
-        "He works across the ideas behind a brand and the operations that make it real — from what customers experience to how the business delivers it.",
-        "The approach is practical: build with purpose, earn trust over time and keep improving what matters.",
+        "He doesn't believe in chasing categories. He believes in choosing industries where India and the UAE are structurally under-served — and then building the kind of operating company that can compound for decades.",
+        "Across gaming, brewing, apparel and manufacturing, the same instinct repeats: own the supply chain, respect the customer, and never outsource the things that make the brand the brand.",
+        "For Rahul, businesses are not financial assets to be traded — they are operating ecosystems that must earn trust every day. Whether launching a new venture, refining a product, or expanding into a new market, the emphasis remains on execution, discipline, and long-term stewardship.",
+        "Behind every venture is a commitment to craftsmanship, operational excellence, and patient growth. The objective is not simply to build successful companies, but to create enduring institutions that outlast market cycles, adapt to changing consumer behaviour, and continue compounding value for customers, partners, and communities for generations to come.",
       ],
     },
     global: {
@@ -681,7 +685,7 @@ export function applyPageSeo(content: PageCmsContent) {
       ? [
         {
           "@type": "Quotation",
-          text: "Great companies are not built by chasing trends. They are built by solving real problems consistently over decades.",
+          text: BUSINESS_PHILOSOPHY_QUOTE,
           spokenByCharacter: {
             "@type": "Person",
             name: "Rahul Tanwar",
