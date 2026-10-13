@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 /**
  * One motion grammar for the whole homepage.
@@ -57,27 +57,28 @@ export function useIntroDone() {
   return done;
 }
 
+/**
+ * Media-query hooks must render the same value on the server and during
+ * hydration, then switch to the real value. useSyncExternalStore does exactly
+ * that: `serverValue` is used for SSR and the hydration pass, and React
+ * re-renders with the live value afterwards only if it differs.
+ */
+function useMatchMedia(query: string, serverValue: boolean) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const list = window.matchMedia(query);
+      list.addEventListener("change", onChange);
+      return () => list.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => serverValue,
+  );
+}
+
 export function useReducedMotionPreference() {
-  const [reduced, setReduced] = useState(prefersReducedMotion);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(query.matches);
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-  return reduced;
+  return useMatchMedia("(prefers-reduced-motion: reduce)", false);
 }
 
 export function useMediaQuery(query: string, initial = false) {
-  const [matches, setMatches] = useState(() =>
-    typeof window === "undefined" ? initial : window.matchMedia(query).matches,
-  );
-  useEffect(() => {
-    const list = window.matchMedia(query);
-    const update = () => setMatches(list.matches);
-    update();
-    list.addEventListener("change", update);
-    return () => list.removeEventListener("change", update);
-  }, [query]);
-  return matches;
+  return useMatchMedia(query, initial);
 }
