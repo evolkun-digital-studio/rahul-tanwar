@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const { apiKey, model } = getOpenAiConfig();
     if (!apiKey) return json({ error: "Chat is not configured yet" }, 503);
 
-    const openai = new OpenAI({ apiKey });
+    const openai = new OpenAI({ apiKey, timeout: 20_000, maxRetries: 1 });
     const completion = await openai.chat.completions.create({
       model,
       temperature: 0.4,
