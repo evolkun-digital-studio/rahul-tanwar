@@ -34,6 +34,7 @@ function nodes() {
 function reset() {
   const { curtain, panel, edgeTop, edgeBottom, label } = nodes();
   document.documentElement.classList.remove("rt-page-entering", "rt-page-leaving");
+  document.documentElement.style.removeProperty("--rt-curtain-label");
   if (curtain) gsap.set(curtain, { clearProps: "visibility" });
   if (panel) gsap.set(panel, { clearProps: "transform" });
   if (edgeTop) gsap.set(edgeTop, { clearProps: "transform" });
