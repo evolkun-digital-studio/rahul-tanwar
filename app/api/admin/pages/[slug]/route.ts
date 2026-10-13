@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { isPageSlug } from "@/lib/slugs";
 import { requireAdmin } from "@/server/auth";
 import { handleError, isPlainObject, json, readJsonBody } from "@/server/http";
@@ -36,6 +36,7 @@ export async function PUT(req: Request, ctx: Ctx) {
     const page = { ...existing, ...body.data, slug, updatedAt: new Date().toISOString() };
     await store.writePages({ ...pages, [slug]: page });
     revalidatePath("/", "layout");
+    revalidateTag("cms", { expire: 0 });
     return json({ page });
   } catch (error) {
     return handleError(error);

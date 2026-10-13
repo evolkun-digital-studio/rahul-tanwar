@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/server/auth";
 import { handleError, isPlainObject, json, readJsonBody } from "@/server/http";
 import { getStore } from "@/server/store";
@@ -25,6 +25,7 @@ export async function PUT(req: Request) {
     const settings = { ...body.data, updatedAt: new Date().toISOString() };
     await getStore().writeSettings(settings);
     revalidatePath("/", "layout");
+    revalidateTag("cms", { expire: 0 });
     return json({ settings });
   } catch (error) {
     return handleError(error);

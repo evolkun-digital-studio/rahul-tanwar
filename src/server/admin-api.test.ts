@@ -3,9 +3,9 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), revalidateTag: vi.fn() }));
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { signAdminToken } from "./auth";
 import { resetLimitersForTests } from "./ratelimit";
 import { resetStoreForTests } from "./store";
@@ -39,6 +39,7 @@ beforeEach(async () => {
   resetStoreForTests();
   resetLimitersForTests();
   vi.mocked(revalidatePath).mockClear();
+  vi.mocked(revalidateTag).mockClear();
 });
 
 describe("public pages", () => {
@@ -122,6 +123,7 @@ describe("admin pages", () => {
     expect((await res.json()).error).toContain('"pages"');
     expect(await readFile(file, "utf8")).toBe("{ corrupt but recoverable");
     expect(revalidatePath).not.toHaveBeenCalled();
+    expect(revalidateTag).not.toHaveBeenCalled();
 
     const pub = await publicPage(new Request("http://x"), ctx("home"));
     expect(pub.status).toBe(200);
@@ -139,6 +141,7 @@ describe("admin pages", () => {
     expect(page.slug).toBe("home");
     expect(page.updatedAt).toBeTruthy();
     expect(revalidatePath).toHaveBeenCalledWith("/", "layout");
+    expect(revalidateTag).toHaveBeenCalledWith("cms", { expire: 0 });
     const read = await publicPage(new Request("http://x"), ctx("home"));
     expect((await read.json()).page.pageTitle).toBe("Edited");
   });
@@ -207,6 +210,7 @@ describe("admin dashboard, media, settings", () => {
     const { settings } = await res.json();
     expect(settings.companyEmail).toBe("new@example.com");
     expect(settings.updatedAt).toBeTruthy();
+    expect(revalidateTag).toHaveBeenCalledWith("cms", { expire: 0 });
     const read = await (await settingsGet(await authed("/api/admin/settings"))).json();
     expect(read.settings.companyEmail).toBe("new@example.com");
   });

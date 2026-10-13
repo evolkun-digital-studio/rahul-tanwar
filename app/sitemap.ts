@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PAGE_SLUGS } from "@/lib/slugs";
+import { getCachedPages } from "@/server/content";
 import { getSiteUrl } from "@/server/env";
-import { getStore } from "@/server/store";
 
 export const revalidate = 3600;
 
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   let pages: Record<string, Record<string, unknown>> = {};
   try {
-    pages = await getStore().readPages();
+    pages = await getCachedPages();
   } catch (error) {
     console.error("[sitemap] storage unavailable, using defaults", error);
   }
