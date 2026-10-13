@@ -157,8 +157,7 @@ export const defaultHomeContent: PageCmsContent = {
       eyebrow: "Get in touch",
       titleLead: "Let's start a",
       titleEmphasis: "conversation.",
-      description:
-        "For partnerships, distribution, investment or enquiries about the ventures.",
+      description: "For partnerships, distribution, investment or enquiries about the ventures.",
       submitText: "Send an enquiry",
       successMessage: "Your message was submitted successfully. Thank you for reaching out.",
     },

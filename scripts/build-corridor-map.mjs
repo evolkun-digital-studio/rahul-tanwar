@@ -38,6 +38,8 @@ export const CORRIDOR_MAP = {
   points: ${JSON.stringify(points.flat())},
 } as const;
 `;
-const out = fileURLToPath(new URL("../src/components/motion-library/inspira-ui/corridorMapData.ts", import.meta.url));
+const out = fileURLToPath(
+  new URL("../src/components/motion-library/inspira-ui/corridorMapData.ts", import.meta.url),
+);
 writeFileSync(out, file);
 console.log(`corridor map: ${points.length} dots, ${map.image.width}×${map.image.height}`, pins);

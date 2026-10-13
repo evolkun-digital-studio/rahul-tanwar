@@ -21,7 +21,16 @@ const sections: Array<{ id: AdminSection; label: string; icon: typeof LayoutDash
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
-const editablePageSlugs = ["home", "sr18-gaming", "delhi-6", "volt-50000", "masai", "adatto", "arnika-textiles", "privacy"];
+const editablePageSlugs = [
+  "home",
+  "sr18-gaming",
+  "delhi-6",
+  "volt-50000",
+  "masai",
+  "adatto",
+  "arnika-textiles",
+  "privacy",
+];
 const pageDefaults = {
   home: defaultHomeContent,
   privacy: defaultPrivacyContent,
