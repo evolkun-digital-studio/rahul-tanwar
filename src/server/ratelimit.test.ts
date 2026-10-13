@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { clientIp, createMemoryLimiter } from "./ratelimit";
+import { describe, expect, it, vi } from "vitest";
+import { clientIp, createFallbackLimiter, createMemoryLimiter, type Limiter } from "./ratelimit";
 
 describe("memory limiter", () => {
   it("allows up to the limit then blocks with a retryAfter", async () => {
@@ -17,6 +17,36 @@ describe("memory limiter", () => {
     const limiter = createMemoryLimiter({ limit: 1, windowMs: 1000 });
     expect((await limiter.check("a")).success).toBe(true);
     expect((await limiter.check("b")).success).toBe(true);
+  });
+});
+
+describe("fallback limiter", () => {
+  const failing: Limiter = {
+    async check() {
+      throw new Error("redis down");
+    },
+  };
+  it("uses the primary limiter result when it works", async () => {
+    const primary: Limiter = { check: async () => ({ success: false, retryAfter: 7 }) };
+    const limiter = createFallbackLimiter(
+      primary,
+      createMemoryLimiter({ limit: 5, windowMs: 1000 }),
+    );
+    expect(await limiter.check("ip")).toEqual({ success: false, retryAfter: 7 });
+  });
+  it("falls back to an in-memory limit (not allow-all) when the primary errors", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const limiter = createFallbackLimiter(
+      failing,
+      createMemoryLimiter({ limit: 2, windowMs: 60_000 }),
+    );
+    expect((await limiter.check("ip")).success).toBe(true);
+    expect((await limiter.check("ip")).success).toBe(true);
+    const blocked = await limiter.check("ip");
+    expect(blocked.success).toBe(false);
+    expect(blocked.retryAfter).toBeGreaterThan(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 });
 

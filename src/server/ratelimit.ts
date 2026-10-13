@@ -34,6 +34,20 @@ export function createMemoryLimiter({
   };
 }
 
+/** Use `primary`; if it throws (e.g. Redis outage) degrade to the per-process `fallback` limiter. */
+export function createFallbackLimiter(primary: Limiter, fallback: Limiter): Limiter {
+  return {
+    async check(key) {
+      try {
+        return await primary.check(key);
+      } catch (error) {
+        console.error("[ratelimit] redis unavailable, using in-memory limit", error);
+        return fallback.check(key);
+      }
+    },
+  };
+}
+
 const CONFIG = {
   contact: { limit: 5, windowSec: 15 * 60 },
   chat: { limit: 12, windowSec: 60 },
@@ -55,22 +69,21 @@ export function getLimiter(name: Name): Limiter {
       prefix: `rt-rl:${name}`,
       limiter: Ratelimit.slidingWindow(limit, `${windowSec} s`),
     });
-    limiter = {
+    const primary: Limiter = {
       async check(key) {
-        try {
-          const result = await remote.limit(key);
-          return {
-            success: result.success,
-            retryAfter: result.success
-              ? 0
-              : Math.max(1, Math.ceil((result.reset - Date.now()) / 1000)),
-          };
-        } catch (error) {
-          console.error("[ratelimit] redis unavailable, allowing request", error);
-          return { success: true, retryAfter: 0 };
-        }
+        const result = await remote.limit(key);
+        return {
+          success: result.success,
+          retryAfter: result.success
+            ? 0
+            : Math.max(1, Math.ceil((result.reset - Date.now()) / 1000)),
+        };
       },
     };
+    limiter = createFallbackLimiter(
+      primary,
+      createMemoryLimiter({ limit, windowMs: windowSec * 1000 }),
+    );
   } else {
     limiter = createMemoryLimiter({ limit, windowMs: windowSec * 1000 });
   }
