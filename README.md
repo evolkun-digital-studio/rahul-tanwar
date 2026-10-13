@@ -9,12 +9,15 @@ Requires Node `>=20.9`.
 
 ```bash
 npm install
-cp .env.example .env
+cp .env.example .env.local   # .env.local is not copied into the standalone/cPanel bundle
 npm run dev          # http://localhost:3000  (add /?intro=1 to replay the preloader)
 npm test             # server logic tests (Vitest)
 npm run typecheck
 npm run build && npm start
 ```
+
+`npm start` prints a Next warning because the app uses `output: "standalone"`; that is expected. For production use
+`node .next/standalone/server.js` or the cPanel bundle (`npm run package:cpanel`, see DEPLOY.md).
 
 Deployment (Vercel and cPanel), environment variables and CMS storage are documented in [DEPLOY.md](DEPLOY.md).
 

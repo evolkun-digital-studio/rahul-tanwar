@@ -5,7 +5,7 @@ The site is a Next.js (App Router) app. It deploys to Vercel as-is, or to cPanel
 
 ## 1. Environment variables
 
-Copy `.env.example` to `.env` for local work. In production set them in the host's UI.
+Copy `.env.example` to `.env.local` for local work (not `.env`: Next copies `.env` and `.env.production` into the standalone build, and the cPanel packaging script strips them). In production set them in the host's UI.
 
 | Variable | Required | Used by | Notes |
 | --- | --- | --- | --- |

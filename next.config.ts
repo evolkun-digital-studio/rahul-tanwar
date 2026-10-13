@@ -12,6 +12,9 @@ const securityHeaders = [
 const config: NextConfig = {
   output: "standalone",
   outputFileTracingRoot: path.resolve(process.cwd()),
+  // Keep local state out of the traced standalone output: a previous cPanel bundle, the local
+  // CMS data dir (store.ts reads it via process.cwd()) and any dev .env files.
+  outputFileTracingExcludes: { "*": ["dist-cpanel/**", "data/**", ".env*"] },
   reactStrictMode: true,
   poweredByHeader: false,
   images: { unoptimized: true },

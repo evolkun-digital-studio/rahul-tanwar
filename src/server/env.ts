@@ -13,6 +13,17 @@ export function getAuthConfig(source: NodeJS.ProcessEnv = process.env) {
   if (source.NODE_ENV === "production" && (source.JWT_SECRET as string).length < 16) {
     throw new ConfigError("JWT_SECRET must be at least 16 characters in production");
   }
+  if (source.NODE_ENV === "production") {
+    // The .env.example placeholders are published in the repo; they must never be live.
+    if ((source.JWT_SECRET as string).startsWith("replace-with")) {
+      throw new ConfigError("JWT_SECRET is still the .env.example placeholder; set a real secret");
+    }
+    if ((source.ADMIN_PASSWORD as string).startsWith("replace-with")) {
+      throw new ConfigError(
+        "ADMIN_PASSWORD is still the .env.example placeholder; set a real password",
+      );
+    }
+  }
   return {
     jwtSecret: source.JWT_SECRET as string,
     adminEmail: source.ADMIN_EMAIL as string,
