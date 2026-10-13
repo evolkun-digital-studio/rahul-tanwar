@@ -259,7 +259,20 @@ export function EditorialMotion({
     // No preloader: the page is ready to perform immediately.
     if (!showIntro) markIntroDone();
 
-    const refresh = () => ScrollTrigger.refresh();
+    // Arriving on /#section (for example from "All ventures"): the browser's native
+    // jump and Lenis's own anchor scroll are both cancelled by the ScrollTrigger
+    // refreshes below, so settle on the target once layout has stopped moving.
+    const hashId = deepLink ? decodeURIComponent(window.location.hash.slice(1)) : "";
+    const toHash = () => {
+      const target = hashId ? document.getElementById(hashId) : null;
+      if (!running || !target) return;
+      if (lenis) lenis.scrollTo(target, { immediate: true });
+      else target.scrollIntoView();
+    };
+    const refresh = () => {
+      ScrollTrigger.refresh();
+      toHash();
+    };
     window.addEventListener("load", refresh, { once: true });
     (document as Document & { fonts?: FontFaceSet }).fonts?.ready.then(refresh);
     ScrollTrigger.refresh();
