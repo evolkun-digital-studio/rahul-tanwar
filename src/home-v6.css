@@ -1431,3 +1431,63 @@
     letter-spacing: -0.045em;
   }
 }
+
+/* Tighter vertical rhythm across the home page. */
+.rt-home .rt-hero6 { min-height: 92svh; }
+.rt-home {
+  --rt-section-space: clamp(34px, 3.85vw, 56px);
+}
+.rt-home .rt-hero6-grid {
+  min-height: 92svh;
+  padding-block: var(--rt-section-space);
+}
+.rt-home .rt-hero6-copy,
+.rt-home .rt-hero6-media { min-height: clamp(500px, 70svh, 780px); }
+.rt-home .rt-hero6-body { padding-top: clamp(18px, 2.7vh, 33px); }
+.rt-home .rt-hero6-actions { margin-top: clamp(14px, 1.65vw, 24px); }
+
+.rt-home main > section:not(.rt-hero6) { padding-block: var(--rt-section-space); }
+.rt-home .rt-introduction { padding-block: var(--rt-section-space); }
+.rt-home .rt-intro-title { margin-top: clamp(33px, 3.85vw, 59px); }
+.rt-home .rt-intro-bottom { margin-top: clamp(38px, 4.35vw, 67px); }
+.rt-home .rt-intro-marquee { margin-top: clamp(39px, 4.35vw, 66px); }
+
+.rt-home .rt-ventures { padding-block: var(--rt-section-space); }
+.rt-home .rt-ventures-heading-row { margin-top: clamp(37px, 3.85vw, 61px); }
+.rt-home .rt-ventures-main { margin-top: clamp(39px, 4.35vw, 66px); gap: clamp(21px, 2.7vw, 46px); }
+.rt-home .rt-ventures-ending { margin-top: clamp(37px, 3.85vw, 61px); }
+
+.rt-home .rt-markets { padding-block: var(--rt-section-space); }
+.rt-home .rt-markets-lead { margin-top: clamp(34px, 3.85vw, 59px); }
+.rt-home .rt-markets-gallery { margin-top: clamp(37px, 3.85vw, 61px); }
+.rt-home .rt-markets-close { margin-top: clamp(45px, 4.9vw, 74px); }
+
+.rt-home .rt-founder { padding-block: var(--rt-section-space); }
+.rt-home .rt-founder-title { margin-top: clamp(30px, 3.3vw, 53px); }
+.rt-home .rt-founder-columns { margin-top: clamp(39px, 4.35vw, 67px); }
+
+.rt-home .rt-journey { padding-block: var(--rt-section-space); }
+.rt-home .rt-journey-list { margin-top: clamp(31px, 3.3vw, 50px); }
+.rt-home .rt-journey-now { margin-top: clamp(20px, 2.15vw, 34px); }
+
+.rt-home .rt-belief { padding-block: var(--rt-section-space); }
+.rt-home .rt-belief-body { margin-top: clamp(39px, 4.35vw, 67px); }
+.rt-home .rt-belief-signature { margin-top: clamp(31px, 3.3vw, 53px); }
+.rt-home .rt-contact { padding-block: var(--rt-section-space); }
+.rt-home footer [data-footer-wordmark] { padding-block: clamp(1.6rem, 3.3vw, 3rem); }
+
+/* Keep the layout quiet by removing decorative rules. */
+.rt-home .rt-intro-marquee,
+.rt-home .rt-founder-stats,
+.rt-home .rt-founder-stat + .rt-founder-stat { border: 0; }
+.rt-home .rt-ventures-list,
+.rt-home .rt-venture { border: 0; }
+.rt-home .rt-journey-item { border-bottom: 0; }
+.rt-home [data-section-outro] { border: 0; }
+.rt-home [data-section-outro]::before { display: none; }
+
+@media (max-width: 850px) {
+  .rt-home .rt-hero6-grid { min-height: 0; }
+  .rt-home .rt-hero6-copy,
+  .rt-home .rt-hero6-media { min-height: 0; }
+}
