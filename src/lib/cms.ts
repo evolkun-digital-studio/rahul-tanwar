@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { IMG, VENTURES } from "@/lib/data";
+import { PAGE_SLUGS } from "@/lib/slugs";
 
 export const BUSINESS_PHILOSOPHY_QUOTE =
   "Great companies are not built by chasing trends. They are built by solving real problems consistently over decades.";
@@ -16,6 +16,7 @@ export type PageCmsContent = {
   metaTitle: string;
   metaDescription: string;
   canonicalUrl: string;
+  updatedAt?: string;
   ogTitle: string;
   ogDescription: string;
   ogImage: string;
@@ -568,7 +569,27 @@ export const defaultArnikaContent: PageCmsContent = {
   },
 };
 
-function mergeContent(defaults: PageCmsContent, page?: Partial<PageCmsContent>) {
+const DEFAULTS_BY_SLUG: Record<(typeof PAGE_SLUGS)[number], PageCmsContent> = {
+  home: defaultHomeContent,
+  privacy: defaultPrivacyContent,
+  "sr18-gaming": defaultSr18GamingContent,
+  "delhi-6": defaultDelhi6Content,
+  masai: defaultMasaiContent,
+  adatto: defaultAdattoContent,
+  "volt-50000": defaultVolt50000Content,
+  "arnika-textiles": defaultArnikaContent,
+};
+
+export function getDefaultContent(slug: string): PageCmsContent | undefined {
+  return Object.hasOwn(DEFAULTS_BY_SLUG, slug)
+    ? DEFAULTS_BY_SLUG[slug as keyof typeof DEFAULTS_BY_SLUG]
+    : undefined;
+}
+
+export function mergeContent(
+  defaults: PageCmsContent,
+  page?: Partial<PageCmsContent> | null,
+): PageCmsContent {
   return {
     ...defaults,
     ...(page || {}),
@@ -577,206 +598,4 @@ function mergeContent(defaults: PageCmsContent, page?: Partial<PageCmsContent>) 
     socialLinks: { ...defaults.socialLinks, ...(page?.socialLinks || {}) },
     sections: { ...defaults.sections, ...(page?.sections || {}) },
   };
-}
-
-function setMeta(selector: string, attr: "content" | "href", value?: string) {
-  if (!value) return;
-  let element = document.head.querySelector(selector);
-  if (!element) {
-    if (selector.startsWith("meta[")) {
-      const name = selector.match(/name="([^"]+)"/)?.[1];
-      const property = selector.match(/property="([^"]+)"/)?.[1];
-      element = document.createElement("meta");
-      if (name) element.setAttribute("name", name);
-      if (property) element.setAttribute("property", property);
-      document.head.appendChild(element);
-    }
-    if (selector === 'link[rel="canonical"]') {
-      element = document.createElement("link");
-      element.setAttribute("rel", "canonical");
-      document.head.appendChild(element);
-    }
-  }
-  if (element) {
-    element.setAttribute(attr, value);
-  }
-}
-
-export function applyPageSeo(content: PageCmsContent) {
-  document.title = content.metaTitle || content.pageTitle;
-  setMeta('meta[name="description"]', "content", content.metaDescription);
-  setMeta('meta[property="og:title"]', "content", content.ogTitle || content.metaTitle);
-  setMeta(
-    'meta[property="og:description"]',
-    "content",
-    content.ogDescription || content.metaDescription,
-  );
-  setMeta('meta[property="og:image"]', "content", content.ogImage);
-  setMeta('meta[property="og:url"]', "content", content.ogUrl || content.canonicalUrl);
-  setMeta('meta[property="og:type"]', "content", content.ogType || "website");
-  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-  setMeta('meta[name="twitter:title"]', "content", content.twitterTitle || content.ogTitle);
-  setMeta(
-    'meta[name="twitter:description"]',
-    "content",
-    content.twitterDescription || content.ogDescription || content.metaDescription,
-  );
-  setMeta('meta[name="twitter:image"]', "content", content.twitterImage || content.ogImage);
-  setMeta(
-    'meta[name="robots"]',
-    "content",
-    "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-  );
-  setMeta('link[rel="canonical"]', "href", content.canonicalUrl);
-
-  document.getElementById("organization-schema")?.remove();
-  document.getElementById("quotation-schema")?.remove();
-  document.getElementById("seo-schema")?.remove();
-  document.querySelectorAll('script[data-page-schema="true"]').forEach((element) => {
-    element.remove();
-  });
-
-  const siteUrl = "https://rahultanwar.com";
-  const pageUrl = content.canonicalUrl || `${siteUrl}/`;
-  const personId = `${siteUrl}/#person`;
-  const websiteId = `${siteUrl}/#website`;
-  const graph: Array<Record<string, unknown>> = [
-    {
-      "@type": "Person",
-      "@id": personId,
-      name: "Rahul Tanwar",
-      url: `${siteUrl}/`,
-      image: content.images.founder?.url || `${siteUrl}/images/rahul-tanwar-portrait.jpg`,
-      jobTitle: "Founder and Entrepreneur",
-      description:
-        "Dubai-based multi-industry founder building ventures across gaming, beverages, apparel and manufacturing in the UAE and India.",
-      sameAs: [content.socialLinks.linkedin].filter(
-        (url) => typeof url === "string" && url.startsWith("https://"),
-      ),
-      knowsAbout: [
-        "Entrepreneurship",
-        "Gaming",
-        "Consumer brands",
-        "Apparel",
-        "Textile manufacturing",
-        "UAE and India business",
-      ],
-    },
-    {
-      "@type": "WebSite",
-      "@id": websiteId,
-      url: `${siteUrl}/`,
-      name: "Rahul Tanwar",
-      inLanguage: "en",
-      publisher: { "@id": personId },
-    },
-    {
-      "@type": content.slug === "home" ? "ProfilePage" : "WebPage",
-      "@id": `${pageUrl}#webpage`,
-      url: pageUrl,
-      name: content.metaTitle || content.pageTitle,
-      description: content.metaDescription,
-      isPartOf: { "@id": websiteId },
-      about: { "@id": personId },
-      mainEntity: content.slug === "home" ? { "@id": personId } : undefined,
-      inLanguage: "en",
-    },
-    ...(content.slug === "home"
-      ? [
-        {
-          "@type": "Quotation",
-          text: BUSINESS_PHILOSOPHY_QUOTE,
-          spokenByCharacter: {
-            "@type": "Person",
-            name: "Rahul Tanwar",
-            jobTitle: "Founder and Entrepreneur",
-            url: "https://rahultanwar.com",
-            worksFor: {
-              "@type": "Organization",
-              name: "Rahul Tanwar Ventures",
-            },
-          },
-        },
-      ]
-      : []),
-    ...(content.jsonLd || []),
-  ];
-
-  if (content.slug !== "home") {
-    graph.push({
-      "@type": "BreadcrumbList",
-      "@id": `${pageUrl}#breadcrumb`,
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: content.pageTitle.split(/[|—-]/)[0].trim(),
-          item: pageUrl,
-        },
-      ],
-    });
-  }
-
-  const script = document.createElement("script");
-  script.id = "seo-schema";
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify({
-    "@context": "https://schema.org",
-    "@graph": graph,
-  });
-  document.head.appendChild(script);
-}
-
-export function usePageContent(slug = "home") {
-  const defaults =
-    slug === "privacy"
-      ? defaultPrivacyContent
-      : slug === "sr18-gaming"
-        ? defaultSr18GamingContent
-        : slug === "delhi-6"
-          ? defaultDelhi6Content
-          : slug === "masai"
-            ? defaultMasaiContent
-            : slug === "adatto"
-              ? defaultAdattoContent
-              : slug === "volt-50000"
-                ? defaultVolt50000Content
-                : slug === "arnika-textiles"
-                  ? defaultArnikaContent
-                  : defaultHomeContent;
-  const [content, setContent] = useState<PageCmsContent>(defaults);
-
-  useEffect(() => {
-    // A standalone Vite preview uses the built-in page content and does not
-    // require the Express CMS server. Opt into live CMS data in development
-    // by setting VITE_ENABLE_CMS_API=true; production always uses the API.
-    const shouldFetchCms = !import.meta.env.DEV || import.meta.env.VITE_ENABLE_CMS_API === "true";
-
-    if (!shouldFetchCms) {
-      setContent(defaults);
-      return;
-    }
-
-    let active = true;
-    fetch(`/api/public/pages/${slug}`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data) => {
-        if (!active) return;
-        setContent(mergeContent(defaults, data?.page));
-      })
-      .catch(() => {
-        if (active) setContent(defaults);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [defaults, slug]);
-
-  useEffect(() => {
-    applyPageSeo(content);
-  }, [content]);
-
-  return content;
 }
