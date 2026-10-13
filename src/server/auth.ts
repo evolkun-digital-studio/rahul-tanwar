@@ -31,7 +31,10 @@ export function signAdminToken(email: string, secret: string) {
 
 export async function verifyAdminToken(token: string, secret: string) {
   try {
-    await jwtVerify(token, encode(secret), { algorithms: ["HS256"] });
+    await jwtVerify(token, encode(secret), {
+      algorithms: ["HS256"],
+      requiredClaims: ["exp"],
+    });
     return true;
   } catch {
     return false;

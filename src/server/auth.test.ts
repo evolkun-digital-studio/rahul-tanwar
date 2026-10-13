@@ -40,6 +40,13 @@ describe("tokens", () => {
       .sign(new TextEncoder().encode(secret));
     expect(await verifyAdminToken(expired, secret)).toBe(false);
   });
+  it("rejects a validly signed token that has no exp claim", async () => {
+    const noExp = await new SignJWT({ email: "a@b.co" })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .sign(new TextEncoder().encode(secret));
+    expect(await verifyAdminToken(noExp, secret)).toBe(false);
+  });
   it("rejects garbage", async () => {
     expect(await verifyAdminToken("not.a.jwt", secret)).toBe(false);
   });
