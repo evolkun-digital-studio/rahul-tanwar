@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import {
+  StorageCorruptError,
   StorageUnavailableError,
   createFileBackend,
   createRedisBackend,
@@ -31,12 +32,15 @@ describe("file backend", () => {
     expect(await createFileBackend(await tempDir()).get("media")).toBeNull();
   });
 
-  it("returns null (not a crash) for corrupt JSON", async () => {
+  it("throws StorageCorruptError (naming the key) for corrupt JSON", async () => {
     const dir = await tempDir();
     await writeFile(path.join(dir, "pages.json"), "{ not json");
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    expect(await createFileBackend(dir).get("pages")).toBeNull();
-    spy.mockRestore();
+    const error = await createFileBackend(dir)
+      .get("pages")
+      .catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(StorageCorruptError);
+    expect((error as Error).message).toContain('"pages"');
+    expect((error as Error).message).toContain("data/pages.json");
   });
 
   it("writes valid JSON atomically (no leftover temp file)", async () => {
@@ -101,6 +105,25 @@ describe("store", () => {
     await expect(createStore(broken, seed).readPages({ strict: true })).rejects.toThrow(
       "redis down",
     );
+  });
+
+  it("strict reads reject with StorageCorruptError for a corrupt data file", async () => {
+    const dir = await tempDir();
+    await writeFile(path.join(dir, "pages.json"), "{ not json");
+    await expect(
+      createStore(createFileBackend(dir), seed).readPages({ strict: true }),
+    ).rejects.toBeInstanceOf(StorageCorruptError);
+  });
+
+  it("non-strict reads fall back to the seed for a corrupt data file", async () => {
+    const dir = await tempDir();
+    await writeFile(path.join(dir, "pages.json"), "{ not json");
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect((await createStore(createFileBackend(dir), seed).readPages()).home.pageTitle).toBe(
+      "Seed home",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
   it("serves the seed but refuses writes when no backend is configured", async () => {

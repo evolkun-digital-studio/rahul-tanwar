@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ConfigError } from "./env";
 import { SLUG_RE, handleError, isPlainObject, readJsonBody } from "./http";
-import { StorageUnavailableError } from "./store";
+import { StorageCorruptError, StorageUnavailableError } from "./store";
 
 const post = (body: BodyInit | null, headers: Record<string, string> = {}) =>
   new Request("http://x/api", { method: "POST", body, headers });
@@ -97,6 +97,9 @@ describe("helpers", () => {
   });
   it("handleError maps known errors", async () => {
     expect((await handleError(new StorageUnavailableError())).status).toBe(503);
+    const corrupt = await handleError(new StorageCorruptError("pages"));
+    expect(corrupt.status).toBe(503);
+    expect((await corrupt.json()).error).toContain('"pages"');
     expect((await handleError(new ConfigError("missing"))).status).toBe(500);
     expect((await handleError(new Error("boom"))).status).toBe(500);
   });

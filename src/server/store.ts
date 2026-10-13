@@ -20,6 +20,13 @@ export class StorageUnavailableError extends Error {
   }
 }
 
+export class StorageCorruptError extends Error {
+  constructor(key: DocKey) {
+    super(`Stored "${key}" content is not valid JSON; fix or remove data/${key}.json`);
+    this.name = "StorageCorruptError";
+  }
+}
+
 export interface StorageBackend {
   get(key: DocKey): Promise<unknown | null>;
   set(key: DocKey, value: unknown): Promise<void>;
@@ -39,8 +46,9 @@ export function createFileBackend(dir: string): StorageBackend {
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
         if (error instanceof SyntaxError) {
-          console.error(`[store] ${key}.json is not valid JSON; using seed content`);
-          return null;
+          // Never treat a damaged-but-recoverable file as "empty": a later admin save would
+          // overwrite it with seed content. Public reads catch this and serve the seed.
+          throw new StorageCorruptError(key);
         }
         throw error;
       }

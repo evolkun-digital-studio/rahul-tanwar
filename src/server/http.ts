@@ -1,5 +1,5 @@
 import { ConfigError } from "./env";
-import { StorageUnavailableError } from "./store";
+import { StorageCorruptError, StorageUnavailableError } from "./store";
 
 export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
@@ -69,7 +69,8 @@ export async function readJsonBody(
 }
 
 export function handleError(error: unknown) {
-  if (error instanceof StorageUnavailableError) return json({ error: error.message }, 503);
+  if (error instanceof StorageUnavailableError || error instanceof StorageCorruptError)
+    return json({ error: error.message }, 503);
   if (error instanceof ConfigError) {
     console.error("[config]", error.message);
     return json({ error: "Server is not configured" }, 500);

@@ -1,4 +1,4 @@
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -110,6 +110,24 @@ describe("admin auth guard", () => {
 });
 
 describe("admin pages", () => {
+  it("returns 503 and leaves a corrupt data file untouched on PUT; public GET still serves the seed", async () => {
+    const file = path.join(process.env.DATA_DIR as string, "pages.json");
+    await writeFile(file, "{ corrupt but recoverable");
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await adminPutPage(
+      await authed("/api/admin/pages/home", "PUT", { pageTitle: "Edited" }),
+      ctx("home"),
+    );
+    expect(res.status).toBe(503);
+    expect((await res.json()).error).toContain('"pages"');
+    expect(await readFile(file, "utf8")).toBe("{ corrupt but recoverable");
+    expect(revalidatePath).not.toHaveBeenCalled();
+
+    const pub = await publicPage(new Request("http://x"), ctx("home"));
+    expect(pub.status).toBe(200);
+    expect((await pub.json()).page.slug).toBe("home");
+    spy.mockRestore();
+  });
   it("PUT merges, forces the slug, stamps updatedAt and revalidates", async () => {
     const res = await adminPutPage(
       await authed("/api/admin/pages/home", "PUT", { pageTitle: "Edited", slug: "hijack" }),
