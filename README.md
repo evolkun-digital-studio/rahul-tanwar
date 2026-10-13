@@ -5,12 +5,18 @@ story section with components ported from **React Bits**, **Animate UI**, **Insp
 running on **GSAP**, **Motion (framer-motion)**, **anime.js v4**, **three.js** and **Lenis**. The CMS, admin, contact form,
 chat and SEO now run as Next.js route handlers and metadata (no separate Express server). See `DEPLOY.md` to deploy to Vercel or cPanel.
 
-```
+Requires Node `>=20.9`.
+
+```bash
 npm install
-npm run dev        # http://localhost:3000
-npm test           # server logic tests (Vitest)
+cp .env.example .env
+npm run dev          # http://localhost:3000  (add /?intro=1 to replay the preloader)
+npm test             # server logic tests (Vitest)
+npm run typecheck
 npm run build && npm start
 ```
+
+Deployment (Vercel and cPanel), environment variables and CMS storage are documented in [DEPLOY.md](DEPLOY.md).
 
 ## What each section uses
 
@@ -44,30 +50,8 @@ Section components live in `src/components/home/`.
 - Fix included: the India photograph now sits lower than Dubai as originally intended (a base
   `figure` reset was overriding it).
 
-## Run
-
-Node 20.19+ or 22.12+:
-
-```bash
-npm install
-cp .env.example .env
-npm run dev          # http://localhost:3000  (add /?intro=1 to replay the preloader)
-```
-
-Before deploying:
-
-```bash
-npm run typecheck
-npm run build
-```
+## Dependencies and licences
 
 New dependencies: `three`, `animejs` (runtime); `@types/three`, `dotted-map` (dev).
 Check upstream licences before redistribution: React Bits (MIT + Commons Clause), Animate UI (MIT),
 Inspira UI (MIT), motion-primitives (MIT).
-
-## Verified
-
-`npm run typecheck` and `npm run build` pass. The production build was run in Chromium at 1440 × 900 and
-390 × 844, with and without reduced motion, across the homepage, all six venture pages and privacy:
-no runtime errors, hero intro, hover states, stage wipes, map choreography, rolling year and page
-transitions checked frame by frame.
