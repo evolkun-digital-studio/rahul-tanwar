@@ -26,17 +26,41 @@ export async function readJsonBody(
   req: Request,
   maxBytes = 1_000_000,
 ): Promise<{ ok: true; data: unknown } | { ok: false; response: Response }> {
+  const tooLarge = () => ({
+    ok: false as const,
+    response: json({ error: "Request too large" }, 413),
+  });
   const declared = Number(req.headers.get("content-length") || 0);
-  if (declared > maxBytes)
-    return { ok: false, response: json({ error: "Request too large" }, 413) };
+  if (declared > maxBytes) return tooLarge();
   let text = "";
   try {
-    text = await req.text();
+    if (req.body) {
+      // Stream the body so an oversize (e.g. chunked, no Content-Length) request is
+      // aborted as soon as it crosses the cap instead of being buffered whole.
+      const reader = req.body.getReader();
+      const chunks: Uint8Array[] = [];
+      let received = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        received += value.byteLength;
+        if (received > maxBytes) {
+          await reader.cancel().catch(() => undefined);
+          return tooLarge();
+        }
+        chunks.push(value);
+      }
+      const merged = new Uint8Array(received);
+      let offset = 0;
+      for (const chunk of chunks) {
+        merged.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+      text = new TextDecoder("utf-8", { fatal: false }).decode(merged);
+    }
   } catch {
     return { ok: false, response: json({ error: "Invalid request body" }, 400) };
   }
-  if (text.length > maxBytes)
-    return { ok: false, response: json({ error: "Request too large" }, 413) };
   try {
     return { ok: true, data: JSON.parse(text) };
   } catch {

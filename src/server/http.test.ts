@@ -33,6 +33,55 @@ describe("readJsonBody", () => {
   });
 });
 
+describe("readJsonBody streaming", () => {
+  const streamed = (chunks: Uint8Array[], onCancel?: () => void) => {
+    let i = 0;
+    let pulled = 0;
+    const stream = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (i >= chunks.length) return controller.close();
+        pulled += 1;
+        controller.enqueue(chunks[i++]);
+      },
+      cancel() {
+        onCancel?.();
+      },
+    });
+    const req = new Request("http://x/api", {
+      method: "POST",
+      body: stream,
+      duplex: "half",
+    } as RequestInit);
+    return { req, pulled: () => pulled };
+  };
+  const enc = new TextEncoder();
+
+  it("returns 413 for an oversize chunked body without reading it all", async () => {
+    let cancelled = false;
+    const chunks = Array.from({ length: 1000 }, () => enc.encode("x".repeat(100)));
+    const { req, pulled } = streamed(chunks, () => {
+      cancelled = true;
+    });
+    expect(req.headers.get("content-length")).toBeNull();
+    const r = await readJsonBody(req, 1000);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.response.status).toBe(413);
+    expect(cancelled).toBe(true);
+    expect(pulled()).toBeLessThan(100);
+  });
+  it("measures the body in bytes, not UTF-16 characters", async () => {
+    const r = await readJsonBody(post(JSON.stringify({ a: "€".repeat(400) })), 1000);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.response.status).toBe(413);
+  });
+  it("reassembles a multibyte character split across chunks", async () => {
+    const bytes = enc.encode(JSON.stringify({ a: "€" }));
+    const mid = bytes.indexOf(0xe2) + 1;
+    const { req } = streamed([bytes.slice(0, mid), bytes.slice(mid)]);
+    expect(await readJsonBody(req, 1000)).toEqual({ ok: true, data: { a: "€" } });
+  });
+});
+
 describe("helpers", () => {
   it("isPlainObject rejects null, arrays and primitives", () => {
     expect(isPlainObject({})).toBe(true);
