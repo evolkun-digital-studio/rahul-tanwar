@@ -25,3 +25,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.next
+dist-cpanel
+next-env.d.ts
+/data
+*.tsbuildinfo

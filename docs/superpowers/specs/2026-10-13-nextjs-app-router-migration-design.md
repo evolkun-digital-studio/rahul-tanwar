@@ -40,11 +40,11 @@ TSX with **Tailwind CSS v4**. The result must be production-ready for **Vercel**
 
 ```
 app/
-  layout.tsx                  next/font DM Sans, global CSS, transition curtain, client providers
+  layout.tsx                  Google Fonts links, global CSS, transition curtain, client providers
   page.tsx                    home: server component fetches CMS, renders client sections
   privacy/page.tsx
   ventures/[slug]/page.tsx    generateStaticParams for 6 slugs, notFound() otherwise
-  admin/page.tsx              client AdminApp, robots noindex
+  admin/[[...slug]]/page.tsx  client AdminApp, robots noindex
   api/public/pages/[slug]/route.ts
   api/public/settings/route.ts
   api/contact/route.ts
@@ -66,6 +66,7 @@ content/                      seed pages.json / settings.json / media.json (move
   (cached, tagged `cms`), merge it with the in-code defaults (`mergeContent` in `src/lib/cms.ts`),
   and pass it to client sections. `usePageContent` and its `fetch("/api/public/pages/…")` effect
   are removed; the client-side `applyPageSeo` DOM patching is replaced by `generateMetadata`.
+- **Route components:** route page components stay client components (`src/views/*`) receiving `content` as a prop; `app/**/page.tsx` are server components that fetch content and render metadata/JSON-LD.
 - **Client boundary:** every component using GSAP, Lenis, Motion, anime.js, three.js, hooks or
   browser APIs gets `"use client"`. `GridDistortion` (three.js) is loaded with
   `next/dynamic({ ssr: false })`, matching today's lazy desktop-only behaviour.
@@ -78,8 +79,7 @@ content/                      seed pages.json / settings.json / media.json (move
   `server/index.js` (`sharedStructuredData`) into `src/server/seo.ts` and rendered as a
   `<script type="application/ld+json">`. `sitemap.ts` ports `public.js` route list and
   `lastmod`/canonical logic.
-- **Fonts:** DM Sans via `next/font/google` (self-hosted at build), replacing the Google Fonts
-  `<link>`.
+- **Fonts:** keep the Google Fonts `<link>` tags (DM Sans + Noto Sans Devanagari) from `index.html` in the root layout head; CSS references the literal family names, which `next/font` would rename.
 - **Removed:** Vite, `@vitejs/plugin-react`, `vite-tsconfig-paths`, TanStack Router/router-plugin,
   `routeTree.gen.ts`, `src/router.tsx`, `src/main.tsx`, `index.html`, `server/`, express, cors,
   helmet, dotenv, express-rate-limit, jsonwebtoken. TanStack Query is dropped if no component
@@ -99,7 +99,7 @@ readMedia / writeMedia`, with two backends selected by env:
 
 - Empty storage falls back to the bundled seed in `content/`, so a fresh deploy is never blank.
 - Writes merge as today (`{...existing, ...body, slug, updatedAt}`), then call
-  `revalidateTag("cms")` so edits appear without a rebuild.
+  `revalidatePath("/", "layout")`; pages use `export const revalidate = 60` as a safety net, so edits appear without a rebuild.
 - File backend writes atomically (temp file + rename).
 - On Vercel without Redis configured, admin writes return a clear 503 ("storage not configured")
   rather than failing silently.
