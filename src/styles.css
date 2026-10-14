@@ -1,3 +1,6 @@
+/* Cascade order: legacy component CSS sits above Tailwind's base and below its utilities. */
+@layer theme, base, legacy, components, utilities;
+
 @import "tailwindcss" source(none);
 @source "../src";
 @source "../app";
@@ -5,7 +8,70 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   Design tokens — the single source of truth (Indigo palette).
+   Colours generate bg-page, text-ink, border-hairline, bg-chapter …
+   ========================================================================== */
+@theme static {
+  --color-page: #f2efe8;
+  --color-surface: #e8e4da;
+  --color-hairline: #d6d2c8;
+  --color-ink: #151a2c;
+  --color-body: #4f5568;
+  --color-muted: #767b8b; /* large display text (>=24px) and decoration only */
+  --color-accent: #2c4a93;
+  --color-accent-soft: #dce1ee;
+  --color-chapter: #131829;
+  --color-chapter-text: #ece8df;
+  --color-chapter-muted: #9da3b6;
+  --color-chapter-accent: #9db0e0;
+  --color-alert: #a4472e;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-wipe: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-rule: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* The site's "desktop motion" breakpoint: desk: */
+  --breakpoint-desk: 851px;
+
+  /* (Animations live in the @theme inline block below: they read per-element variables.) */
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(28px); }
+  }
+  /* translate / scale, not transform, so an element keeps its own positioning transform */
+  @keyframes rise-in {
+    from { opacity: 0; translate: 0 4vh; scale: 1.03; }
+  }
+  @keyframes line {
+    from { transform: scaleX(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes ping-slow {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+}
+
+/* Inline so each animation value is substituted into its utility and resolved on the
+   element itself: that is how a per-element --anim-delay reaches the shorthand. */
 @theme inline {
+  /* Entrances start paused; the hero releases them once the preloader hands over.
+     A per-element stagger is passed in as --anim-delay. */
+  --animate-marquee: marquee 30s linear infinite paused;
+  --animate-fade-up: fade-up 0.9s var(--ease-soft) var(--anim-delay, 0s) both paused;
+  --animate-rise-in: rise-in 1.4s var(--ease-soft) 0.3s both paused;
+  --animate-line: line 1.1s var(--ease-wipe) 1.2s both paused;
+  --animate-fade-in: fade-in 1.2s ease-out both paused;
+  --animate-ping-slow: ping-slow 2.6s ease-out infinite;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -14,29 +80,9 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  --color-page: var(--rt-page);
-  --color-sand: var(--rt-sand);
-  --color-hairline: var(--rt-hairline);
-  --color-ink: var(--rt-ink);
-  --color-copy: var(--rt-copy);
-  --color-rt-muted: var(--rt-muted);
-  --color-rt-accent: var(--rt-accent);
-  --color-accent-soft: var(--rt-accent-soft);
-  --color-chapter: var(--rt-chapter);
-  --color-chapter-text: var(--rt-chapter-text);
-  --color-chapter-muted: var(--rt-chapter-muted);
-  --color-chapter-accent: var(--rt-chapter-accent);
-  --color-alert: var(--rt-alert);
-
+  /* shadcn/ui roles */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-paper: var(--paper);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-stone: var(--stone);
-  --color-stone-soft: var(--stone-soft);
-  --color-line: var(--line);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -45,15 +91,21 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* The admin panel keeps its original palette; these resolve inside .rt-admin only. */
+  --color-paper: var(--paper);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-stone: var(--stone);
+  --color-stone-soft: var(--stone-soft);
+  --color-line: var(--line);
 
   --font-display: "DM Sans", "Helvetica Neue", sans-serif;
   --font-sans: "DM Sans", "Helvetica Neue", sans-serif;
@@ -63,55 +115,43 @@
 :root {
   --radius: 0.875rem;
 
-  /* Indigo palette: the only place colour values live on public pages. */
-  --rt-page: #f2efe8;
-  --rt-sand: #e8e4da;
-  --rt-hairline: #d6d2c8;
-  --rt-ink: #151a2c;
-  --rt-copy: #4f5568;
-  --rt-muted: #767b8b; /* large display text (>=24px) and decoration only */
-  --rt-accent: #2c4a93;
-  --rt-accent-soft: #dce1ee;
-  --rt-chapter: #131829;
-  --rt-chapter-text: #ece8df;
-  --rt-chapter-muted: #9da3b6;
-  --rt-chapter-accent: #9db0e0;
-  --rt-alert: #a4472e;
+  --background: var(--color-page);
+  --foreground: var(--color-ink);
+  --card: var(--color-page);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-page);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-page);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-body);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-page);
+  --destructive: var(--color-alert);
+  --destructive-foreground: var(--color-page);
+  --border: var(--color-hairline);
+  --input: var(--color-hairline);
+  --ring: var(--color-accent);
 
-  /* Legacy names */
-  --paper: var(--rt-page);
-  --ink: var(--rt-ink);
-  --gold: var(--rt-accent);
-  --gold-soft: var(--rt-accent-soft);
-  --stone: var(--rt-copy);
-  --stone-soft: var(--rt-sand);
-  --line: var(--rt-hairline);
-  --rt-gold: var(--rt-accent);
-  --rt-night: var(--rt-chapter);
-  --rt-paper: var(--rt-chapter-text);
-
-  --background: var(--rt-page);
-  --foreground: var(--rt-ink);
-  --card: var(--rt-page);
-  --card-foreground: var(--rt-ink);
-  --popover: var(--rt-page);
-  --popover-foreground: var(--rt-ink);
-  --primary: var(--rt-ink);
-  --primary-foreground: var(--rt-page);
-  --secondary: var(--rt-sand);
-  --secondary-foreground: var(--rt-ink);
-  --muted: var(--rt-sand);
-  --muted-foreground: var(--rt-copy);
-  --accent: var(--rt-accent);
-  --accent-foreground: var(--rt-page);
-  --destructive: var(--rt-alert);
-  --destructive-foreground: var(--rt-page);
-  --border: var(--rt-hairline);
-  --input: var(--rt-hairline);
-  --ring: var(--rt-accent);
+  /* Legacy aliases, still read by the sections that are not on Tailwind yet. */
+  --rt-page: var(--color-page);
+  --rt-sand: var(--color-surface);
+  --rt-hairline: var(--color-hairline);
+  --rt-ink: var(--color-ink);
+  --rt-copy: var(--color-body);
+  --rt-muted: var(--color-muted);
+  --rt-accent: var(--color-accent);
+  --rt-accent-soft: var(--color-accent-soft);
+  --rt-chapter: var(--color-chapter);
+  --rt-chapter-text: var(--color-chapter-text);
+  --rt-chapter-muted: var(--color-chapter-muted);
+  --rt-chapter-accent: var(--color-chapter-accent);
+  --rt-alert: var(--color-alert);
+  --rt-gold: var(--color-accent);
 }
 
-/* The admin panel keeps its original palette. */
 body:has(.rt-admin),
 .rt-admin {
   --paper: oklch(0.974 0.006 80);
@@ -121,6 +161,7 @@ body:has(.rt-admin),
   --stone: oklch(0.58 0.005 80);
   --stone-soft: oklch(0.88 0.004 80);
   --line: oklch(0.9 0.004 80);
+  --color-ink: var(--ink);
   --rt-ink: var(--ink);
   --background: var(--paper);
   --foreground: var(--ink);
@@ -128,21 +169,9 @@ body:has(.rt-admin),
   --input: var(--line);
 }
 
-/* Chapter: the dark close (philosophy + contact). Role tokens flip so shared rules follow. */
-.rt-belief,
-.rt-contact {
-  --rt-ink: var(--rt-chapter-text);
-  --rt-copy: var(--rt-chapter-muted);
-  --rt-muted: var(--rt-chapter-muted);
-  --rt-accent: var(--rt-chapter-accent);
-  --rt-hairline: color-mix(in srgb, var(--rt-chapter-text) 18%, transparent);
-  background: var(--rt-chapter);
-  color: var(--rt-ink);
-}
-
 .dark {
-  --background: var(--rt-chapter);
-  --foreground: var(--rt-chapter-text);
+  --background: var(--color-chapter);
+  --foreground: var(--color-chapter-text);
 }
 
 @layer base {
@@ -186,15 +215,11 @@ body:has(.rt-admin),
     font: inherit;
   }
   ::selection {
-    background: var(--rt-accent);
-    color: var(--rt-page);
-  }
-  .rt-belief ::selection,
-  .rt-contact ::selection {
-    color: var(--rt-chapter);
+    background: var(--color-accent);
+    color: var(--color-page);
   }
   :focus-visible {
-    outline-color: var(--rt-accent);
+    outline-color: var(--color-accent);
   }
 }
 
@@ -208,264 +233,183 @@ body:has(.rt-admin),
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--stone);
+  color: var(--color-body);
   font-weight: 500;
+}
+/* The one place for markup generated at runtime: GSAP SplitText wraps lines, words and
+   chars in elements of its own (rb-split-line-mask, rb-split-word, rb-split-char), which can't
+   carry utilities. Their rules hang off the SplitText root instead. */
+@utility split-text {
+  display: block;
+  &[data-split-pending] {
+    visibility: hidden;
+  }
+  & .rb-split-line-mask {
+    padding: 0.1em 0.08em 0.17em 0.02em;
+    margin: -0.1em -0.08em -0.17em -0.02em;
+  }
+  & .rb-split-word,
+  & .rb-split-char {
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &[data-split-pending] {
+      visibility: visible;
+    }
+  }
 }
 @utility hairline {
   height: 1px;
-  background: var(--line);
+  background: var(--color-hairline);
   width: 100%;
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@layer legacy {
+  /* Home opening: one piece of motion direction, not a separate visual language. */
+  :root {
+    --rt-gutter: clamp(24px, 4.1vw, 80px);
   }
-  to {
-    transform: translateX(-50%);
-  }
-}
-@utility animate-marquee {
-  animation: marquee 40s linear infinite;
-}
 
-@keyframes ping-slow {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
+  .rt-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    overflow: visible;
+    background: var(--rt-chapter);
+    color: var(--rt-chapter-text);
+    will-change: transform;
   }
-  100% {
-    transform: scale(2.4);
+
+  .rt-preloader-curve {
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 0;
+    width: 100%;
+    height: clamp(70px, 9vw, 150px);
+    display: block;
+    fill: var(--rt-chapter);
+    pointer-events: none;
+  }
+
+  .rt-preloader-inner {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    padding: 30px;
+  }
+
+  .rt-preloader-greetings {
+    position: relative;
+    display: grid;
+    width: min(100%, 950px);
+    height: clamp(100px, 16vw, 216px);
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .rt-preloader-greeting {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 2.3vw, 30px);
+    white-space: nowrap;
+    font-family: "DM Sans", "Noto Sans Devanagari", "Noto Sans Arabic", system-ui, sans-serif;
+    font-size: clamp(3.5rem, 9.7vw, 9.8rem);
+    font-weight: 450;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
     opacity: 0;
+    visibility: hidden;
   }
-}
-@utility animate-ping-slow {
-  animation: ping-slow 2.6s ease-out infinite;
-}
 
-/* Animate UI rolling text (shared by the home page and the editorial header on every page). */
-.aui-rolling {
-  display: inline;
-}
-.aui-rolling-word {
-  display: inline-block;
-  white-space: nowrap;
-}
-.aui-rolling-char {
-  position: relative;
-  display: inline-block;
-  transform-style: preserve-3d;
-  perspective: 9999999px;
-}
-.aui-rolling .rt-visually-hidden {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+  .rt-preloader-greeting[data-script="devanagari"] {
+    font-family: "Noto Sans Devanagari", "DM Sans", system-ui, sans-serif;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+  }
 
-/* Home opening: one piece of motion direction, not a separate visual language. */
-:root {
-  --rt-gutter: clamp(24px, 4.1vw, 80px);
-}
+  .rt-preloader-greeting[data-script="arabic"] {
+    font-family: "Noto Sans Arabic", "DM Sans", system-ui, sans-serif;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
 
-.rt-preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  overflow: visible;
-  background: var(--rt-chapter);
-  color: var(--rt-chapter-text);
-  will-change: transform;
-}
+  .rt-preloader-dot {
+    position: relative;
+    width: clamp(12px, 1.4vw, 20px);
+    height: clamp(12px, 1.4vw, 20px);
+    flex: none;
+    border-radius: 50%;
+    background: currentColor;
+    transform: translateY(7%);
+  }
 
-.rt-preloader-curve {
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  width: 100%;
-  height: clamp(70px, 9vw, 150px);
-  display: block;
-  fill: var(--rt-chapter);
-  pointer-events: none;
-}
+  .rt-preloader-corner {
+    position: absolute;
+    right: var(--rt-gutter);
+    bottom: 37px;
+    left: var(--rt-gutter);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: var(--rt-chapter-muted);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: .015em;
+  }
 
-.rt-preloader-inner {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  place-items: center;
-  padding: 30px;
-}
+  .rt-home section[id] { scroll-margin-top: 85px; }
+  .rt-home #top { scroll-margin-top: 0; }
+  .rt-home #presence img { backface-visibility: hidden; }
 
-.rt-preloader-greetings {
-  position: relative;
-  display: grid;
-  width: min(100%, 950px);
-  height: clamp(100px, 16vw, 216px);
-  place-items: center;
-  overflow: hidden;
-}
+  html.lenis, html.lenis body { scroll-behavior: auto !important; }
 
-.rt-preloader-greeting {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(12px, 2.3vw, 30px);
-  white-space: nowrap;
-  font-family: "DM Sans", "Noto Sans Devanagari", "Noto Sans Arabic", system-ui, sans-serif;
-  font-size: clamp(3.5rem, 9.7vw, 9.8rem);
-  font-weight: 450;
-  line-height: 1.1;
-  letter-spacing: -0.018em;
-  opacity: 0;
-  visibility: hidden;
-}
+  @media (max-width: 768px) {
+    :root { --rt-gutter: clamp(22px, 5vw, 34px); }
+  }
+  @media (max-width: 550px) {
+    .rt-preloader-greetings { height: 140px; }
+    .rt-preloader-greeting { font-size: clamp(3.4rem, 13.1vw, 5.3rem); gap: 13px; }
+    .rt-preloader-greeting[data-script="devanagari"] { font-size: clamp(2.8rem, 12vw, 5rem); }
+    .rt-preloader-greeting[data-script="arabic"] { font-size: clamp(3rem, 12.4vw, 5rem); }
+    .rt-preloader-corner { bottom: 24px; font-size: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    .rt-preloader { display: none !important; }
+  }
 
-.rt-preloader-greeting[data-script="devanagari"] {
-  font-family: "Noto Sans Devanagari", "DM Sans", system-ui, sans-serif;
-  letter-spacing: -0.015em;
-  font-weight: 400;
-}
-
-.rt-preloader-greeting[data-script="arabic"] {
-  font-family: "Noto Sans Arabic", "DM Sans", system-ui, sans-serif;
-  letter-spacing: 0;
-  font-weight: 400;
-}
-
-.rt-preloader-dot {
-  position: relative;
-  width: clamp(12px, 1.4vw, 20px);
-  height: clamp(12px, 1.4vw, 20px);
-  flex: none;
-  border-radius: 50%;
-  background: currentColor;
-  transform: translateY(7%);
-}
-
-.rt-preloader-corner {
-  position: absolute;
-  right: var(--rt-gutter);
-  bottom: 37px;
-  left: var(--rt-gutter);
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  color: var(--rt-chapter-muted);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: .015em;
-}
-
-.rt-site-header {
-  --rt-nav-space: var(--rt-gutter);
-}
-
-.rt-site-header > div:first-child {
-  padding-inline: var(--rt-nav-space);
-  max-width: 1880px;
-}
-
-.rt-site-header > div > a:first-child {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -.045em;
-}
-
-.rt-site-header .rt-nav-link,
-.rt-site-header .rt-nav-contact {
-  font-size: 12px;
-  letter-spacing: -.005em;
-}
-
-.rt-site-header .rt-nav-link { position: relative; padding-block: 7px; }
-.rt-site-header .rt-nav-link::after {
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  content: "";
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform .42s cubic-bezier(.19,1,.22,1);
-}
-.rt-site-header .rt-nav-link:hover::after,
-.rt-site-header .rt-nav-link:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-.rt-site-header .rt-nav-contact svg {
-  transition: transform .42s cubic-bezier(.19,1,.22,1);
-}
-.rt-site-header .rt-nav-contact:hover svg { transform: translate(3px,-3px); }
-
-.rt-home section[id] { scroll-margin-top: 85px; }
-.rt-home #top { scroll-margin-top: 0; }
-.rt-home #ventures .rt-venture-art img,
-.rt-home #presence img { backface-visibility: hidden; }
-.rt-home #ventures a:focus-visible,
-.rt-home .rt-hero6-cta:focus-visible,
-.rt-home .rt-hero6-scroll:focus-visible,
-.rt-site-header a:focus-visible,
-.rt-site-header button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 5px; }
-
-html.lenis, html.lenis body { scroll-behavior: auto !important; }
-
-@media (max-width: 768px) {
-  :root { --rt-gutter: clamp(22px, 5vw, 34px); }
-}
-@media (max-width: 550px) {
-  .rt-preloader-greetings { height: 140px; }
-  .rt-preloader-greeting { font-size: clamp(3.4rem, 13.1vw, 5.3rem); gap: 13px; }
-  .rt-preloader-greeting[data-script="devanagari"] { font-size: clamp(2.8rem, 12vw, 5rem); }
-  .rt-preloader-greeting[data-script="arabic"] { font-size: clamp(3rem, 12.4vw, 5rem); }
-  .rt-preloader-corner { bottom: 24px; font-size: 10px; }
-  .rt-site-header > div > a:first-child { font-size: 15px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto !important; }
-  .rt-preloader { display: none !important; }
-  .rt-site-header, .rt-site-header .rt-nav-link::after,
-  .rt-site-header .rt-nav-contact svg { transition: none !important; }
-}
-
-/* Page transition curtain (Barba-style leave / enter, driven by GSAP). */
-.rt-curtain { position: fixed; inset: 0; z-index: 2000; visibility: hidden; pointer-events: none; }
-.rt-curtain-panel {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: var(--rt-chapter);
-  color: var(--rt-chapter-text);
-  transform: translateY(112%);
-  will-change: transform;
-}
-.rt-curtain-edge { position: absolute; left: 0; width: 100%; height: clamp(60px, 9vw, 140px); fill: var(--rt-chapter); pointer-events: none; }
-.rt-curtain-edge--top { bottom: calc(100% - 1px); transform-origin: 50% 100%; }
-.rt-curtain-edge--bottom { top: calc(100% - 1px); transform-origin: 50% 0%; transform: scaleY(0); }
-.rt-curtain-label {
-  display: block;
-  padding: 0 24px;
-  font-family: "DM Sans", "Helvetica Neue", sans-serif;
-  font-size: clamp(2.6rem, 7vw, 7rem);
-  font-weight: 450;
-  line-height: 1;
-  letter-spacing: -0.065em;
-  text-align: center;
-}
-html.rt-page-entering .rt-curtain, html.rt-page-leaving .rt-curtain { visibility: visible; pointer-events: auto; }
-html.rt-page-entering .rt-curtain-panel { transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .rt-curtain { display: none !important; }
+  /* Page transition curtain (Barba-style leave / enter, driven by GSAP). */
+  .rt-curtain { position: fixed; inset: 0; z-index: 2000; visibility: hidden; pointer-events: none; }
+  .rt-curtain-panel {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: var(--color-chapter);
+    color: var(--color-chapter-text);
+    transform: translateY(112%);
+    will-change: transform;
+  }
+  .rt-curtain-edge { position: absolute; left: 0; width: 100%; height: clamp(60px, 9vw, 140px); fill: var(--color-chapter); pointer-events: none; }
+  .rt-curtain-edge--top { bottom: calc(100% - 1px); transform-origin: 50% 100%; }
+  .rt-curtain-edge--bottom { top: calc(100% - 1px); transform-origin: 50% 0%; transform: scaleY(0); }
+  .rt-curtain-label {
+    display: block;
+    padding: 0 24px;
+    font-family: "DM Sans", "Helvetica Neue", sans-serif;
+    font-size: clamp(2.6rem, 7vw, 7rem);
+    font-weight: 450;
+    line-height: 1;
+    letter-spacing: -0.065em;
+    text-align: center;
+  }
+  html.rt-page-entering .rt-curtain, html.rt-page-leaving .rt-curtain { visibility: visible; pointer-events: auto; }
+  html.rt-page-entering .rt-curtain-panel { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-curtain { display: none !important; }
+  }
 }

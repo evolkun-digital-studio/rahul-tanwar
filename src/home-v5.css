@@ -1,371 +1,257 @@
-/* V5 / Founder editorial motion
-   Source components: React Bits ScrollFloat + ScrollReveal; Animate UI Fade,
-   Magnetic and local Scroll Progress. No decorative counters, glowing cards,
-   fake 3D scenes or additional runtime dependencies. */
+/* Legacy styles live in the `legacy` cascade layer (after base, before utilities),
+   so Tailwind utilities always win over them. */
+@layer legacy {
+  /* V5 / Founder editorial motion
+     Source components: React Bits ScrollFloat + ScrollReveal; Animate UI Fade,
+     Magnetic and local Scroll Progress. No decorative counters, glowing cards,
+     fake 3D scenes or additional runtime dependencies. */
 
-.rt-home .rt-visually-hidden {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* React Bits: character float remains word-safe and accessible. */
-.rt-home .rb-scroll-float {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
-  text-wrap: balance;
-}
-.rt-home .rb-float-word {
-  display: inline-block;
-  white-space: nowrap;
-}
-.rt-home .rb-float-char {
-  display: inline-block;
-  white-space: pre;
-  will-change: transform, opacity;
-}
-.rt-home .rb-float-space {
-  white-space: pre-wrap;
-}
-.rt-home .rb-scroll-reveal {
-  display: inline;
-  white-space: normal;
-}
-.rt-home .rb-reveal-word {
-  display: inline-block;
-  will-change: opacity;
-}
-.rt-home .rt-float-line {
-  overflow: clip;
-}
-.rt-home .rt-section-title .rb-scroll-float,
-.rt-home .rt-intro-title .rb-scroll-float {
-  padding-right: 0.075em;
-}
-.rt-home .rt-type-mask {
-  overflow: clip;
-}
-.rt-home .rt-type-muted {
-  color: var(--rt-muted);
-}
-
-/* Match the rhythm of the entire reading journey, rather than isolating cards. */
-.rt-home .rt-introduction {
-  padding-block: clamp(126px, 12vw, 205px) clamp(122px, 12vw, 185px);
-}
-.rt-home .rt-intro-title {
-  font-size: clamp(3.6rem, 6.8vw, 7.35rem);
-  line-height: 1.075;
-  letter-spacing: -0.014em;
-  margin-top: clamp(88px, 10vw, 160px);
-}
-.rt-home .rt-intro-bottom {
-  margin-top: clamp(110px, 12vw, 195px);
-}
-.rt-home .rt-intro-reading {
-  max-width: 450px;
-  line-height: 1.74;
-  font-size: clamp(16px, 1.18vw, 19px);
-  color: var(--rt-copy);
-}
-.rt-home .rt-intro-whisper {
-  align-self: start;
-  line-height: 1.75;
-}
-
-.rt-home [data-section-outro] {
-  position: relative;
-  border-top-color: transparent;
-  --rt-outro-line: 0;
-}
-.rt-home [data-section-outro]::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  content: "";
-  background: var(--rt-hairline);
-  transform: scaleX(var(--rt-outro-line));
-  transform-origin: 0 50%;
-  pointer-events: none;
-}
-
-.rt-home .rt-ventures {
-  padding-top: clamp(95px, 10vw, 170px);
-}
-.rt-home .rt-ventures-heading-row {
-  margin-top: clamp(96px, 9vw, 155px);
-}
-.rt-home .rt-ventures-heading-row .rt-section-title {
-  max-width: 900px;
-  font-size: clamp(3.2rem, 5.65vw, 6.25rem);
-  letter-spacing: -0.019em;
-}
-.rt-home .rt-ventures-summary {
-  align-self: end;
-}
-.rt-home .rt-ventures-main {
-  margin-top: clamp(95px, 10vw, 170px);
-  gap: clamp(50px, 6vw, 110px);
-}
-.rt-home .rt-stage-media {
-  background: var(--rt-sand);
-}
-.rt-home .rt-stage-panel {
-  overflow: hidden;
-}
-.rt-home .rt-stage-meta {
-  font-size: 11px;
-  padding-top: 19px;
-}
-.rt-home .rt-venture {
-  transition: border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rt-home .rt-venture-anchor {
-  transition: color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rt-home .rt-venture-heading {
-  display: flex;
-  gap: 15px;
-  justify-content: space-between;
-  align-items: center;
-  transform-origin: left center;
-  font-size: clamp(2rem, 3.12vw, 3.55rem);
-}
-.rt-home .rt-venture-heading > span:first-child {
-  min-width: 0;
-}
-.rt-home .rt-venture-copy {
-  display: block;
-  max-width: 355px;
-  margin-top: 18px;
-}
-.rt-home .rt-magnetic {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-}
-.rt-home .rt-venture-arrow {
-  margin-left: auto;
-}
-.rt-home .rt-venture.is-current {
-  border-color: var(--rt-hairline);
-}
-.rt-home .rt-venture-anchor:hover .rt-venture-copy,
-.rt-home .rt-venture-anchor:focus-visible .rt-venture-copy {
-  color: var(--rt-ink);
-}
-.rt-home .rt-ventures-ending {
-  margin-top: clamp(80px, 9vw, 148px);
-}
-
-.rt-home .rt-markets {
-  padding-top: clamp(95px, 9vw, 156px);
-  background: var(--rt-page);
-}
-.rt-home .rt-markets .rt-section-title {
-  max-width: 950px;
-  font-size: clamp(3.2rem, 5.6vw, 6.2rem);
-}
-.rt-home .rt-markets-gallery {
-  margin-top: clamp(86px, 9.5vw, 150px);
-}
-.rt-home .rt-market-name {
-  font-weight: 440;
-}
-.rt-home .rt-market-viewport {
-  overflow: hidden;
-}
-.rt-home .rt-markets-close {
-  margin-top: clamp(116px, 12vw, 200px);
-}
-.rt-home .rt-markets-close h3 {
-  text-wrap: balance;
-}
-.rt-home .rt-markets-close .rb-reveal-word {
-  display: inline-block;
-}
-
-.rt-home .rt-founder {
-  background: var(--rt-page);
-  padding-top: clamp(96px, 10vw, 165px);
-}
-.rt-home .rt-founder-title {
-  font-size: clamp(3.3rem, 5.65vw, 6.35rem);
-  max-width: 1100px;
-}
-.rt-home .rt-founder-columns {
-  margin-top: clamp(92px, 10vw, 170px);
-}
-.rt-home .rt-founder-image img {
-  filter: saturate(0.77) contrast(1.025);
-}
-.rt-home .rt-founder-lead {
-  line-height: 1.42;
-  color: var(--rt-ink);
-}
-.rt-home .rt-founder-paragraph {
-  line-height: 1.78;
-  color: var(--rt-copy);
-}
-.rt-home .rt-founder-photo figcaption {
-  padding-top: 2px;
-}
-
-/* Animate UI local scroll-progress: line advances with the list, not the page. */
-.rt-home .rt-journey {
-  padding-top: clamp(98px, 10vw, 170px);
-}
-.rt-home .rt-journey-heading .rt-section-title {
-  font-size: clamp(3.25rem, 5.3vw, 5.9rem);
-}
-.rt-home .rt-journey-timeline {
-  min-width: 0;
-  position: relative;
-  padding-left: clamp(20px, 2.4vw, 35px);
-}
-
-.rt-home .rt-journey-list {
-  position: relative;
-}
-.rt-home .rt-journey-item {
-  opacity: 0.82;
-  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rt-home .rt-journey-item.is-current {
-  opacity: 1;
-}
-.rt-home .rt-journey-year {
-  display: block;
-}
-.rt-home .rt-journey-details {
-  display: block;
-}
-
-/* Keep the light sections continuous; reserve the single dark shift for the close. */
-.rt-home .rt-belief {
-  background: var(--rt-chapter);
-}
-.rt-home .rt-contact {
-  background: var(--rt-chapter) !important;
-}
-
-@media (max-width: 1100px) {
-  .rt-home .rt-ventures-heading-row .rt-section-title,
-  .rt-home .rt-founder-title,
-  .rt-home .rt-markets .rt-section-title {
-    font-size: clamp(3.2rem, 6vw, 5.6rem);
+  .rt-home .rt-visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
-  .rt-home .rt-journey-timeline {
-    padding-left: 22px;
-  }
-}
-@media (max-width: 850px) {
-  .rt-home .rt-ventures-heading-row .rt-section-title,
-  .rt-home .rt-markets .rt-section-title,
-  .rt-home .rt-founder-title {
-    font-size: clamp(3rem, 7vw, 5rem);
-  }
-  .rt-home .rt-ventures-main {
-    margin-top: 92px;
-  }
-  .rt-home .rt-journey-timeline {
-    width: 100%;
-  }
-  .rt-home .rt-venture-heading > span:first-child {
+
+  /* React Bits: character float remains word-safe and accessible. */
+  .rt-home .rb-scroll-float {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
     text-wrap: balance;
   }
-}
-@media (max-width: 620px) {
+  .rt-home .rb-float-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .rt-home .rb-float-char {
+    display: inline-block;
+    white-space: pre;
+    will-change: transform, opacity;
+  }
+  .rt-home .rb-float-space {
+    white-space: pre-wrap;
+  }
+  .rt-home .rb-scroll-reveal {
+    display: inline;
+    white-space: normal;
+  }
+  .rt-home .rb-reveal-word {
+    display: inline-block;
+    will-change: opacity;
+  }
+  .rt-home .rt-float-line {
+    overflow: clip;
+  }
+  .rt-home .rt-section-title .rb-scroll-float,
+  .rt-home .rt-intro-title .rb-scroll-float {
+    padding-right: 0.075em;
+  }
+  .rt-home .rt-type-mask {
+    overflow: clip;
+  }
+  .rt-home .rt-type-muted {
+    color: var(--rt-muted);
+  }
+
+  /* Match the rhythm of the entire reading journey, rather than isolating cards. */
   .rt-home .rt-introduction {
-    padding-top: 100px;
-    padding-bottom: 118px;
+    padding-block: clamp(126px, 12vw, 205px) clamp(122px, 12vw, 185px);
   }
   .rt-home .rt-intro-title {
-    font-size: clamp(2.52rem, 9.9vw, 4.2rem);
-    margin-top: 92px;
+    font-size: clamp(3.6rem, 6.8vw, 7.35rem);
+    line-height: 1.075;
+    letter-spacing: -0.014em;
+    margin-top: clamp(88px, 10vw, 160px);
   }
   .rt-home .rt-intro-bottom {
-    margin-top: 98px;
+    margin-top: clamp(110px, 12vw, 195px);
   }
   .rt-home .rt-intro-reading {
-    max-width: 100%;
-    font-size: 15px;
+    max-width: 450px;
+    line-height: 1.74;
+    font-size: clamp(16px, 1.18vw, 19px);
+    color: var(--rt-copy);
   }
-  .rt-home .rt-ventures-heading-row .rt-section-title,
-  .rt-home .rt-markets .rt-section-title,
-  .rt-home .rt-founder-title {
-    font-size: clamp(2.48rem, 9.2vw, 4rem);
+  .rt-home .rt-intro-whisper {
+    align-self: start;
+    line-height: 1.75;
   }
-  .rt-home .rt-ventures-main {
-    margin-top: 70px;
+
+  .rt-home [data-section-outro] {
+    position: relative;
+    border-top-color: transparent;
+    --rt-outro-line: 0;
   }
-  .rt-home .rt-venture-heading {
-    font-size: clamp(1.9rem, 7.8vw, 3rem);
+  .rt-home [data-section-outro]::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    content: "";
+    background: var(--rt-hairline);
+    transform: scaleX(var(--rt-outro-line));
+    transform-origin: 0 50%;
+    pointer-events: none;
   }
-  .rt-home .rt-venture-copy {
-    max-width: 100%;
-    font-size: 14px;
+
+  .rt-home .rt-magnetic {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
   }
+
   .rt-home .rt-markets {
-    padding-top: 105px;
+    padding-top: clamp(95px, 9vw, 156px);
+    background: var(--rt-page);
+  }
+  .rt-home .rt-markets .rt-section-title {
+    max-width: 950px;
+    font-size: clamp(3.2rem, 5.6vw, 6.2rem);
+  }
+  .rt-home .rt-markets-gallery {
+    margin-top: clamp(86px, 9.5vw, 150px);
+  }
+  .rt-home .rt-market-name {
+    font-weight: 440;
+  }
+  .rt-home .rt-market-viewport {
+    overflow: hidden;
   }
   .rt-home .rt-markets-close {
-    margin-top: 105px;
+    margin-top: clamp(116px, 12vw, 200px);
   }
-  .rt-home .rt-founder {
-    padding-top: 115px;
+  .rt-home .rt-markets-close h3 {
+    text-wrap: balance;
   }
+  .rt-home .rt-markets-close .rb-reveal-word {
+    display: inline-block;
+  }
+
+  /* Animate UI local scroll-progress: line advances with the list, not the page. */
   .rt-home .rt-journey {
-    padding-top: 100px;
-  }
-  .rt-home .rt-journey-timeline {
-    padding-left: 17px;
+    padding-top: clamp(98px, 10vw, 170px);
   }
   .rt-home .rt-journey-heading .rt-section-title {
-    font-size: clamp(2.5rem, 9.4vw, 4rem);
-  }
-  .rt-home .rt-journey-list {
-    margin-top: 74px;
-  }
-}
-@media (max-width: 360px) {
-  .rt-home .rt-intro-title {
-    font-size: 9.35vw;
-  }
-  .rt-home .rt-ventures-heading-row .rt-section-title,
-  .rt-home .rt-markets .rt-section-title,
-  .rt-home .rt-founder-title {
-    font-size: 8.8vw;
+    font-size: clamp(3.25rem, 5.3vw, 5.9rem);
   }
   .rt-home .rt-journey-timeline {
-    padding-left: 13px;
+    min-width: 0;
+    position: relative;
+    padding-left: clamp(20px, 2.4vw, 35px);
+  }
+
+  .rt-home .rt-journey-list {
+    position: relative;
   }
   .rt-home .rt-journey-item {
-    gap: 13px;
+    opacity: 0.82;
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .rt-home .rb-float-char,
-  .rt-home .rb-reveal-word {
-    opacity: 1 !important;
-    filter: none !important;
-    transform: none !important;
-    will-change: auto;
-  }
-  .rt-home [data-section-outro] {
-    --rt-outro-line: 1 !important;
-  }
-  .rt-home .rt-journey-item {
+  .rt-home .rt-journey-item.is-current {
     opacity: 1;
+  }
+  .rt-home .rt-journey-year {
+    display: block;
+  }
+  .rt-home .rt-journey-details {
+    display: block;
+  }
+
+  /* Keep the light sections continuous; reserve the single dark shift for the close. */
+
+  @media (max-width: 1100px) {
+    .rt-home .rt-markets .rt-section-title {
+      font-size: clamp(3.2rem, 6vw, 5.6rem);
+    }
+    .rt-home .rt-journey-timeline {
+      padding-left: 22px;
+    }
+  }
+  @media (max-width: 850px) {
+    .rt-home .rt-markets .rt-section-title {
+      font-size: clamp(3rem, 7vw, 5rem);
+    }
+
+    .rt-home .rt-journey-timeline {
+      width: 100%;
+    }
+
+  }
+  @media (max-width: 620px) {
+    .rt-home .rt-introduction {
+      padding-top: 100px;
+      padding-bottom: 118px;
+    }
+    .rt-home .rt-intro-title {
+      font-size: clamp(2.52rem, 9.9vw, 4.2rem);
+      margin-top: 92px;
+    }
+    .rt-home .rt-intro-bottom {
+      margin-top: 98px;
+    }
+    .rt-home .rt-intro-reading {
+      max-width: 100%;
+      font-size: 15px;
+    }
+    .rt-home .rt-markets .rt-section-title {
+      font-size: clamp(2.48rem, 9.2vw, 4rem);
+    }
+
+    .rt-home .rt-markets {
+      padding-top: 105px;
+    }
+    .rt-home .rt-markets-close {
+      margin-top: 105px;
+    }
+
+    .rt-home .rt-journey {
+      padding-top: 100px;
+    }
+    .rt-home .rt-journey-timeline {
+      padding-left: 17px;
+    }
+    .rt-home .rt-journey-heading .rt-section-title {
+      font-size: clamp(2.5rem, 9.4vw, 4rem);
+    }
+    .rt-home .rt-journey-list {
+      margin-top: 74px;
+    }
+  }
+  @media (max-width: 360px) {
+    .rt-home .rt-intro-title {
+      font-size: 9.35vw;
+    }
+    .rt-home .rt-markets .rt-section-title {
+      font-size: 8.8vw;
+    }
+    .rt-home .rt-journey-timeline {
+      padding-left: 13px;
+    }
+    .rt-home .rt-journey-item {
+      gap: 13px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-home .rb-float-char,
+    .rt-home .rb-reveal-word {
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+      will-change: auto;
+    }
+    .rt-home [data-section-outro] {
+      --rt-outro-line: 1 !important;
+    }
+    .rt-home .rt-journey-item {
+      opacity: 1;
+    }
   }
 }

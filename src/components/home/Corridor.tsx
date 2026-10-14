@@ -1,6 +1,5 @@
 import { SplitText } from "@/components/motion-library/react-bits/SplitText";
 import { ScrollReveal } from "@/components/motion-library/react-bits/ScrollReveal";
-import { CountUp } from "@/components/motion-library/react-bits/CountUp";
 import { Fade } from "@/components/motion-library/animate-ui/Fade";
 import { SlidingNumber } from "@/components/motion-library/animate-ui/SlidingNumber";
 import { WorldMap } from "@/components/motion-library/inspira-ui/WorldMap";
@@ -9,9 +8,6 @@ import { TextEffect } from "@/components/motion-library/motion-primitives/TextEf
 import type { PageCmsContent } from "@/lib/cms";
 import { useMediaQuery, useReducedMotionPreference } from "@/lib/motion";
 import { useZonedClock } from "@/lib/useZonedClock";
-
-/* Dubai (25.20°N, 55.27°E) → New Delhi (28.61°N, 77.21°E): great-circle ≈ 2,205 km. */
-const DISTANCE_KM = 2200;
 
 function Clock({ timeZone, reduced }: { timeZone: string; reduced: boolean }) {
   const { hours, minutes } = useZonedClock(timeZone);
@@ -97,26 +93,19 @@ export function Corridor({ content }: { content: PageCmsContent }) {
           <WorldMap className="rt-corridor-map" viewBox={mapView} reduced={reduced} />
           <dl className="rt-corridor-facts">
             <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.05}>
-              <dt>Distance</dt>
-              <dd>
-                <CountUp to={DISTANCE_KM} duration={2.2} reduced={reduced} />
-                <small>km</small>
-              </dd>
-            </Fade>
-            <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.13}>
               <dt>Time difference</dt>
               <dd>
                 +1:30<small>hrs</small>
               </dd>
             </Fade>
-            <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.21}>
+            <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.13}>
               <dt>Dubai now</dt>
               <dd>
                 <Clock timeZone="Asia/Dubai" reduced={reduced} />
                 <small>GST</small>
               </dd>
             </Fade>
-            <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.29}>
+            <Fade as="div" className="rt-corridor-fact" initialOpacity={0} y={18} delay={0.21}>
               <dt>New Delhi now</dt>
               <dd>
                 <Clock timeZone="Asia/Kolkata" reduced={reduced} />

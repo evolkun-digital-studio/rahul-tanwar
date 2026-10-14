@@ -12,10 +12,25 @@ import { Corridor } from "@/components/home/Corridor";
 import { Founder } from "@/components/home/Founder";
 import { Milestones } from "@/components/home/Milestones";
 import { BUSINESS_PHILOSOPHY_QUOTE, type PageCmsContent } from "@/lib/cms";
+import { SectionCaption } from "@/components/home/SectionCaption";
+import { Shell } from "@/components/site/Shell";
+import { contactEmail, linkedinUrl } from "@/lib/siteLinks";
+import { cn } from "@/lib/utils";
 import "@/home-redesign.css";
 import "@/home-v4.css";
 import "@/home-v5.css";
 import "@/home-v6.css";
+
+/* The dark close (philosophy + contact): the role tokens flip, so every utility inside
+   (text-ink, text-body, border-hairline, outline-accent …) follows automatically. */
+const CHAPTER =
+  "bg-chapter text-chapter-text selection:text-chapter [--color-ink:var(--color-chapter-text)] [--color-body:var(--color-chapter-muted)] [--color-muted:var(--color-chapter-muted)] [--color-accent:var(--color-chapter-accent)] [--color-hairline:color-mix(in_srgb,var(--color-chapter-text)_18%,transparent)]";
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-current focus-visible:outline-offset-4";
+const FIELD =
+  "flex flex-col gap-3 border-b border-hairline py-5 [transition:border-color_0.4s_ease] focus-within:border-ink";
+const INPUT =
+  "w-full border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-body";
 
 function Philosophy({ content }: { content: PageCmsContent }) {
   const philosophy = content.sections.philosophy as {
@@ -26,26 +41,26 @@ function Philosophy({ content }: { content: PageCmsContent }) {
   const quote = philosophy?.quote || BUSINESS_PHILOSOPHY_QUOTE;
   return (
     <section
-      className="rt-belief rt-surface-sheet"
+      className={cn(CHAPTER, "relative z-3 min-h-0 py-[var(--rt-section-space)]")}
       id="philosophy"
       data-home-tone="dark"
       aria-labelledby="rt-belief-title"
     >
-      <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{philosophy?.eyebrow || "Business philosophy"}</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          {/* <span className="rt-caption-aside">The approach</span> */}
-        </div>
-        <div className="rt-belief-body">
-          {/* <p className="rt-belief-overline">The thinking behind the work.</p> */}
-          <h2 className="rt-belief-quote" id="rt-belief-title" data-belief-quote aria-label={quote}>
+      <Shell>
+        <SectionCaption eyebrow={philosophy?.eyebrow || "Business philosophy"} />
+        <div className="mt-[clamp(39px,4.35vw,67px)] mr-0 mb-0 ml-auto max-w-[1050px]">
+          <h2
+            className="m-0 max-w-[1060px] text-[clamp(34px,8vw,48px)] leading-[1.12] font-[420] tracking-[-0.015em] text-balance text-ink min-[621px]:text-[clamp(40px,4.6vw,70px)]"
+            id="rt-belief-title"
+            data-belief-quote
+            aria-label={quote}
+          >
             {quote
               .split(/\s+/)
               .filter(Boolean)
               .map((word, index) => (
                 <span
-                  className="rt-belief-word"
+                  className="inline will-change-[opacity]"
                   data-reading-word
                   aria-hidden="true"
                   key={`${index}-${word}`}
@@ -54,12 +69,11 @@ function Philosophy({ content }: { content: PageCmsContent }) {
                 </span>
               ))}
           </h2>
-          <div className="rt-belief-signature">
-            {/* <span className="rt-belief-signature-rule" aria-hidden="true" /> */}
+          <div className="mt-[clamp(31px,3.3vw,53px)] flex items-center gap-[25px] text-[13px] text-body">
             <span>{philosophy?.attribution || "A long-term view"}</span>
           </div>
         </div>
-      </div>
+      </Shell>
     </section>
   );
 }
@@ -77,10 +91,8 @@ function Contact({ content }: { content: PageCmsContent }) {
     | undefined;
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState("");
-  const email = content.contactEmail || "hello@rahultanwar.com";
-  const linkedin = content.socialLinks.linkedin?.startsWith("https://")
-    ? content.socialLinks.linkedin
-    : "https://www.linkedin.com/in/rahul-tanwar-350a13279/";
+  const email = contactEmail(content);
+  const linkedin = linkedinUrl(content);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -118,31 +130,34 @@ function Contact({ content }: { content: PageCmsContent }) {
   return (
     <section
       id="contact"
-      className="rt-contact relative overflow-hidden bg-chapter py-[clamp(7rem,12vw,12rem)] text-chapter-text"
+      className={cn(CHAPTER, "relative overflow-hidden py-[var(--rt-section-space)]")}
       data-home-tone="dark"
     >
-      <div className="relative mx-auto grid w-full max-w-[1680px] gap-16 px-6 md:grid-cols-[.85fr_.65fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
+      <div className="relative mx-auto grid w-full max-w-[1680px] gap-16 border-t-hairline px-6 pt-[clamp(38px,5vw,70px)] md:grid-cols-[.85fr_.65fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
         <div data-reveal="left">
-          <p className="text-xs font-semibold uppercase tracking-[0.135em] text-copy">
+          <p className="text-xs font-semibold tracking-[0.135em] text-body uppercase">
             {contact?.eyebrow || "Open to meaningful conversations"}
           </p>
-          <h2 className="mt-8 max-w-[8ch] text-[clamp(3rem,5.7vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.05em]">
+          <h2 className="mt-8 max-w-[10ch] text-[clamp(2.5rem,9vw,3.5rem)] leading-[1.02] font-[450] tracking-[-0.015em] text-ink min-[621px]:text-[clamp(3rem,5.7vw,5.5rem)] min-[621px]:tracking-[-0.017em]">
             {contact?.titleLead || "What's worth"}{" "}
             <span>{contact?.titleEmphasis || "building?"}</span>
           </h2>
-          <p className="mt-8 max-w-lg text-base leading-relaxed text-copy">
+          <p className="mt-8 max-w-lg text-base leading-relaxed text-body">
             {contact?.description ||
               "For partnerships, distribution, media and investment conversations across the portfolio."}
           </p>
           <a
-            className="mt-[clamp(3rem,5vw,5rem)] inline-flex items-center gap-5 border-b border-ink pb-2.5 text-[clamp(1rem,1.35vw,1.25rem)]"
+            className={cn(
+              "mt-[clamp(3rem,5vw,5rem)] inline-flex items-center gap-5 border-b border-ink pb-2.5 text-[clamp(1rem,1.35vw,1.25rem)] text-ink",
+              FOCUS,
+            )}
             href={`mailto:${email}`}
           >
             {email}
             <ArrowUpRight size={23} strokeWidth={1.3} />
           </a>
           <a
-            className="mt-8 flex w-fit items-center gap-2.5 text-sm text-copy"
+            className={cn("mt-8 flex w-fit items-center gap-2.5 text-sm text-ink", FOCUS)}
             href={linkedin}
             target="_blank"
             rel="noreferrer noopener"
@@ -151,11 +166,11 @@ function Contact({ content }: { content: PageCmsContent }) {
           </a>
         </div>
         <form
-          className="self-start border-t border-hairline [&_label]:text-xs [&_label]:font-semibold [&_label]:text-copy"
+          className="self-start border-t border-hairline [&_label]:text-xs [&_label]:font-semibold [&_label]:text-body"
           onSubmit={submit}
           data-reveal="right"
         >
-          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
+          <div className={FIELD}>
             <label htmlFor="rt-name">Name</label>
             <input
               id="rt-name"
@@ -164,27 +179,30 @@ function Contact({ content }: { content: PageCmsContent }) {
               minLength={2}
               maxLength={120}
               autoComplete="name"
-              className="w-full border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
+              className={INPUT}
               placeholder="Your name"
               required
             />
           </div>
-          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
+          <div className={FIELD}>
             <label htmlFor="rt-email">Email</label>
             <input
               id="rt-email"
               name="email"
               type="email"
-              className="w-full border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
+              className={INPUT}
               autoComplete="email"
               placeholder="you@company.com"
               required
             />
           </div>
-          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
+          <div className={FIELD}>
             <label htmlFor="rt-inquiry">I'm reaching out about</label>
             <select
-              className="w-full appearance-none border-0 bg-transparent p-0 text-base text-ink outline-none"
+              className={cn(
+                "w-full appearance-none border-0 bg-transparent p-0 text-base text-ink outline-none [&_option]:bg-chapter [&_option]:text-chapter-text",
+                FOCUS,
+              )}
               id="rt-inquiry"
               name="service"
               defaultValue=""
@@ -200,12 +218,12 @@ function Contact({ content }: { content: PageCmsContent }) {
               <option value="Other enquiry">Something else</option>
             </select>
           </div>
-          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
+          <div className={FIELD}>
             <label htmlFor="rt-message">Your message</label>
             <textarea
               id="rt-message"
               name="message"
-              className="w-full resize-y border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
+              className={cn(INPUT, "resize-y")}
               placeholder="Tell us a little about the opportunity"
               minLength={10}
               maxLength={3000}
@@ -228,21 +246,33 @@ function Contact({ content }: { content: PageCmsContent }) {
             </p>
           ) : null}
           {status === "error" ? (
-            <p className="mt-5 text-sm leading-relaxed" role="alert">
-              {error} <a href={`mailto:${email}`}>Email directly ↗</a>
+            <p
+              className="mt-5 text-sm leading-relaxed text-[color-mix(in_srgb,var(--color-alert)_45%,var(--color-chapter-text))]"
+              role="alert"
+            >
+              {error}{" "}
+              <a className={cn("text-ink", FOCUS)} href={`mailto:${email}`}>
+                Email directly ↗
+              </a>
             </p>
           ) : null}
           <button
             type="submit"
-            className="mt-8 flex min-h-14 w-full items-center justify-between border-0 bg-chapter-text px-6 text-sm font-semibold text-chapter transition-colors hover:bg-chapter-accent disabled:cursor-not-allowed disabled:opacity-50"
+            className={cn(
+              "mt-8 flex min-h-14 w-full items-center justify-between border-0 bg-chapter-text px-6 text-sm font-semibold text-chapter [transition:background-color_0.35s_ease,transform_0.5s_cubic-bezier(0.19,1,0.22,1)] hover:bg-chapter-accent enabled:hover:[transform:translateY(-2px)] disabled:cursor-not-allowed disabled:opacity-50",
+              FOCUS,
+            )}
             disabled={status === "sending"}
           >
             {status === "sending" ? "Sending message…" : contact?.submitText || "Send an enquiry"}
             <ArrowRight size={20} strokeWidth={1.5} />
           </button>
-          <p className="mt-5 text-xs leading-relaxed text-copy [&_a]:underline">
+          <p className="mt-5 text-xs leading-relaxed text-body">
             By submitting, you agree to the handling of your information described in our{" "}
-            <a href="/privacy">privacy policy</a>.
+            <a className={cn("text-ink underline", FOCUS)} href="/privacy">
+              privacy policy
+            </a>
+            .
           </p>
         </form>
       </div>
@@ -254,7 +284,7 @@ export function HomeView({ content }: { content: PageCmsContent }) {
   return (
     <div className="rt-home min-h-svh overflow-x-clip bg-page text-ink">
       <EditorialMotion intro introName={content.header.brand || "Rahul Tanwar"} />
-      <EditorialHeader content={content} />
+      <EditorialHeader content={content} heroAware />
       <main>
         <Hero content={content} />
         <OnBuilding content={content} />

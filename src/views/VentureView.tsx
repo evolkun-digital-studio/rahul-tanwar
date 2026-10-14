@@ -95,20 +95,20 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
             className="flex flex-col gap-8 border-b border-hairline py-6 md:flex-row md:items-start md:justify-between md:gap-12 md:pb-12"
             data-reveal
           >
-            <p className="text-xs text-copy">
+            <p className="text-xs text-body">
               An independent venture within the Rahul Tanwar portfolio.
             </p>
             <dl className="flex flex-wrap gap-10 md:gap-20">
               <div>
-                <dt className="mb-2 text-xs text-copy">Focus</dt>
+                <dt className="mb-2 text-xs text-body">Focus</dt>
                 <dd className="m-0 text-sm">{detail.category || venture.industry}</dd>
               </div>
               <div>
-                <dt className="mb-2 text-xs text-copy">Market</dt>
+                <dt className="mb-2 text-xs text-body">Market</dt>
                 <dd className="m-0 text-sm">{detail.region || venture.country}</dd>
               </div>
               <div>
-                <dt className="mb-2 text-xs text-copy">Established</dt>
+                <dt className="mb-2 text-xs text-body">Established</dt>
                 <dd className="m-0 text-sm">{detail.year || venture.year}</dd>
               </div>
             </dl>
@@ -116,7 +116,7 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
         </section>
         <section className="mx-auto grid w-full max-w-[1680px] gap-12 px-6 py-[clamp(7rem,13vw,13rem)] md:grid-cols-[.8fr_1.2fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
           <div data-reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.135em] text-copy">
+            <p className="text-xs font-semibold uppercase tracking-[0.135em] text-body">
               Behind the venture
             </p>
             <h2 className="mt-8 text-[clamp(2.5rem,4.8vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.05em]">
@@ -138,7 +138,7 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
             <ul className="mt-16 border-t border-hairline p-0">
               {detail.highlights.map((highlight) => (
                 <li
-                  className="flex list-none items-baseline justify-between gap-8 border-b border-hairline py-5 text-[15px] after:content-['↗'] after:text-lg after:text-rt-muted"
+                  className="flex list-none items-baseline justify-between gap-8 border-b border-hairline py-5 text-[15px] after:content-['↗'] after:text-lg after:text-muted"
                   key={highlight}
                 >
                   {highlight}
@@ -153,7 +153,7 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
             </a>
           </div>
         </section>
-        <section className="bg-sand py-[clamp(5rem,9vw,9rem)]">
+        <section className="bg-surface py-[clamp(5rem,9vw,9rem)]">
           <div className="mx-auto w-full max-w-[1680px] px-6 md:px-[clamp(24px,5.15vw,94px)]">
             <a
               className="flex items-end justify-between gap-10"
@@ -161,14 +161,14 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
               aria-label={`Next venture: ${next.name}`}
             >
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.135em] text-copy">
+                <p className="text-xs font-semibold uppercase tracking-[0.135em] text-body">
                   Discover another venture
                 </p>
                 <h2 className="mt-6 text-[clamp(2.5rem,7vw,7rem)] font-medium leading-none tracking-[-0.06em]">
                   {next.name}
                 </h2>
               </div>
-              <div className="grid size-14 shrink-0 place-items-center border border-rt-muted md:size-20">
+              <div className="grid size-14 shrink-0 place-items-center border border-muted md:size-20">
                 <ArrowUpRight size={26} strokeWidth={1.2} />
               </div>
             </a>

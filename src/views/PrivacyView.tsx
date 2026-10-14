@@ -22,13 +22,13 @@ export function PrivacyView({ content }: { content: PageCmsContent }) {
         <a className="inline-flex border-b border-current pb-2 text-sm" href="/">
           ← Back to home
         </a>
-        <p className="mt-20 text-xs font-semibold uppercase tracking-[0.135em] text-copy">
+        <p className="mt-20 text-xs font-semibold uppercase tracking-[0.135em] text-body">
           Our policies
         </p>
         <h1 className="mt-6 text-[clamp(3.5rem,7vw,6.5rem)] font-medium leading-none tracking-[-0.06em]">
           {privacy.title}
         </h1>
-        <p className="mt-7 text-xs text-copy">
+        <p className="mt-7 text-xs text-body">
           {privacy.updatedLabel}: {privacy.updatedAt}
         </p>
         <p className="mt-16 max-w-3xl text-[clamp(1.25rem,2.5vw,2rem)] leading-snug tracking-[-0.03em]">
@@ -43,7 +43,7 @@ export function PrivacyView({ content }: { content: PageCmsContent }) {
               <h2 className="text-[clamp(1.35rem,2.6vw,2rem)] font-medium tracking-[-0.04em]">
                 {block.title}
               </h2>
-              <p className="text-[15px] leading-[1.9] text-copy">{block.body}</p>
+              <p className="text-[15px] leading-[1.9] text-body">{block.body}</p>
             </section>
           ))}
         </div>

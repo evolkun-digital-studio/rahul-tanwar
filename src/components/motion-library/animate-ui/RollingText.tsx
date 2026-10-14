@@ -1,5 +1,7 @@
 import { Fragment, useMemo } from "react";
 import { motion } from "framer-motion";
+import { VISUALLY_HIDDEN } from "@/components/site/Shell";
+import { cn } from "@/lib/utils";
 
 /**
  * Animate UI / Rolling Text — https://animate-ui.com/docs/primitives/texts/rolling
@@ -37,17 +39,24 @@ export function RollingText({
   if (reduced) return <span className={className}>{text}</span>;
   let index = 0;
   return (
-    <span className={`aui-rolling ${className}`} data-library="animate-ui-rolling-text">
-      <span className="rt-visually-hidden">{text}</span>
+    <span className={cn("inline", className)} data-library="animate-ui-rolling-text">
+      <span className={VISUALLY_HIDDEN}>{text}</span>
       {parts.map((part, partIndex) =>
         /^\s+$/.test(part) ? (
           <Fragment key={`s-${partIndex}`}>{part}</Fragment>
         ) : (
-          <span key={`w-${partIndex}`} className="aui-rolling-word" aria-hidden="true">
+          <span
+            key={`w-${partIndex}`}
+            className="inline-block whitespace-nowrap"
+            aria-hidden="true"
+          >
             {Array.from(part).map((char, charIndex) => {
               const delay = index++ * stagger;
               return (
-                <span key={charIndex} className="aui-rolling-char">
+                <span
+                  key={charIndex}
+                  className="relative inline-block transform-3d perspective-[9999999px]"
+                >
                   <motion.span
                     style={{ ...CHAR_BOX, transformOrigin: "50% 25%" }}
                     initial={false}

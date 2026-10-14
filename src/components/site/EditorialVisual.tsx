@@ -142,7 +142,7 @@ export function EditorialVisual({
   if (image.url) {
     return (
       <div
-        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-sand md:min-h-[410px] rt-art-${venture.id}`}
+        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-surface md:min-h-[410px] rt-art-${venture.id}`}
       >
         <img
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"

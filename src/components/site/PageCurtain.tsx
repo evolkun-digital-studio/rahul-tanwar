@@ -4,9 +4,9 @@ const BOOT = `try{var n=sessionStorage.getItem("rt-page-transition");if(n&&!matc
 
 export const CURTAIN_CRITICAL_CSS = `
 .rt-curtain { position: fixed; inset: 0; z-index: 2000; visibility: hidden; pointer-events: none; }
-.rt-curtain-panel { position: absolute; inset: 0; background: var(--rt-chapter); transform: translateY(112%); }
+.rt-curtain-panel { position: absolute; inset: 0; background: var(--color-chapter); transform: translateY(112%); }
 .rt-curtain-label::before { content: var(--rt-curtain-label, ""); }
-.rt-curtain-edge { position: absolute; left: 0; width: 100%; height: 100px; fill: var(--rt-chapter); }
+.rt-curtain-edge { position: absolute; left: 0; width: 100%; height: 100px; fill: var(--color-chapter); }
 html.rt-page-entering .rt-curtain { visibility: visible; }
 html.rt-page-entering .rt-curtain-panel { transform: none; }
 `;

@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { markIntroDone, resetIntro } from "@/lib/motion";
+import { markIntroDone, resetIntro, setSmoothScroll } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,6 +84,7 @@ export function EditorialMotion({
       gsap.ticker.add(frameTick);
       gsap.ticker.lagSmoothing(0);
       if (showIntro) instance.stop();
+      setSmoothScroll(instance);
     }
 
     const mm = gsap.matchMedia();
@@ -292,6 +293,7 @@ export function EditorialMotion({
       resetIntro();
       if (lenis && frameTick) {
         gsap.ticker.remove(frameTick);
+        setSmoothScroll(undefined);
         lenis.destroy();
       }
     };
