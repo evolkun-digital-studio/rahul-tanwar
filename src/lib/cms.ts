@@ -106,12 +106,12 @@ export const defaultHomeContent: PageCmsContent = {
   },
   sections: {
     hero: {
-      eyebrow: "Entrepreneur · Founder · Multi-Industry Builder · Dubai",
+      eyebrow: "",
       heading: "Rahul Tanwar",
       manifestoLead: "",
       manifestoEmphasis: "",
       subheading:
-        "Rahul Tanwar is a Dubai-based founder who builds businesses across gaming, beverages, apparel and consumer brands with operations spanning the UAE and India. Explore his ventures, journey and investment ecosystem.",
+        "A Dubai-based founder building across gaming, beverages and apparel in the UAE and India.",
       ctaText: "Explore the ventures",
       ctaLink: "#ventures",
     },
@@ -126,7 +126,7 @@ export const defaultHomeContent: PageCmsContent = {
       eyebrow: "The Ecosystem — Rahul Tanwar Ventures",
       heading: "Six Ventures. One Operating Philosophy.",
       description:
-        "Each venture is built from first principles and connected by one obsession: quality, speed, and long-term value creation in every market Rahul enters.",
+        "Each venture is built from first principles, with one focus: quality, speed and long-term value.",
       ventures: VENTURES,
     },
     philosophy: {
@@ -137,12 +137,11 @@ export const defaultHomeContent: PageCmsContent = {
     manBehind: {
       eyebrow: "The Man Behind The Brands",
       introduction:
-        "Rahul Tanwar moves through the day the way a craftsman moves through a workshop — sleeves rolled, attention sharp, the next problem already half-solved before the meeting ends.",
+        "Rahul Tanwar moves through the day like a craftsman in a workshop — sleeves rolled, attention sharp.",
       paragraphs: [
-        "He doesn't believe in chasing categories. He believes in choosing industries where India and the UAE are structurally under-served — and then building the kind of operating company that can compound for decades.",
-        "Across gaming, brewing, apparel and manufacturing, the same instinct repeats: own the supply chain, respect the customer, and never outsource the things that make the brand the brand.",
-        "For Rahul, businesses are not financial assets to be traded — they are operating ecosystems that must earn trust every day. Whether launching a new venture, refining a product, or expanding into a new market, the emphasis remains on execution, discipline, and long-term stewardship.",
-        "Behind every venture is a commitment to craftsmanship, operational excellence, and patient growth. The objective is not simply to build successful companies, but to create enduring institutions that outlast market cycles, adapt to changing consumer behaviour, and continue compounding value for customers, partners, and communities for generations to come.",
+        "He doesn't chase categories. He picks industries where India and the UAE are under-served, then builds operating companies that compound for decades.",
+        "Across gaming, brewing, apparel and manufacturing the instinct repeats: own the supply chain, respect the customer, never outsource what makes the brand the brand.",
+        "Businesses are not assets to trade but operating ecosystems that earn trust every day — built on execution, discipline and patient growth.",
       ],
     },
     global: {

@@ -35,10 +35,10 @@ function Philosophy({ content }: { content: PageCmsContent }) {
         <div className="rt-section-caption" data-soft-reveal>
           <span className="rt-eyebrow">{philosophy?.eyebrow || "Business philosophy"}</span>
           {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          <span className="rt-caption-aside">The approach</span>
+          {/* <span className="rt-caption-aside">The approach</span> */}
         </div>
         <div className="rt-belief-body">
-          <p className="rt-belief-overline">The thinking behind the work.</p>
+          {/* <p className="rt-belief-overline">The thinking behind the work.</p> */}
           <h2 className="rt-belief-quote" id="rt-belief-title" data-belief-quote aria-label={quote}>
             {quote
               .split(/\s+/)
@@ -55,7 +55,7 @@ function Philosophy({ content }: { content: PageCmsContent }) {
               ))}
           </h2>
           <div className="rt-belief-signature">
-            <span className="rt-belief-signature-rule" aria-hidden="true" />
+            {/* <span className="rt-belief-signature-rule" aria-hidden="true" /> */}
             <span>{philosophy?.attribution || "A long-term view"}</span>
           </div>
         </div>

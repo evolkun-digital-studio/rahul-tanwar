@@ -230,18 +230,24 @@
   justify-content: center;
   gap: clamp(12px, 2.3vw, 30px);
   white-space: nowrap;
-  font-family: "DM Sans", "Noto Sans Devanagari", system-ui, sans-serif;
+  font-family: "DM Sans", "Noto Sans Devanagari", "Noto Sans Arabic", system-ui, sans-serif;
   font-size: clamp(3.5rem, 9.7vw, 9.8rem);
   font-weight: 450;
   line-height: 1.1;
-  letter-spacing: -0.068em;
+  letter-spacing: -0.018em;
   opacity: 0;
   visibility: hidden;
 }
 
 .rt-preloader-greeting[data-script="devanagari"] {
   font-family: "Noto Sans Devanagari", "DM Sans", system-ui, sans-serif;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+.rt-preloader-greeting[data-script="arabic"] {
+  font-family: "Noto Sans Arabic", "DM Sans", system-ui, sans-serif;
+  letter-spacing: 0;
   font-weight: 400;
 }
 
@@ -332,6 +338,7 @@ html.lenis, html.lenis body { scroll-behavior: auto !important; }
   .rt-preloader-greetings { height: 140px; }
   .rt-preloader-greeting { font-size: clamp(3.4rem, 13.1vw, 5.3rem); gap: 13px; }
   .rt-preloader-greeting[data-script="devanagari"] { font-size: clamp(2.8rem, 12vw, 5rem); }
+  .rt-preloader-greeting[data-script="arabic"] { font-size: clamp(3rem, 12.4vw, 5rem); }
   .rt-preloader-corner { bottom: 24px; font-size: 10px; }
   .rt-site-header > div > a:first-child { font-size: 15px; }
 }

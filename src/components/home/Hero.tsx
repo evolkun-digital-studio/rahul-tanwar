@@ -117,8 +117,8 @@ export function Hero({ content }: { content: PageCmsContent }) {
         <div className="rt-hero6-copy" data-hero-copy>
           <div className="rt-hero6-meta" data-hero-fade>
             {/* <span className="rt-hero6-status" aria-hidden="true" /> */}
-            <span>{hero.eyebrow || "Founder & entrepreneur"}</span>
-            <span className="rt-hero6-meta-aside">UAE — India</span>
+            {/* <span>{hero.eyebrow || "Founder & entrepreneur"}</span>
+            <span className="rt-hero6-meta-aside">UAE — India</span> */}
           </div>
 
           <div className="rt-hero6-body">

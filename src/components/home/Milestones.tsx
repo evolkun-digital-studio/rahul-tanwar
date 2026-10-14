@@ -91,7 +91,7 @@ export function Milestones() {
           <div className="rt-journey-heading">
             <h2 className="rt-section-title" id="rt-journey-title">
               <SplitText
-                text="The journey"
+                text="The journey so far."
                 className="rt-split-heading"
                 splitType="lines, chars"
                 mask="lines"
@@ -100,25 +100,14 @@ export function Milestones() {
                 stagger={0.03}
                 duration={1.2}
               />
-              <SplitText
-                text="so far."
-                className="rt-split-heading rt-type-muted"
-                splitType="lines, words"
-                mask="lines"
-                from={{ yPercent: 105 }}
-                to={{ yPercent: 0 }}
-                stagger={0.08}
-                duration={1.2}
-                delay={0.18}
-              />
             </h2>
             <div className="rt-journey-now" aria-hidden="true">
               <BigYear year={current.year} reduced={reduced} />
               <div className="rt-journey-now-meta">
-                <span className="rt-journey-now-count">
+                {/* <span className="rt-journey-now-count">
                   {String(active + 1).padStart(2, "0")} /{" "}
                   {String(MILESTONES.length).padStart(2, "0")}
-                </span>
+                </span> */}
                 <span className="rt-journey-now-title">
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.span

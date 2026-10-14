@@ -12,6 +12,7 @@ const INTRO_KEY = "rt-greeting-intro-seen-v4";
 const GREETINGS = [
   { text: "Hello", language: "en" },
   { text: "नमस्ते", language: "hi", script: "devanagari" },
+  { text: "مرحبا", language: "ar", script: "arabic" },
   { text: "Hola", language: "es" },
   { text: "Bonjour", language: "fr" },
   { text: "Ciao", language: "it" },
