@@ -11,12 +11,19 @@ import {
   AnimatedBackgroundMark,
   useAnimatedBackgroundGroup,
 } from "@/components/motion-library/motion-primitives/AnimatedBackground";
+import technologyImage from "@/assets/technology.avif";
 import { VENTURES } from "@/lib/data";
-import type { PageCmsContent } from "@/lib/cms";
+import type { CmsImage, PageCmsContent } from "@/lib/cms";
 import { useMediaQuery, useReducedMotionPreference } from "@/lib/motion";
 import { resolveDisplayedVenture } from "@/lib/venture-interaction";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const technologyPhoto: CmsImage = {
+  url: typeof technologyImage === "string" ? technologyImage : technologyImage.src,
+  alt: "SR18 Gaming technology and digital entertainment experience.",
+  title: "SR18 Gaming technology",
+};
 
 const VENTURE_ORDER = ["sr18", "delhi6", "volt50000", "masai", "adatto", "arnika"];
 const HOVER_HIGHLIGHT_TRANSITION = {
@@ -303,7 +310,12 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
                   data-stage-panel={index}
                   className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden opacity-0 invisible [will-change:clip-path,opacity] [&_.rt-venture-art]:absolute [&_.rt-venture-art]:inset-0 [&_.rt-venture-art]:h-full [&_.rt-venture-art]:min-h-0 [&_.rt-venture-art]:w-full [&_.rt-venture-art]:origin-center [&_.rt-venture-art]:overflow-hidden [&_.rt-venture-art]:will-change-transform [&_.rt-venture-art]:[transform:translateZ(0)] [&_.rt-venture-art_img]:block [&_.rt-venture-art_img]:h-full [&_.rt-venture-art_img]:min-h-0 [&_.rt-venture-art_img]:w-full [&_.rt-venture-art_img]:object-cover [&_.rt-venture-art_img]:object-center [&_.rt-venture-art_img]:[backface-visibility:hidden] [&_.rt-venture-art_img]:[filter:saturate(.78)_contrast(1.01)]"
                 >
-                  <EditorialVisual venture={venture} content={content} priority />
+                  <EditorialVisual
+                    venture={venture}
+                    content={content}
+                    priority
+                    imageOverride={venture.id === "sr18" ? technologyPhoto : undefined}
+                  />
                 </div>
               ))}
             </a>
@@ -379,7 +391,11 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
                   aria-hidden="true"
                   data-image-reveal
                 >
-                  <EditorialVisual venture={venture} content={content} />
+                    <EditorialVisual
+                      venture={venture}
+                      content={content}
+                      imageOverride={venture.id === "sr18" ? technologyPhoto : undefined}
+                    />
                 </span>
               </a>
             </article>

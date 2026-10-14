@@ -130,13 +130,15 @@ export function EditorialVisual({
   content,
   parallax = false,
   priority = false,
+  imageOverride,
 }: {
   venture: VentureEditorial;
   content: PageCmsContent;
   parallax?: boolean;
   priority?: boolean;
+  imageOverride?: CmsImage;
 }) {
-  const image = ventureImage(venture, content);
+  const image = imageOverride || ventureImage(venture, content);
   if (image.url) {
     return (
       <div
