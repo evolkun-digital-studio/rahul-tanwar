@@ -142,23 +142,18 @@ export const MILESTONES = [
   },
   {
     year: "2023",
-    title: "New consumer ventures",
+    title: "Delhi 6 · Volt 50000",
     body: "Delhi 6 and Volt 50000 mark an expansion into brewing and beverages.",
   },
   {
     year: "2024",
-    title: "Beyond consumer brands",
+    title: "Adatto · Masai · Arnika Textiles",
     body: "Adatto, Masai and Arnika Textiles extend the portfolio into apparel, brewing and manufacturing.",
   },
   {
     year: "2025",
-    title: "A wider portfolio",
+    title: "SR18 Gaming",
     body: "SR18 Gaming adds a digital entertainment business to the group.",
-  },
-  {
-    year: "Now",
-    title: "Building what comes next",
-    body: "Continuing to develop ventures and partnerships across the UAE and India.",
   },
 ];
 

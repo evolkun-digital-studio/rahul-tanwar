@@ -245,13 +245,6 @@
 .rt-home .rt-journey-list {
   position: relative;
 }
-.rt-home .rt-journey-item {
-  opacity: 0.82;
-  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rt-home .rt-journey-item.is-current {
-  opacity: 1;
-}
 .rt-home .rt-journey-year {
   display: block;
 }
@@ -358,9 +351,6 @@
   .rt-home .rt-journey-timeline {
     padding-left: 13px;
   }
-  .rt-home .rt-journey-item {
-    gap: 13px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .rt-home .rb-float-char,
@@ -372,8 +362,5 @@
   }
   .rt-home [data-section-outro] {
     --rt-outro-line: 1 !important;
-  }
-  .rt-home .rt-journey-item {
-    opacity: 1;
   }
 }

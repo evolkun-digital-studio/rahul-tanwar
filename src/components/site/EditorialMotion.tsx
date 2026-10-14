@@ -168,14 +168,15 @@ export function EditorialMotion({
       if (quote && words.length) {
         gsap.fromTo(
           words,
-          { opacity: 0.16, filter: "blur(3px)" },
+          { opacity: 0.12, filter: "blur(8px)", yPercent: 18 },
           {
             opacity: 1,
             filter: "blur(0px)",
-            duration: 1.05,
-            stagger: 0.11,
-            ease: "none",
-            scrollTrigger: { trigger: quote, start: "top 89%", end: "bottom 46%", scrub: 0.8 },
+            yPercent: 0,
+            duration: 0.72,
+            stagger: 0.025,
+            ease: "power3.out",
+            scrollTrigger: { trigger: quote, start: "top 96%", once: true },
           },
         );
       }

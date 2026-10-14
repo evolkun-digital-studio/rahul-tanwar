@@ -6,7 +6,6 @@ import { EditorialFooter } from "@/components/site/EditorialFooter";
 import { EditorialHeader } from "@/components/site/EditorialHeader";
 import { EditorialMotion } from "@/components/site/EditorialMotion";
 import { Hero } from "@/components/home/Hero";
-import { OnBuilding } from "@/components/home/OnBuilding";
 import { Ecosystem } from "@/components/home/Ecosystem";
 import { Corridor } from "@/components/home/Corridor";
 import { Founder } from "@/components/home/Founder";
@@ -26,37 +25,43 @@ function Philosophy({ content }: { content: PageCmsContent }) {
   const quote = philosophy?.quote || BUSINESS_PHILOSOPHY_QUOTE;
   return (
     <section
-      className="rt-belief rt-surface-sheet"
+      className="relative isolate overflow-hidden bg-[#171b18] text-[#f4f3ee]"
       id="philosophy"
       data-home-tone="dark"
-      aria-labelledby="rt-belief-title"
+      aria-labelledby="philosophy-title"
     >
-      <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{philosophy?.eyebrow || "Business philosophy"}</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          {/* <span className="rt-caption-aside">The approach</span> */}
-        </div>
-        <div className="rt-belief-body">
-          {/* <p className="rt-belief-overline">The thinking behind the work.</p> */}
-          <h2 className="rt-belief-quote" id="rt-belief-title" data-belief-quote aria-label={quote}>
+      <div className="mx-auto w-full max-w-[1680px] px-6 py-[clamp(6rem,6vw,6rem)] md:px-[clamp(24px,5.15vw,94px)]">
+        {/* <div className="flex items-center gap-5">
+          <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-[#aeb4ad]">
+            {philosophy?.eyebrow || "Business philosophy"}
+          </p>
+          <span className="h-px w-full bg-[#3f4641]" aria-hidden="true" />
+        </div> */}
+
+        <div className="mt-[clamp(4rem,7vw,8rem)] ml-auto max-w-[1280px]">
+          <h2
+            className="text-[clamp(3.1rem,4.5vw,4.5rem)]  leading-[0.94] tracking-[0.025em] text-[#f4f3ee]"
+            id="philosophy-title"
+            data-belief-quote
+            aria-label={quote}
+          >
             {quote
               .split(/\s+/)
               .filter(Boolean)
               .map((word, index) => (
                 <span
-                  className="rt-belief-word"
+                  className="mr-[0.25em] inline-block will-change-[opacity,filter,transform] last:mr-0"
                   data-reading-word
                   aria-hidden="true"
                   key={`${index}-${word}`}
                 >
-                  {word}{" "}
+                  {word}
                 </span>
               ))}
           </h2>
-          <div className="rt-belief-signature">
-            {/* <span className="rt-belief-signature-rule" aria-hidden="true" /> */}
-            <span>{philosophy?.attribution || "A long-term view"}</span>
+
+          <div className="mt-[clamp(4rem,8vw,8rem)] flex justify-end pt-5 text-sm leading-relaxed text-[#aeb4ad] sm:pt-6">
+            <p className="max-w-[34ch]">{philosophy?.attribution || "A long-term view"}</p>
           </div>
         </div>
       </div>
@@ -257,7 +262,6 @@ export function HomeView({ content }: { content: PageCmsContent }) {
       <EditorialHeader content={content} />
       <main>
         <Hero content={content} />
-        <OnBuilding content={content} />
         <Ecosystem content={content} />
         <Corridor content={content} />
         <Founder content={content} />
