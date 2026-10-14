@@ -82,11 +82,6 @@ export function Milestones() {
       aria-labelledby="rt-journey-title"
     >
       <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">Milestones</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          <span className="rt-caption-aside">A continuing story</span>
-        </div>
         <div className="rt-journey-layout">
           <div className="rt-journey-heading">
             <h2 className="rt-section-title" id="rt-journey-title">

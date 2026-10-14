@@ -321,9 +321,7 @@
 
 .rt-home section[id] { scroll-margin-top: 85px; }
 .rt-home #top { scroll-margin-top: 0; }
-.rt-home #ventures .rt-venture-art img,
 .rt-home #presence img { backface-visibility: hidden; }
-.rt-home #ventures a:focus-visible,
 .rt-home .rt-hero6-cta:focus-visible,
 .rt-home .rt-hero6-scroll:focus-visible,
 .rt-site-header a:focus-visible,

@@ -63,11 +63,6 @@ export function OnBuilding({ content }: { content: PageCmsContent }) {
       aria-labelledby="rt-intro-title"
     >
       <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{intro?.eyebrow || "On building"}</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          <span className="rt-caption-aside">A way of thinking</span>
-        </div>
         <h2 className="rt-intro-title" id="rt-intro-title">
           <span className="rt-type-mask rt-float-line">
             <ScrollFloat text={intro?.headline || "Build with intent."} />

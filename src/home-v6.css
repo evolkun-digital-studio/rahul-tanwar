@@ -597,11 +597,6 @@
   align-items: baseline;
   gap: 18px;
 }
-.rt-venture-index {
-  min-width: 2ch;
-  color: #9a9d95;
-  font-variant-numeric: tabular-nums;
-}
 .rt-venture-country {
   margin-left: auto;
 }

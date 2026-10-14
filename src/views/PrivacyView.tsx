@@ -22,10 +22,7 @@ export function PrivacyView({ content }: { content: PageCmsContent }) {
         <a className="inline-flex border-b border-current pb-2 text-sm" href="/">
           ← Back to home
         </a>
-        <p className="mt-20 text-xs font-semibold uppercase tracking-[0.135em] text-[#696f69]">
-          Our policies
-        </p>
-        <h1 className="mt-6 text-[clamp(3.5rem,7vw,6.5rem)] font-medium leading-none tracking-[-0.06em]">
+        <h1 className="mt-20 text-[clamp(3.5rem,7vw,6.5rem)] font-medium leading-none tracking-[-0.06em]">
           {privacy.title}
         </h1>
         <p className="mt-7 text-xs text-[#777b76]">

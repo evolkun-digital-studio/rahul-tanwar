@@ -41,11 +41,6 @@ export function Founder({ content }: { content: PageCmsContent }) {
       aria-labelledby="rt-founder-title"
     >
       <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{about?.eyebrow || "The Man Behind The Brands"}</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          <span className="rt-caption-aside">The founder</span>
-        </div>
         <h2 className="rt-section-title rt-founder-title" id="rt-founder-title">
           <SplitText
             text="A builder. An operator."

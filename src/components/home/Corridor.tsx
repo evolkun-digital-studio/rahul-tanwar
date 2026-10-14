@@ -58,11 +58,6 @@ export function Corridor({ content }: { content: PageCmsContent }) {
       aria-labelledby="rt-markets-title"
     >
       <div className="rt-shell">
-        <div className="rt-section-caption" data-soft-reveal>
-          <span className="rt-eyebrow">{global?.eyebrow || "Where it happens"}</span>
-          {/* <span className="rt-caption-rule" aria-hidden="true" /> */}
-          <span className="rt-caption-aside">UAE — India</span>
-        </div>
         <div className="rt-markets-lead">
           <h2 className="rt-section-title" id="rt-markets-title">
             <SplitText

@@ -116,10 +116,7 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
         </section>
         <section className="mx-auto grid w-full max-w-[1680px] gap-12 px-6 py-[clamp(7rem,13vw,13rem)] md:grid-cols-[.8fr_1.2fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
           <div data-reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.135em] text-[#696f69]">
-              Behind the venture
-            </p>
-            <h2 className="mt-8 text-[clamp(2.5rem,4.8vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.05em]">
+            <h2 className="text-[clamp(2.5rem,4.8vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.05em]">
               {detail.focusTitle.includes(" ") ? (
                 <>
                   {detail.focusTitle.split(" ").slice(0, -2).join(" ")}
@@ -161,10 +158,7 @@ export function VentureView({ slug, content }: { slug: string; content: PageCmsC
               aria-label={`Next venture: ${next.name}`}
             >
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.135em] text-[#696f69]">
-                  Discover another venture
-                </p>
-                <h2 className="mt-6 text-[clamp(2.5rem,7vw,7rem)] font-medium leading-none tracking-[-0.06em]">
+                <h2 className="text-[clamp(2.5rem,7vw,7rem)] font-medium leading-none tracking-[-0.06em]">
                   {next.name}
                 </h2>
               </div>
