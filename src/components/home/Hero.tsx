@@ -69,7 +69,7 @@ export function Hero({ content }: { content: PageCmsContent }) {
         style={delay(500)}
         aria-hidden="true"
       >
-        <div className="flex w-max animate-marquee whitespace-nowrap text-[16vh] leading-[0.9] font-medium tracking-[-0.045em] will-change-transform group-data-[marquee=running]/hero:[animation-play-state:running] motion-reduce:animate-none motion-reduce:[transform:none] sm:text-[26vh]">
+        <div className="flex w-max animate-marquee whitespace-nowrap text-[14vh] leading-[0.9] font-medium tracking-[-0.045em] will-change-transform group-data-[marquee=running]/hero:[animation-play-state:running] motion-reduce:animate-none motion-reduce:[transform:none] sm:text-[26vh]">
           <span className="pr-[6vw]">{MARQUEE_TEXT}</span>
           <span className="pr-[6vw]">{MARQUEE_TEXT}</span>
         </div>
