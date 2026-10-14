@@ -128,10 +128,7 @@ function Contact({ content }: { content: PageCmsContent }) {
     >
       <div className="relative mx-auto grid w-full max-w-[1680px] gap-16 px-6 md:grid-cols-[.85fr_.65fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
         <div data-reveal="left">
-          <p className="text-xs font-semibold uppercase tracking-[0.135em] text-[#aeb4ad]">
-            {contact?.eyebrow || "Open to meaningful conversations"}
-          </p>
-          <h2 className="mt-8 max-w-[8ch] text-[clamp(3rem,5.7vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.05em]">
+          <h2 className="max-w-[8ch] text-[clamp(3rem,5.7vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.05em]">
             {contact?.titleLead || "What's worth"}{" "}
             <span>{contact?.titleEmphasis || "building?"}</span>
           </h2>

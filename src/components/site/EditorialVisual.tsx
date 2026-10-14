@@ -4,7 +4,6 @@ import adattoImage from "@/assets/adatto.avif";
 import sr18Image from "@/assets/sr18.avif";
 import voltImage from "@/assets/volt.avif";
 import textileImage from "@/assets/textile.avif";
-import delhi6Image from "@/assets/delhi6.jpeg";
 
 const url = (image: unknown): string =>
   typeof image === "string" ? image : ((image as { src?: string })?.src ?? "");
@@ -13,7 +12,6 @@ const adattoPhoto = url(adattoImage);
 const sr18Photo = url(sr18Image);
 const voltPhoto = url(voltImage);
 const textilePhoto = url(textileImage);
-const delhi6Photo = url(delhi6Image);
 
 export type VentureEditorial = Venture & {
   slug: string;
@@ -80,7 +78,7 @@ export function toEditorialVenture(venture: Venture): VentureEditorial {
 export function ventureImage(venture: VentureEditorial, content: PageCmsContent): CmsImage {
   const rootPhotos: Record<string, CmsImage> = {
     delhi6: {
-      url: delhi6Photo,
+      url: "/delhi%206%203.png",
       alt: VENTURES.find((venture) => venture.id === "delhi6")!.alt,
       title: VENTURES.find((venture) => venture.id === "delhi6")!.title,
     },
