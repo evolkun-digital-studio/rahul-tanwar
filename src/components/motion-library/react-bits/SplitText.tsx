@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
 import { onIntroDone, prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
@@ -156,7 +157,7 @@ function SplitTextInner({
     <Tag
       ref={ref}
       id={id}
-      className={`rb-split-text ${className}`}
+      className={cn("split-text", className)}
       style={style}
       data-split-pending=""
     >

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rahul Tanwar — hero reference</title>
+<style>
+@font-face { font-family: "DM Sans"; src: url(dm-sans.woff2) format("woff2"); font-weight: 100 1000; font-display: swap; }
+
+:root {
+  --rt-chapter: #131829;
+  --cream: #ece8df;
+  --cream-muted: #9da3b6;
+  --gutter: clamp(24px, 4.1vw, 80px);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-wipe: cubic-bezier(.76, 0, .24, 1);
+  --drop: 15vh;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--rt-chapter); }
+body { font-family: "DM Sans", Helvetica, Arial, sans-serif; color: var(--cream); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.hero { position: relative; height: 100vh; height: 100dvh; min-height: 560px; overflow: hidden; background: var(--rt-chapter); }
+
+/* One transparent cut-out, anchored to the bottom, sized by viewport height so it never upscales on large screens. */
+.figure {
+  position: absolute; bottom: 0; height: 100%;
+  aspect-ratio: 1086 / 1448;
+  left: 50%; transform: translate(-49%, var(--drop));  /* face centred; dropped so the name sits behind the top of the head */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16%);
+          mask-image: linear-gradient(to right, transparent 0, #000 16%); /* chair dissolves on the left */
+}
+.figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block; }
+.figure--cut { z-index: 20; pointer-events: none; }
+
+.shade { position: absolute; inset-inline: 0; bottom: 0; height: 34%; z-index: 25; pointer-events: none;
+  background: linear-gradient(to bottom, rgb(19 24 41 / 0), rgb(19 24 41 / .92) 78%, var(--rt-chapter)); }
+.marquee { position: absolute; inset-inline: 0; top: 14vh; z-index: 10; overflow: hidden; }
+.track { display: flex; width: max-content; white-space: nowrap; font-size: 26vh; line-height: .9; font-weight: 500; letter-spacing: -.045em; animation: marquee 30s linear infinite; will-change: transform; }
+.track span { padding-right: 6vw; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.chrome { position: absolute; inset-inline: 0; top: 0; z-index: 30; display: flex; justify-content: space-between; align-items: flex-start; padding: 32px var(--gutter) 0; }
+.brand { font-size: 18px; font-weight: 500; letter-spacing: -.03em; }
+.cluster { display: flex; gap: clamp(48px, 6vw, 96px); font-size: 14px; }
+.cluster ul { list-style: none; display: grid; gap: 2px; }
+.cluster a { transition: opacity .3s; }
+.cluster a:hover { opacity: .6; }
+.muted { color: var(--cream-muted); }
+.burger { display: none; width: 40px; height: 40px; background: none; border: 0; position: relative; }
+.burger i { position: absolute; left: 8px; width: 24px; height: 1.5px; background: var(--cream); }
+.burger i:nth-child(1) { top: 12px; } .burger i:nth-child(2) { top: 19px; } .burger i:nth-child(3) { top: 26px; }
+
+.rule { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 7rem; z-index: 10; height: 1px; background: rgb(236 232 223 / 70%); transform-origin: left; }
+.foot { position: absolute; inset-inline: 0; bottom: 0; z-index: 30; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 var(--gutter) 32px; font-size: 14px; line-height: 1.6; }
+.foot .right { text-align: right; }
+
+/* Entrance — paused until the preloader hands over (data-intro="done"). */
+.fade-in { animation: fadeIn 1.2s ease-out both; }
+.rise-in { animation: riseIn 1.4s var(--ease-out) .3s both; }
+.fade-up { animation: fadeUp .9s var(--ease-out) both; }
+.line    { animation: line 1.1s var(--ease-wipe) 1.2s both; }
+.hero:not([data-intro="done"]) .a { animation-play-state: paused; }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes riseIn { from { opacity: 0; translate: 0 4vh; scale: 1.03; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } }
+@keyframes line   { from { transform: scaleX(0); } }
+
+@media (max-width: 639px) {
+  .chrome { padding-top: 24px; }
+  .cluster { display: none; }
+  .burger { display: block; }
+  :root { --drop: 13vh; }
+  .figure { transform: translate(-52%, var(--drop)); }
+  .shade { height: 40%; }
+  .marquee { top: 16vh; }
+  .track { font-size: 16vh; }
+  .rule { bottom: 5.5rem; }
+  .foot { padding-bottom: 20px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a, .track { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
+  .track { transform: none !important; }
+}
+</style>
+</head>
+<body>
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <h1 class="sr-only" id="hero-title">Rahul Tanwar — Founder, Rahul Tanwar Ventures</h1>
+
+  <div class="marquee a fade-up" style="animation-delay:.5s" aria-hidden="true">
+    <div class="track"><span>Rahul Tanwar&nbsp;&mdash;&nbsp;</span><span>Rahul Tanwar&nbsp;&mdash;&nbsp;</span></div>
+  </div>
+
+  <div class="figure figure--cut a rise-in" aria-hidden="true"><img src="rahul-cutout.webp" alt=""></div>
+
+  <header class="chrome">
+    <a class="brand a fade-up" style="animation-delay:.8s" href="#top">Rahul Tanwar.</a>
+    <div class="cluster">
+      <span class="muted a fade-up" style="animation-delay:.9s">Dubai — New Delhi</span>
+      <ul>
+        <li class="a fade-up" style="animation-delay:1s"><a href="#ventures">Ventures</a></li>
+        <li class="a fade-up" style="animation-delay:1.08s"><a href="#about">About</a></li>
+        <li class="a fade-up" style="animation-delay:1.16s"><a href="#philosophy">Philosophy</a></li>
+      </ul>
+      <ul>
+        <li class="a fade-up" style="animation-delay:1.15s"><a href="#">LinkedIn</a></li>
+        <li class="a fade-up" style="animation-delay:1.23s"><a href="mailto:hello@rahultanwar.com">Email</a></li>
+        <li class="a fade-up" style="animation-delay:1.31s"><a href="#contact">Get in touch</a></li>
+      </ul>
+    </div>
+    <button class="burger a fade-up" style="animation-delay:.9s" aria-label="Open menu"><i></i><i></i><i></i></button>
+  </header>
+
+  <div class="shade" aria-hidden="true"></div>
+  <div class="rule a line" aria-hidden="true"></div>
+
+  <div class="foot">
+    <p class="a fade-up" style="animation-delay:1.4s">Dubai-based founder<br>Gaming, beverages, apparel and textiles<br>Building across the UAE and India</p>
+    <a class="right a fade-up" style="animation-delay:1.55s" href="#ventures">Six ventures<br>Explore ↓</a>
+  </div>
+</section>
+<script>
+  // Stand-in for onIntroDone(): the real site starts this when the preloader lifts.
+  const hero = document.querySelector('.hero');
+  const start = () => hero.dataset.intro = 'done';
+  if (new URLSearchParams(location.search).has('static')) {
+    document.querySelectorAll('.a').forEach(el => { el.style.animation = 'none'; });
+    document.querySelector('.track').style.animationPlayState = 'paused';
+  } else {
+    setTimeout(start, 250);
+  }
+  // Pause the marquee off-screen.
+  new IntersectionObserver(([e]) => {
+    document.querySelector('.track').style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+  }).observe(hero);
+</script>
+</body>
+</html>

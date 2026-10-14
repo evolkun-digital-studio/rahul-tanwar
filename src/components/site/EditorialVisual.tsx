@@ -1,7 +1,7 @@
 import { VENTURES, type Venture } from "@/lib/data";
 import type { CmsImage, PageCmsContent } from "@/lib/cms";
 import adattoImage from "@/assets/adatto.avif";
-import sr18Image from "@/assets/sr18.avif";
+import technologyImage from "@/assets/technology.avif";
 import voltImage from "@/assets/volt.avif";
 import textileImage from "@/assets/textile.avif";
 
@@ -9,7 +9,7 @@ const url = (image: unknown): string =>
   typeof image === "string" ? image : ((image as { src?: string })?.src ?? "");
 
 const adattoPhoto = url(adattoImage);
-const sr18Photo = url(sr18Image);
+const technologyPhoto = url(technologyImage);
 const voltPhoto = url(voltImage);
 const textilePhoto = url(textileImage);
 
@@ -83,7 +83,7 @@ export function ventureImage(venture: VentureEditorial, content: PageCmsContent)
       title: VENTURES.find((venture) => venture.id === "delhi6")!.title,
     },
     masai: {
-      url: "/assets/masai-og.jpg",
+      url: "/masai.png",
       alt: VENTURES.find((venture) => venture.id === "masai")!.alt,
       title: VENTURES.find((venture) => venture.id === "masai")!.title,
     },
@@ -93,7 +93,7 @@ export function ventureImage(venture: VentureEditorial, content: PageCmsContent)
       title: VENTURES.find((venture) => venture.id === "adatto")!.title,
     },
     sr18: {
-      url: sr18Photo,
+      url: technologyPhoto,
       alt: VENTURES.find((venture) => venture.id === "sr18")!.alt,
       title: VENTURES.find((venture) => venture.id === "sr18")!.title,
     },
@@ -142,7 +142,7 @@ export function EditorialVisual({
   if (image.url) {
     return (
       <div
-        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-[#e7dfd3] md:min-h-[410px] rt-art-${venture.id}`}
+        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-surface md:min-h-[410px] rt-art-${venture.id}`}
       >
         <img
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -158,7 +158,7 @@ export function EditorialVisual({
   }
   return (
     <div
-      className={`rt-venture-art relative flex h-full min-h-80 flex-col justify-between overflow-hidden p-7 md:min-h-[410px] md:p-12 ${venture.art === "volt" ? "bg-[#273c3c] text-[#edf3e4]" : "bg-[#bcb4a6] text-[#292b25]"}`}
+      className={`rt-venture-art relative flex h-full min-h-80 flex-col justify-between overflow-hidden p-7 md:min-h-[410px] md:p-12 ${venture.art === "volt" ? "bg-chapter text-chapter-text" : "bg-hairline text-ink"}`}
       role="img"
       aria-label={image.alt}
       title={venture.title}

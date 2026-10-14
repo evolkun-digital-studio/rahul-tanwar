@@ -51,6 +51,21 @@ export function onIntroDone(listener: Listener) {
   };
 }
 
+/* ---------------------------------------------------------------------------
+ * The page's Lenis instance (desktop smooth scroll), so overlays such as the
+ * mobile menu can pause scrolling. Undefined on touch / reduced motion.
+ * ------------------------------------------------------------------------- */
+type ScrollController = { stop(): void; start(): void };
+let smoothScroll: ScrollController | undefined;
+
+export function setSmoothScroll(instance: ScrollController | undefined) {
+  smoothScroll = instance;
+}
+
+export function getSmoothScroll() {
+  return smoothScroll;
+}
+
 export function useIntroDone() {
   const [done, setDone] = useState(introDone);
   useEffect(() => onIntroDone(() => setDone(true)), []);

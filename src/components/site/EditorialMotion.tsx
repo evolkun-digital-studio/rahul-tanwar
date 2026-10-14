@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { markIntroDone, resetIntro } from "@/lib/motion";
+import { markIntroDone, resetIntro, setSmoothScroll } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,9 +10,9 @@ type EditorialMotionProps = { intro?: boolean; introName?: string };
 
 const INTRO_KEY = "rt-greeting-intro-seen-v4";
 const GREETINGS = [
+  { text: "مرحبا", language: "ar", script: "arabic" },
   { text: "Hello", language: "en" },
   { text: "नमस्ते", language: "hi", script: "devanagari" },
-  { text: "مرحبا", language: "ar", script: "arabic" },
   { text: "Hola", language: "es" },
   { text: "Bonjour", language: "fr" },
   { text: "Ciao", language: "it" },
@@ -35,6 +35,10 @@ export function EditorialMotion({
     const fineDesktop = window.matchMedia("(min-width: 851px) and (pointer: fine)").matches;
     const preloader = preloaderRef.current;
     const forceIntro = new URLSearchParams(window.location.search).get("intro") === "1";
+    const navigation = performance.getEntriesByType("navigation")[0] as
+      | PerformanceNavigationTiming
+      | undefined;
+    const hardRefresh = navigation?.type === "reload";
     const deepLink = Boolean(window.location.hash && window.location.hash !== "#top");
     const arrivingFromTransition = document.documentElement.classList.contains("rt-page-entering");
     let seen = false;
@@ -50,7 +54,7 @@ export function EditorialMotion({
       !deepLink &&
       !arrivingFromTransition &&
       window.scrollY < 12 &&
-      (forceIntro || !seen),
+      (forceIntro || hardRefresh || !seen),
     );
 
     let running = true;
@@ -84,6 +88,7 @@ export function EditorialMotion({
       gsap.ticker.add(frameTick);
       gsap.ticker.lagSmoothing(0);
       if (showIntro) instance.stop();
+      setSmoothScroll(instance);
     }
 
     const mm = gsap.matchMedia();
@@ -216,29 +221,29 @@ export function EditorialMotion({
       const greetings = gsap.utils.toArray<HTMLElement>(".rt-preloader-greeting", preloader);
       const corners = gsap.utils.toArray<HTMLElement>(".rt-preloader-corner", preloader);
       const opening = gsap.timeline();
-      const step = 0.445;
+      const step = 0.62;
       if (corners.length)
-        opening.fromTo(corners, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0);
+        opening.fromTo(corners, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0);
       greetings.forEach((element, index) => {
         const at = index * step;
         opening.fromTo(
           element,
           { yPercent: 100, autoAlpha: 0 },
-          { yPercent: 0, autoAlpha: 1, duration: 0.27, ease: "power3.out" },
+          { yPercent: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" },
           at,
         );
         opening.to(
           element,
-          { yPercent: -100, autoAlpha: 0, duration: 0.19, ease: "power2.in" },
-          at + 0.31,
+          { yPercent: -100, autoAlpha: 0, duration: 0.28, ease: "power2.in" },
+          at + 0.43,
         );
       });
       const curtainAt = GREETINGS.length * step + 0.02;
-      opening.to(corners, { autoAlpha: 0, duration: 0.2 }, curtainAt - 0.22);
-      opening.to(preloader, { yPercent: -120, duration: 1.06, ease: "power4.inOut" }, curtainAt);
+      opening.to(corners, { autoAlpha: 0, duration: 0.32 }, curtainAt - 0.32);
+      opening.to(preloader, { yPercent: -120, duration: 1.35, ease: "power4.inOut" }, curtainAt);
       // Start the hero reveal before the preloader finishes lifting so the
       // name is already moving into place as the page comes into view.
-      opening.call(() => markIntroDone(), [], curtainAt - 0.65);
+      opening.call(() => markIntroDone(), [], curtainAt - 0.82);
       opening.call(
         () => {
           if (!running) return;
@@ -254,7 +259,7 @@ export function EditorialMotion({
           ScrollTrigger.refresh();
         },
         [],
-        curtainAt + 1.08,
+        curtainAt + 1.38,
       );
     });
 
@@ -293,6 +298,7 @@ export function EditorialMotion({
       resetIntro();
       if (lenis && frameTick) {
         gsap.ticker.remove(frameTick);
+        setSmoothScroll(undefined);
         lenis.destroy();
       }
     };

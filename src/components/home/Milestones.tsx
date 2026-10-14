@@ -60,7 +60,7 @@ export function Milestones() {
             const timeline = gsap.timeline({
               scrollTrigger: {
                 trigger: section,
-                start: "top 98%",
+                start: "top 108%",
                 end: "bottom 30%",
                 scrub: 0.28,
                 invalidateOnRefresh: true,
@@ -94,7 +94,7 @@ export function Milestones() {
                 duration: 0.55,
                 ease: "power2.out",
                 stagger: 0.045,
-                scrollTrigger: { trigger: row, start: "top 88%", once: true },
+                scrollTrigger: { trigger: row, start: "top 100%", once: true },
               },
             );
             return;

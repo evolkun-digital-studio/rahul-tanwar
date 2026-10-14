@@ -1,234 +1,176 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { SplitText } from "@/components/motion-library/react-bits/SplitText";
-import { RotatingText } from "@/components/motion-library/react-bits/RotatingText";
-import { CircularText } from "@/components/motion-library/react-bits/CircularText";
-import { GridDistortion } from "@/components/motion-library/react-bits/GridDistortion";
-import { Magnetic } from "@/components/motion-library/animate-ui/Magnetic";
-import { RollingText } from "@/components/motion-library/animate-ui/RollingText";
-import { TextGenerateEffect } from "@/components/motion-library/inspira-ui/TextGenerateEffect";
-import { ProgressiveBlur } from "@/components/motion-library/motion-primitives/ProgressiveBlur";
-import { IMG, VENTURES } from "@/lib/data";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import Image from "next/image";
+import { MenuButton } from "@/components/site/MenuButton";
 import type { PageCmsContent } from "@/lib/cms";
-import { onIntroDone, useIntroDone, useMediaQuery, useReducedMotionPreference } from "@/lib/motion";
+import { onIntroDone } from "@/lib/motion";
+import { contactLinks, navLinks } from "@/lib/siteLinks";
+import { cn } from "@/lib/utils";
 
-gsap.registerPlugin(ScrollTrigger);
+const MARQUEE_TEXT = "Rahul Tanwar — ";
 
-/* One word per venture, in portfolio order. Unknown CMS ventures fall back to their industry. */
-const ROTATOR_WORDS: Record<string, string> = {
-  sr18: "gaming",
-  delhi6: "craft beer",
-  volt50000: "functional drinks",
-  masai: "brewing",
-  adatto: "athleisure",
-  arnika: "textiles",
-};
-
-type HeroCopy = {
-  eyebrow?: string;
-  heading?: string;
-  subheading?: string;
-  ctaText?: string;
-  ctaLink?: string;
-};
+/* Entrance animations start paused (see the --animate-* tokens) and are released when the
+   preloader hands over (data-intro="done"). Reduced motion finishes them instantly. */
+const RELEASE =
+  "group-data-[intro=done]/hero:[animation-play-state:running] motion-reduce:[animation-duration:0.01ms] motion-reduce:[animation-delay:0s] motion-reduce:[animation-play-state:running]";
+const FADE_UP = cn("animate-fade-up", RELEASE);
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chapter-accent";
+const LINK = cn("[transition:opacity_0.3s] hover:opacity-60", FOCUS);
+/** Stagger for one entrance, in ms (read by the --animate-fade-up token). */
+const delay = (ms: number) => ({ "--anim-delay": `${ms}ms` }) as CSSProperties;
 
 export function Hero({ content }: { content: PageCmsContent }) {
   const rootRef = useRef<HTMLElement>(null);
-  const introDone = useIntroDone();
-  const reduced = useReducedMotionPreference();
-  const fineDesktop = useMediaQuery("(min-width: 851px) and (pointer: fine)");
-  const [ctaHover, setCtaHover] = useState(false);
-  const [rotate, setRotate] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const brand = content.header.brand || "Rahul Tanwar";
+  const nav = navLinks(content);
+  const contact = contactLinks(content);
 
-  const hero = content.sections.hero as HeroCopy;
-  const photo = content.images.founder?.url || IMG.founder;
-  const photoAlt = content.images.founder?.alt || "Rahul Tanwar, entrepreneur and founder";
-  const photoTitle = content.images.founder?.title || "Rahul Tanwar | Founder & Entrepreneur";
-  const heading = (hero.heading || content.header.brand || "Rahul Tanwar").trim();
-  const ecosystem = content.sections.ecosystem as { ventures?: typeof VENTURES } | undefined;
-  const rotator = (ecosystem?.ventures?.length ? ecosystem.ventures : VENTURES).map(
-    (venture) => ROTATOR_WORDS[venture.id] || venture.industry.toLowerCase(),
-  );
+  // Nothing performs until the greeting preloader hands over.
+  useEffect(() => onIntroDone(() => setIntroDone(true)), []);
 
-  // Intro + scroll choreography owned by the hero itself (GSAP).
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root || reduced) return;
-    const frame = root.querySelector<HTMLElement>("[data-hero-frame]");
-    const parallax = root.querySelector<HTMLElement>("[data-hero-parallax]");
-    const copy = root.querySelector<HTMLElement>("[data-hero-copy]");
-    const fades = root.querySelectorAll<HTMLElement>("[data-hero-fade]");
-    const badge = root.querySelector<HTMLElement>("[data-hero-badge]");
-    const rule = root.querySelector<HTMLElement>("[data-hero-rule]");
-
-    const ctx = gsap.context(() => {
-      gsap.set(frame, { clipPath: "inset(100% 0% 0% 0%)" });
-      gsap.set(parallax, { scale: 1.32 });
-      gsap.set(fades, { autoAlpha: 0, y: 22 });
-      gsap.set(badge, { autoAlpha: 0, scale: 0.6, rotate: -120 });
-      gsap.set(rule, { scaleX: 0 });
-
-      const intro = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
-      intro
-        .to(frame, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.45, ease: "power4.inOut" }, 0)
-        .to(parallax, { scale: 1.12, duration: 2.2 }, 0.05)
-        .to(rule, { scaleX: 1, duration: 1.2, ease: "power3.inOut" }, 0.35)
-        .to(fades, { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.09 }, 0.62)
-        .to(badge, { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.4 }, 0.95)
-        .call(() => setRotate(true), [], 1.9);
-
-      const stop = onIntroDone(() => intro.play());
-
-      // Reading begins: the portrait sinks back and the copy lifts away.
-      gsap.to(frame, {
-        yPercent: 7,
-        scale: 0.94,
-        transformOrigin: "50% 0%",
-        ease: "none",
-        scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.9 },
-      });
-      gsap.to(parallax, {
-        yPercent: 6,
-        ease: "none",
-        scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.9 },
-      });
-      gsap.to(copy, {
-        y: -60,
-        autoAlpha: 0.15,
-        ease: "none",
-        scrollTrigger: { trigger: root, start: "top top", end: "bottom 15%", scrub: 0.9 },
-      });
-      return () => stop();
-    }, root);
-    return () => ctx.revert();
-  }, [reduced]);
+  // The marquee only runs while the hero is on screen and the tab is visible.
+  useEffect(() => {
+    const hero = rootRef.current;
+    if (!hero) return;
+    let intersecting = true;
+    const sync = () => setOnScreen(intersecting && document.visibilityState === "visible");
+    const observer = new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(hero);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
 
   return (
     <section
       ref={rootRef}
-      className="rt-hero6"
+      className="group/hero relative h-screen min-h-[560px] overflow-hidden bg-chapter text-chapter-text [font-variation-settings:'opsz'_14] supports-[height:100dvh]:h-dvh"
       id="top"
-      data-home-tone="light"
-      aria-labelledby="hero-heading"
+      data-hero
+      data-home-tone="dark"
+      data-intro={introDone ? "done" : undefined}
+      data-marquee={introDone && onScreen ? "running" : "paused"}
+      aria-labelledby="rt-hero-title"
     >
-      <div className="rt-hero6-grid">
-        <div className="rt-hero6-copy" data-hero-copy>
-          <div className="rt-hero6-meta" data-hero-fade>
-            {/* <span className="rt-hero6-status" aria-hidden="true" /> */}
-            {/* <span>{hero.eyebrow || "Founder & entrepreneur"}</span>
-            <span className="rt-hero6-meta-aside">UAE — India</span> */}
-          </div>
+      <h1 className="sr-only mt-0" id="rt-hero-title">
+        Rahul Tanwar — Founder, Rahul Tanwar Ventures
+      </h1>
 
-          <div className="rt-hero6-body">
-            <h1 className="rt-hero6-title" id="hero-heading" aria-label={heading}>
-              <SplitText
-                text={heading}
-                className="rt-hero6-line"
-                splitType="lines, chars"
-                mask="lines"
-                trigger="intro"
-                from={{ yPercent: 118, rotate: 6 }}
-                to={{ yPercent: 0, rotate: 0 }}
-                stagger={0.045}
-                duration={1.35}
-                delay={0.28}
-              />
-            </h1>
-
-            <p className="rt-hero6-rotator" data-hero-fade>
-              <span className="rt-hero6-rotator-lead">Ventures in</span>
-              <RotatingText
-                texts={rotator}
-                className="rt-hero6-pill "
-                paused={!rotate}
-                reduced={reduced}
-                staggerFrom="last"
-                rotationInterval={2600}
-              />
-            </p>
-
-            <TextGenerateEffect
-              className="rt-hero6-summary"
-              words={
-                hero.subheading ||
-                "Building ventures across gaming, beverages, apparel and manufacturing in the UAE and India."
-              }
-              play={introDone}
-              delay={0.9}
-              stagger={0.045}
-              reduced={reduced}
-            />
-          </div>
-
-          <div className="rt-hero6-actions" data-hero-fade>
-            <Magnetic strength={0.22} max={10}>
-              <a
-                className="rt-hero6-cta"
-                href={hero.ctaLink || "#ventures"}
-                onPointerEnter={() => setCtaHover(true)}
-                onPointerLeave={() => setCtaHover(false)}
-                onFocus={() => setCtaHover(true)}
-                onBlur={() => setCtaHover(false)}
-              >
-                <RollingText
-                  text={hero.ctaText || "Explore the ventures"}
-                  active={ctaHover}
-                  reduced={reduced}
-                />
-                <span className="rt-hero6-cta-icon" aria-hidden="true">
-                  <ArrowUpRight size={18} strokeWidth={1.6} />
-                </span>
-              </a>
-            </Magnetic>
-            {/* <span className="rt-hero6-index" aria-hidden="true">
-              {String(rotator.length).padStart(2, "0")} ventures · 02 markets
-            </span> */}
-          </div>
+      {/* 1 — the name, scrolling endlessly behind the head */}
+      <div
+        className={cn("absolute inset-x-0 top-[16vh] z-10 overflow-hidden sm:top-[14vh]", FADE_UP)}
+        style={delay(500)}
+        aria-hidden="true"
+      >
+        <div className="flex w-max animate-marquee whitespace-nowrap text-[16vh] leading-[0.9] font-medium tracking-[-0.045em] will-change-transform group-data-[marquee=running]/hero:[animation-play-state:running] motion-reduce:animate-none motion-reduce:[transform:none] sm:text-[26vh]">
+          <span className="pr-[6vw]">{MARQUEE_TEXT}</span>
+          <span className="pr-[6vw]">{MARQUEE_TEXT}</span>
         </div>
+      </div>
 
-        <div className="rt-hero6-media">
-          <div className="rt-hero6-frame" data-hero-frame>
-            <div className="rt-hero6-parallax" data-hero-parallax>
-              <GridDistortion
-                className="rt-hero6-image"
-                imageSrc={photo}
-                alt={photoAlt}
-                title={photoTitle}
-                priority
-                enabled={fineDesktop && !reduced}
-                strength={0.13}
-                softness={0.86}
-                maxShift={0.03}
-              />
-            </div>
-            <ProgressiveBlur
-              className="rt-hero6-blur"
-              direction="bottom"
-              blurLayers={6}
-              blurIntensity={0.7}
-            />
-            <div className="rt-hero6-caption" data-hero-fade aria-hidden="true">
-              <span>Rahul Tanwar</span>
-              <span>Founder, Rahul Tanwar Ventures</span>
-            </div>
-          </div>
-          <a
-            className="rt-hero6-scroll"
-            href="#introduction"
-            aria-label="Scroll to explore"
-            data-hero-badge
-          >
-            <CircularText
-              text="SCROLL · TO · EXPLORE · SCROLL · TO · EXPLORE · "
-              spinDuration={22}
-              reduced={reduced}
-            >
-              <ArrowDown size={18} strokeWidth={1.4} />
-            </CircularText>
-          </a>
+      {/* 2 — the rule, which passes behind Rahul */}
+      <div
+        className={cn(
+          "absolute inset-x-[var(--rt-gutter)] bottom-[5.5rem] z-10 h-px origin-left bg-[color-mix(in_srgb,var(--color-chapter-text)_70%,transparent)] sm:bottom-28",
+          "animate-line",
+          RELEASE,
+        )}
+        aria-hidden="true"
+      />
+
+      {/* 3 — the cut-out: sized by viewport height, dropped so the name sits behind the top of the head.
+             Centred with `transform`; rise-in animates `translate`/`scale`, so the two never collide. */}
+      <div
+        className={cn(
+          "pointer-events-none absolute bottom-0 left-1/2 z-20 h-full aspect-[1086/1448] [transform:translate(-52%,13vh)] [mask-image:linear-gradient(to_right,transparent_0,var(--color-ink)_16%)] sm:[transform:translate(-49%,15vh)]",
+          "animate-rise-in",
+          RELEASE,
+        )}
+        aria-hidden="true"
+      >
+        <Image
+          className="pointer-events-none object-cover object-[50%_0]"
+          src="/images/hero/rahul-cutout.webp"
+          alt=""
+          fill
+          preload
+          fetchPriority="high"
+          loading="eager"
+          sizes="75vh"
+        />
+      </div>
+
+      {/* 4 — lower body and chair fade into the indigo */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-25 h-[40%] bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-chapter)_0%,transparent),color-mix(in_srgb,var(--color-chapter)_92%,transparent)_78%,var(--color-chapter))] sm:h-[34%]"
+        aria-hidden="true"
+      />
+
+      {/* 5 — editorial chrome */}
+      <header className="absolute inset-x-0 top-0 z-30 flex items-start justify-between px-[var(--rt-gutter)] pt-6 leading-[normal] sm:pt-8">
+        <a
+          className={cn("text-[18px] font-medium tracking-[-0.03em]", FADE_UP, FOCUS)}
+          style={delay(800)}
+          href="#top"
+        >
+          {brand}.
+        </a>
+        <div className="hidden gap-[clamp(48px,6vw,96px)] text-[14px] sm:flex">
+          <span className={cn("text-chapter-muted", FADE_UP)} style={delay(900)}>
+            Dubai — New Delhi
+          </span>
+          <nav aria-label="Site">
+            <ul className="grid list-none gap-0.5 p-0">
+              {nav.map((link, index) => (
+                <li key={link.href} className={FADE_UP} style={delay(1000 + index * 80)}>
+                  <a className={LINK} href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <ul className="grid list-none gap-0.5 p-0" aria-label="Contact">
+            {contact.map((link, index) => (
+              <li key={link.label} className={FADE_UP} style={delay(1150 + index * 80)}>
+                <a
+                  className={LINK}
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noreferrer noopener" : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
+        <MenuButton
+          className={cn("block text-chapter-text sm:hidden", FADE_UP, FOCUS)}
+          style={delay(900)}
+        />
+      </header>
+
+      <div className="absolute inset-x-0 bottom-0 z-30 flex items-end justify-between px-[var(--rt-gutter)] pb-5 text-[12px] leading-[1.6] sm:pb-8 sm:text-[14px]">
+        <p className={FADE_UP} style={delay(1400)}>
+          Dubai-based founder
+          <br />
+          Gaming, beverages, apparel and textiles
+          <br />
+          Building across the UAE and India
+        </p>
+        <a className={cn("text-right", FADE_UP, FOCUS)} style={delay(1550)} href="#ventures">
+          Six ventures
+          <br />
+          Explore <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </section>
   );

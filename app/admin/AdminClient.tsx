@@ -7,5 +7,9 @@ const AdminApp = dynamic(() => import("@/admin/AdminApp").then((m) => m.AdminApp
 });
 
 export function AdminClient() {
-  return <AdminApp />;
+  return (
+    <div className="rt-admin">
+      <AdminApp />
+    </div>
+  );
 }

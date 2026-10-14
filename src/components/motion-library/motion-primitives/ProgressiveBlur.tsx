@@ -33,7 +33,7 @@ export function ProgressiveBlur({
       {Array.from({ length: layers }, (_, index) => {
         const stops = [index, index + 1, index + 2, index + 3].map(
           (position, stop) =>
-            `rgba(255,255,255,${stop === 1 || stop === 2 ? 1 : 0}) ${position * segment * 100}%`,
+            `${stop === 1 || stop === 2 ? "var(--rt-ink)" : "transparent"} ${position * segment * 100}%`,
         );
         const gradient = `linear-gradient(${ANGLES[direction]}deg, ${stops.join(", ")})`;
         return (
