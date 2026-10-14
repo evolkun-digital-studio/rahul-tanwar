@@ -144,6 +144,8 @@ export function WorldMap({
       className={`ins-world-map ${className}`}
       style={{ aspectRatio: `${vw} / ${vh}` }}
       data-library="inspira-ui-world-map"
+      role="img"
+      aria-label={`${fromLabel} to ${toLabel} operating corridor`}
     >
       <svg
         viewBox={viewBox.join(" ")}

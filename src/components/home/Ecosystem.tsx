@@ -8,7 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import gsap from "gsap";
-import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { EditorialVisual, toEditorialVenture } from "@/components/site/EditorialVisual";
 import { SplitText } from "@/components/motion-library/react-bits/SplitText";
 import { SectionCaption } from "@/components/home/SectionCaption";
@@ -66,8 +66,6 @@ type Parts = {
   buttons: HTMLElement[];
   panels: HTMLElement[];
   fades: HTMLElement[][];
-  ctas: HTMLElement[];
-  labels: HTMLElement[];
   bars: HTMLElement[];
   layers: HTMLElement[];
 };
@@ -99,7 +97,7 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
   const [userTookControl, setUserTookControl] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const accRef = useRef<HTMLDivElement>(null);
-  const mediaRef = useRef<HTMLAnchorElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const rows = useRef<{ v: number }[]>([]);
   const shown = useRef(active);
@@ -120,8 +118,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
       buttons: one("[data-acc-button]"),
       panels: one("[data-acc-panel]"),
       fades: items.map((item) => Array.from(item.querySelectorAll<HTMLElement>("[data-acc-fade]"))),
-      ctas: one("[data-acc-cta]"),
-      labels: one("[data-acc-cta-label]"),
       bars: one("[data-acc-progress]"),
       layers: Array.from(mediaRef.current?.querySelectorAll<HTMLElement>("[data-acc-layer]") || []),
     };
@@ -154,8 +150,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
         rowState(i).v = open ? 1 : 0;
         paintRows(p, i);
         gsap.set(p.fades[i], { autoAlpha: open ? 1 : 0, y: 0 });
-        gsap.set(p.ctas[i], { autoAlpha: open ? 1 : 0, scaleY: 1 });
-        gsap.set(p.labels[i], { autoAlpha: open ? 1 : 0 });
       });
       p.layers.forEach((layer, i) => gsap.set(layer, { autoAlpha: i === index ? 1 : 0, scale: 1 }));
       if (desktop && mediaRef.current)
@@ -184,21 +178,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
         0,
       );
       tl.to(
-        others.map((i) => p.labels[i]),
-        { autoAlpha: 0, duration: 0.08, ease: "power2.in" },
-        0,
-      );
-      tl.to(
-        others.map((i) => p.ctas[i]),
-        { scaleY: 0.05, duration: 0.12, ease: "power2.in" },
-        0,
-      );
-      tl.to(
-        others.map((i) => p.ctas[i]),
-        { autoAlpha: 0, duration: 0.06, ease: "none" },
-        0.12,
-      );
-      tl.to(
         others.flatMap((i) => p.fades[i]),
         { autoAlpha: 0, duration: 0.16, ease: "power2.in" },
         0,
@@ -225,10 +204,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
       const fades = p.fades[to];
       if (fades.some((el) => alpha(el) < 0.5)) gsap.set(fades, { autoAlpha: 0, y: 6 });
       tl.to(fades, { autoAlpha: 1, y: 0, duration: 0.22, ease: "expo.out", stagger: 0.02 }, 0.4);
-      const cta = p.ctas[to];
-      if (alpha(cta) < 0.5) gsap.set(cta, { autoAlpha: 1, scaleY: 0.05 });
-      tl.to(cta, { autoAlpha: 1, scaleY: 1, duration: 0.2, ease: "expo.out" }, 0.4);
-      tl.to(p.labels[to], { autoAlpha: 1, duration: 0.12, ease: "none" }, 0.52);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [parts],
@@ -246,11 +221,10 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
         const open = i === to;
         tweenRows(tl, p, i, open ? 1 : 0, { duration: 0.34, ease: "power2.out" }, 0);
         tl.to(
-          [...p.fades[i], p.ctas[i], p.labels[i]],
+          p.fades[i],
           { autoAlpha: open ? 1 : 0, duration: 0.24, ease: "power2.out" },
           open ? 0.08 : 0,
         );
-        if (open) gsap.set(p.ctas[i], { scaleY: 1 });
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -366,10 +340,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
     else if (event.key === "Home") focus(0);
     else if (event.key === "End") focus(count - 1);
   };
-
-  const current = ventures[active] || ventures[0];
-  const hrefOf = (venture: (typeof ventures)[number]) =>
-    venture.href || `/ventures/${venture.slug}`;
 
   return (
     <section
@@ -504,22 +474,6 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
                       <p className="mt-0 pt-3.5 text-[12px] text-muted desk:mt-auto" data-acc-fade>
                         Est. {venture.year} · {venture.country}
                       </p>
-                      <a
-                        className="group/cta mt-3.5 inline-flex origin-center rounded-[999px] bg-ink px-4 py-[9px] text-[13px] leading-[1.3] font-medium text-page [transition:background-color_0.25s_ease] hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-[5px] focus-visible:outline-accent motion-reduce:[transition:none]"
-                        href={hrefOf(venture)}
-                        data-transition-label={venture.name}
-                        data-acc-cta
-                      >
-                        <span className="inline-flex items-center gap-2" data-acc-cta-label>
-                          Explore {venture.name}
-                          <ArrowRight
-                            className="[transition:transform_0.25s_var(--ease-expo)] group-hover/cta:[transform:translateX(3px)] motion-reduce:[transition:none]"
-                            size={14}
-                            strokeWidth={1.6}
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -534,12 +488,9 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
         </div>
 
         <div className="relative hidden min-w-0 aspect-[4/3] overflow-hidden desk:block">
-          <a
+          <div
             ref={mediaRef}
             className="absolute inset-0 block overflow-hidden rounded-[14px] bg-surface will-change-[transform,border-radius]"
-            href={hrefOf(current)}
-            data-transition-label={current.name}
-            tabIndex={-1}
             aria-hidden="true"
           >
             {ventures.map((venture, index) => (
@@ -555,7 +506,7 @@ export function Ecosystem({ content }: { content: PageCmsContent }) {
                 <EditorialVisual venture={venture} content={content} priority />
               </div>
             ))}
-          </a>
+          </div>
         </div>
       </Shell>
 

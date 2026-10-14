@@ -74,10 +74,13 @@ export function EditorialMotion({
 
     let lenis: Lenis | undefined;
     let frameTick: ((time: number) => void) | undefined;
-    if (fineDesktop && !reduced) {
+    if (!reduced) {
       lenis = new Lenis({
-        duration: 1.1,
-        smoothWheel: true,
+        duration: fineDesktop ? 1.1 : 0.86,
+        smoothWheel: fineDesktop,
+        syncTouch: !fineDesktop,
+        syncTouchLerp: 0.08,
+        touchMultiplier: 1,
         wheelMultiplier: 1,
         anchors: { offset: 0 },
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
