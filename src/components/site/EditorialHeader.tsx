@@ -70,7 +70,7 @@ export function EditorialHeader({
 
   return (
     <header
-      className={`rt-site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,color] duration-500 ${inverse ? "border-transparent bg-transparent text-[#f3f1ea]" : scrolled || open ? "border-[#e2e4db] bg-[#f4f1eb]/94 text-[#181b19] backdrop-blur-xl" : "border-transparent bg-transparent text-[#181b19]"}`}
+      className={`rt-site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,color] duration-500 ${inverse ? "border-transparent bg-transparent text-chapter-text [--rt-accent:var(--rt-chapter-accent)]" : scrolled || open ? "border-hairline bg-page/92 text-ink backdrop-blur-xl" : "border-transparent bg-transparent text-ink"}`}
     >
       <div className="mx-auto flex min-h-17 w-full max-w-[1680px] items-center justify-between gap-6 px-6 md:min-h-22 md:px-[clamp(24px,5.15vw,94px)]">
         <a
@@ -120,7 +120,7 @@ export function EditorialHeader({
         </button>
       </div>
       <div
-        className={`overflow-hidden bg-[#f9f8f5] transition-[height] duration-500 md:hidden ${open ? "h-[min(480px,calc(100svh-68px))]" : "h-0"}`}
+        className={`overflow-hidden bg-page transition-[height] duration-500 md:hidden ${open ? "h-[min(480px,calc(100svh-68px))]" : "h-0"}`}
         id="rt-mobile-menu"
         inert={!open}
       >
@@ -143,7 +143,7 @@ export function EditorialHeader({
             {content?.header.ctaText || "Get in touch"} <ArrowUpRight size={24} strokeWidth={1.3} />
           </a>
         </nav>
-        <p className="mt-5 px-6 text-xs text-[#777b76]">Dubai, UAE &nbsp; / &nbsp; India</p>
+        <p className="mt-5 px-6 text-xs text-copy">Dubai, UAE &nbsp; / &nbsp; India</p>
       </div>
     </header>
   );

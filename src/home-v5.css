@@ -3,14 +3,6 @@
    Magnetic and local Scroll Progress. No decorative counters, glowing cards,
    fake 3D scenes or additional runtime dependencies. */
 
-.rt-home {
-  --rt-page: #f6f4ee;
-  --rt-ink: #1d211d;
-  --rt-muted: #9a9d95;
-  --rt-copy: #61665f;
-  --rt-hairline: #d4d6cf;
-}
-
 .rt-home .rt-visually-hidden {
   position: absolute !important;
   width: 1px;
@@ -61,7 +53,7 @@
   overflow: clip;
 }
 .rt-home .rt-type-muted {
-  color: #91978e;
+  color: var(--rt-muted);
 }
 
 /* Match the rhythm of the entire reading journey, rather than isolating cards. */
@@ -81,7 +73,7 @@
   max-width: 450px;
   line-height: 1.74;
   font-size: clamp(16px, 1.18vw, 19px);
-  color: #434941;
+  color: var(--rt-copy);
 }
 .rt-home .rt-intro-whisper {
   align-self: start;
@@ -125,7 +117,7 @@
   gap: clamp(50px, 6vw, 110px);
 }
 .rt-home .rt-stage-media {
-  background: #cbd0c8;
+  background: var(--rt-sand);
 }
 .rt-home .rt-stage-panel {
   overflow: hidden;
@@ -166,11 +158,11 @@
   margin-left: auto;
 }
 .rt-home .rt-venture.is-current {
-  border-color: #b3b8ae;
+  border-color: var(--rt-hairline);
 }
 .rt-home .rt-venture-anchor:hover .rt-venture-copy,
 .rt-home .rt-venture-anchor:focus-visible .rt-venture-copy {
-  color: #474c45;
+  color: var(--rt-ink);
 }
 .rt-home .rt-ventures-ending {
   margin-top: clamp(80px, 9vw, 148px);
@@ -178,7 +170,7 @@
 
 .rt-home .rt-markets {
   padding-top: clamp(95px, 9vw, 156px);
-  background: linear-gradient(180deg, var(--rt-page) 0%, #f1f1eb 34%, #edede8 100%);
+  background: var(--rt-page);
 }
 .rt-home .rt-markets .rt-section-title {
   max-width: 950px;
@@ -204,7 +196,7 @@
 }
 
 .rt-home .rt-founder {
-  background: linear-gradient(180deg, #edede8 0%, var(--rt-page) 20%);
+  background: var(--rt-page);
   padding-top: clamp(96px, 10vw, 165px);
 }
 .rt-home .rt-founder-title {
@@ -219,11 +211,11 @@
 }
 .rt-home .rt-founder-lead {
   line-height: 1.42;
-  color: #2d332d;
+  color: var(--rt-ink);
 }
 .rt-home .rt-founder-paragraph {
   line-height: 1.78;
-  color: #6b7068;
+  color: var(--rt-copy);
 }
 .rt-home .rt-founder-photo figcaption {
   padding-top: 2px;
@@ -261,10 +253,10 @@
 
 /* Keep the light sections continuous; reserve the single dark shift for the close. */
 .rt-home .rt-belief {
-  background: #20251f;
+  background: var(--rt-chapter);
 }
 .rt-home .rt-contact {
-  background: #20251f !important;
+  background: var(--rt-chapter) !important;
 }
 
 @media (max-width: 1100px) {

@@ -14,9 +14,22 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
+  --color-page: var(--rt-page);
+  --color-sand: var(--rt-sand);
+  --color-hairline: var(--rt-hairline);
+  --color-ink: var(--rt-ink);
+  --color-copy: var(--rt-copy);
+  --color-rt-muted: var(--rt-muted);
+  --color-rt-accent: var(--rt-accent);
+  --color-accent-soft: var(--rt-accent-soft);
+  --color-chapter: var(--rt-chapter);
+  --color-chapter-text: var(--rt-chapter-text);
+  --color-chapter-muted: var(--rt-chapter-muted);
+  --color-chapter-accent: var(--rt-chapter-accent);
+  --color-alert: var(--rt-alert);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
@@ -50,39 +63,86 @@
 :root {
   --radius: 0.875rem;
 
-  /* Brand palette (oklch) */
-  --paper: oklch(0.974 0.006 80); /* #FAF9F7 warm white */
-  --ink: oklch(0.18 0 0); /* #111111 rich black */
-  --gold: oklch(0.74 0.103 78); /* #C8A45D deep gold */
+  /* Indigo palette: the only place colour values live on public pages. */
+  --rt-page: #f2efe8;
+  --rt-sand: #e8e4da;
+  --rt-hairline: #d6d2c8;
+  --rt-ink: #151a2c;
+  --rt-copy: #4f5568;
+  --rt-muted: #767b8b; /* large display text (>=24px) and decoration only */
+  --rt-accent: #2c4a93;
+  --rt-accent-soft: #dce1ee;
+  --rt-chapter: #131829;
+  --rt-chapter-text: #ece8df;
+  --rt-chapter-muted: #9da3b6;
+  --rt-chapter-accent: #9db0e0;
+  --rt-alert: #a4472e;
+
+  /* Legacy names */
+  --paper: var(--rt-page);
+  --ink: var(--rt-ink);
+  --gold: var(--rt-accent);
+  --gold-soft: var(--rt-accent-soft);
+  --stone: var(--rt-copy);
+  --stone-soft: var(--rt-sand);
+  --line: var(--rt-hairline);
+  --rt-gold: var(--rt-accent);
+  --rt-night: var(--rt-chapter);
+  --rt-paper: var(--rt-chapter-text);
+
+  --background: var(--rt-page);
+  --foreground: var(--rt-ink);
+  --card: var(--rt-page);
+  --card-foreground: var(--rt-ink);
+  --popover: var(--rt-page);
+  --popover-foreground: var(--rt-ink);
+  --primary: var(--rt-ink);
+  --primary-foreground: var(--rt-page);
+  --secondary: var(--rt-sand);
+  --secondary-foreground: var(--rt-ink);
+  --muted: var(--rt-sand);
+  --muted-foreground: var(--rt-copy);
+  --accent: var(--rt-accent);
+  --accent-foreground: var(--rt-page);
+  --destructive: var(--rt-alert);
+  --destructive-foreground: var(--rt-page);
+  --border: var(--rt-hairline);
+  --input: var(--rt-hairline);
+  --ring: var(--rt-accent);
+}
+
+/* The admin panel keeps its original palette. */
+body:has(.rt-admin),
+.rt-admin {
+  --paper: oklch(0.974 0.006 80);
+  --ink: oklch(0.18 0 0);
+  --gold: oklch(0.74 0.103 78);
   --gold-soft: oklch(0.86 0.06 80);
-  --stone: oklch(0.58 0.005 80); /* #7A7A7A stone grey */
+  --stone: oklch(0.58 0.005 80);
   --stone-soft: oklch(0.88 0.004 80);
   --line: oklch(0.9 0.004 80);
-
+  --rt-ink: var(--ink);
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: var(--paper);
-  --card-foreground: var(--ink);
-  --popover: var(--paper);
-  --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: var(--paper);
-  --secondary: var(--stone-soft);
-  --secondary-foreground: var(--ink);
-  --muted: var(--stone-soft);
-  --muted-foreground: var(--stone);
-  --accent: var(--gold);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.55 0.2 27);
-  --destructive-foreground: var(--paper);
   --border: var(--line);
   --input: var(--line);
-  --ring: var(--gold);
+}
+
+/* Chapter: the dark close (philosophy + contact). Role tokens flip so shared rules follow. */
+.rt-belief,
+.rt-contact {
+  --rt-ink: var(--rt-chapter-text);
+  --rt-copy: var(--rt-chapter-muted);
+  --rt-muted: var(--rt-chapter-muted);
+  --rt-accent: var(--rt-chapter-accent);
+  --rt-hairline: color-mix(in srgb, var(--rt-chapter-text) 18%, transparent);
+  background: var(--rt-chapter);
+  color: var(--rt-ink);
 }
 
 .dark {
-  --background: oklch(0.14 0 0);
-  --foreground: var(--paper);
+  --background: var(--rt-chapter);
+  --foreground: var(--rt-chapter-text);
 }
 
 @layer base {
@@ -126,8 +186,15 @@
     font: inherit;
   }
   ::selection {
-    background: var(--gold);
-    color: var(--ink);
+    background: var(--rt-accent);
+    color: var(--rt-page);
+  }
+  .rt-belief ::selection,
+  .rt-contact ::selection {
+    color: var(--rt-chapter);
+  }
+  :focus-visible {
+    outline-color: var(--rt-accent);
   }
 }
 
@@ -176,11 +243,34 @@
   animation: ping-slow 2.6s ease-out infinite;
 }
 
+/* Animate UI rolling text (shared by the home page and the editorial header on every page). */
+.aui-rolling {
+  display: inline;
+}
+.aui-rolling-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.aui-rolling-char {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  perspective: 9999999px;
+}
+.aui-rolling .rt-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Home opening: one piece of motion direction, not a separate visual language. */
 :root {
-  --rt-night: #111312;
-  --rt-paper: #f1eee8;
-  --rt-dim: rgba(241, 238, 232, 0.68);
   --rt-gutter: clamp(24px, 4.1vw, 80px);
 }
 
@@ -189,8 +279,8 @@
   inset: 0;
   z-index: 1000;
   overflow: visible;
-  background: var(--rt-night);
-  color: var(--rt-paper);
+  background: var(--rt-chapter);
+  color: var(--rt-chapter-text);
   will-change: transform;
 }
 
@@ -201,7 +291,7 @@
   width: 100%;
   height: clamp(70px, 9vw, 150px);
   display: block;
-  fill: var(--rt-night);
+  fill: var(--rt-chapter);
   pointer-events: none;
 }
 
@@ -269,7 +359,7 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  color: rgba(241, 238, 232, 0.48);
+  color: var(--rt-chapter-muted);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: .015em;
@@ -327,7 +417,7 @@
 .rt-home .rt-hero6-cta:focus-visible,
 .rt-home .rt-hero6-scroll:focus-visible,
 .rt-site-header a:focus-visible,
-.rt-site-header button:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+.rt-site-header button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 5px; }
 
 html.lenis, html.lenis body { scroll-behavior: auto !important; }
 
@@ -356,12 +446,12 @@ html.lenis, html.lenis body { scroll-behavior: auto !important; }
   inset: 0;
   display: grid;
   place-items: center;
-  background: #171a18;
-  color: #f1eee8;
+  background: var(--rt-chapter);
+  color: var(--rt-chapter-text);
   transform: translateY(112%);
   will-change: transform;
 }
-.rt-curtain-edge { position: absolute; left: 0; width: 100%; height: clamp(60px, 9vw, 140px); fill: #171a18; pointer-events: none; }
+.rt-curtain-edge { position: absolute; left: 0; width: 100%; height: clamp(60px, 9vw, 140px); fill: var(--rt-chapter); pointer-events: none; }
 .rt-curtain-edge--top { bottom: calc(100% - 1px); transform-origin: 50% 100%; }
 .rt-curtain-edge--bottom { top: calc(100% - 1px); transform-origin: 50% 0%; transform: scaleY(0); }
 .rt-curtain-label {

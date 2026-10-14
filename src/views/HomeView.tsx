@@ -118,31 +118,31 @@ function Contact({ content }: { content: PageCmsContent }) {
   return (
     <section
       id="contact"
-      className="rt-contact relative overflow-hidden bg-[#171b18] py-[clamp(7rem,12vw,12rem)] text-[#f4f3ee]"
+      className="rt-contact relative overflow-hidden bg-chapter py-[clamp(7rem,12vw,12rem)] text-chapter-text"
       data-home-tone="dark"
     >
       <div className="relative mx-auto grid w-full max-w-[1680px] gap-16 px-6 md:grid-cols-[.85fr_.65fr] md:gap-[clamp(4rem,10vw,10rem)] md:px-[clamp(24px,5.15vw,94px)]">
         <div data-reveal="left">
-          <p className="text-xs font-semibold uppercase tracking-[0.135em] text-[#aeb4ad]">
+          <p className="text-xs font-semibold uppercase tracking-[0.135em] text-copy">
             {contact?.eyebrow || "Open to meaningful conversations"}
           </p>
           <h2 className="mt-8 max-w-[8ch] text-[clamp(3rem,5.7vw,5.5rem)] font-medium leading-[1.02] tracking-[-0.05em]">
             {contact?.titleLead || "What's worth"}{" "}
             <span>{contact?.titleEmphasis || "building?"}</span>
           </h2>
-          <p className="mt-8 max-w-lg text-base leading-relaxed text-[#aeb4ad]">
+          <p className="mt-8 max-w-lg text-base leading-relaxed text-copy">
             {contact?.description ||
               "For partnerships, distribution, media and investment conversations across the portfolio."}
           </p>
           <a
-            className="mt-[clamp(3rem,5vw,5rem)] inline-flex items-center gap-5 border-b border-[#f4f3ee] pb-2.5 text-[clamp(1rem,1.35vw,1.25rem)]"
+            className="mt-[clamp(3rem,5vw,5rem)] inline-flex items-center gap-5 border-b border-ink pb-2.5 text-[clamp(1rem,1.35vw,1.25rem)]"
             href={`mailto:${email}`}
           >
             {email}
             <ArrowUpRight size={23} strokeWidth={1.3} />
           </a>
           <a
-            className="mt-8 flex w-fit items-center gap-2.5 text-sm text-[#aeb4ad]"
+            className="mt-8 flex w-fit items-center gap-2.5 text-sm text-copy"
             href={linkedin}
             target="_blank"
             rel="noreferrer noopener"
@@ -151,11 +151,11 @@ function Contact({ content }: { content: PageCmsContent }) {
           </a>
         </div>
         <form
-          className="self-start border-t border-[#4a504b] [&_label]:text-xs [&_label]:font-semibold [&_label]:text-[#aeb4ad]"
+          className="self-start border-t border-hairline [&_label]:text-xs [&_label]:font-semibold [&_label]:text-copy"
           onSubmit={submit}
           data-reveal="right"
         >
-          <div className="flex flex-col gap-3 border-b border-[#4a504b] py-5 focus-within:border-[#f4f3ee]">
+          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
             <label htmlFor="rt-name">Name</label>
             <input
               id="rt-name"
@@ -164,27 +164,27 @@ function Contact({ content }: { content: PageCmsContent }) {
               minLength={2}
               maxLength={120}
               autoComplete="name"
-              className="w-full border-0 bg-transparent p-0 text-base text-[#f4f3ee] outline-none placeholder:text-[#737a74]"
+              className="w-full border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
               placeholder="Your name"
               required
             />
           </div>
-          <div className="flex flex-col gap-3 border-b border-[#4a504b] py-5 focus-within:border-[#f4f3ee]">
+          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
             <label htmlFor="rt-email">Email</label>
             <input
               id="rt-email"
               name="email"
               type="email"
-              className="w-full border-0 bg-transparent p-0 text-base text-[#f4f3ee] outline-none placeholder:text-[#737a74]"
+              className="w-full border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
               autoComplete="email"
               placeholder="you@company.com"
               required
             />
           </div>
-          <div className="flex flex-col gap-3 border-b border-[#4a504b] py-5 focus-within:border-[#f4f3ee]">
+          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
             <label htmlFor="rt-inquiry">I'm reaching out about</label>
             <select
-              className="w-full appearance-none border-0 bg-transparent p-0 text-base text-[#f4f3ee] outline-none"
+              className="w-full appearance-none border-0 bg-transparent p-0 text-base text-ink outline-none"
               id="rt-inquiry"
               name="service"
               defaultValue=""
@@ -200,12 +200,12 @@ function Contact({ content }: { content: PageCmsContent }) {
               <option value="Other enquiry">Something else</option>
             </select>
           </div>
-          <div className="flex flex-col gap-3 border-b border-[#4a504b] py-5 focus-within:border-[#f4f3ee]">
+          <div className="flex flex-col gap-3 border-b border-hairline py-5 focus-within:border-ink">
             <label htmlFor="rt-message">Your message</label>
             <textarea
               id="rt-message"
               name="message"
-              className="w-full resize-y border-0 bg-transparent p-0 text-base text-[#f4f3ee] outline-none placeholder:text-[#737a74]"
+              className="w-full resize-y border-0 bg-transparent p-0 text-base text-ink outline-none placeholder:text-copy"
               placeholder="Tell us a little about the opportunity"
               minLength={10}
               maxLength={3000}
@@ -222,25 +222,25 @@ function Contact({ content }: { content: PageCmsContent }) {
             className="pointer-events-none absolute size-px opacity-0"
           />
           {status === "success" ? (
-            <p className="mt-5 text-sm leading-relaxed text-[#8fc69e]" role="status">
+            <p className="mt-5 text-sm leading-relaxed text-ink" role="status">
               {contact?.successMessage ||
                 "Your message was submitted successfully. Thank you for reaching out."}
             </p>
           ) : null}
           {status === "error" ? (
-            <p className="mt-5 text-sm leading-relaxed text-[#ef928b]" role="alert">
+            <p className="mt-5 text-sm leading-relaxed" role="alert">
               {error} <a href={`mailto:${email}`}>Email directly ↗</a>
             </p>
           ) : null}
           <button
             type="submit"
-            className="mt-8 flex min-h-14 w-full items-center justify-between border-0 bg-[#f4f3ee] px-6 text-sm font-semibold text-[#171b18] transition-colors hover:bg-[#d9ddd5] disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-8 flex min-h-14 w-full items-center justify-between border-0 bg-chapter-text px-6 text-sm font-semibold text-chapter transition-colors hover:bg-chapter-accent disabled:cursor-not-allowed disabled:opacity-50"
             disabled={status === "sending"}
           >
             {status === "sending" ? "Sending message…" : contact?.submitText || "Send an enquiry"}
             <ArrowRight size={20} strokeWidth={1.5} />
           </button>
-          <p className="mt-5 text-xs leading-relaxed text-[#777f78] [&_a]:underline">
+          <p className="mt-5 text-xs leading-relaxed text-copy [&_a]:underline">
             By submitting, you agree to the handling of your information described in our{" "}
             <a href="/privacy">privacy policy</a>.
           </p>
@@ -252,7 +252,7 @@ function Contact({ content }: { content: PageCmsContent }) {
 
 export function HomeView({ content }: { content: PageCmsContent }) {
   return (
-    <div className="rt-home min-h-svh overflow-x-clip bg-[#f4f1eb] text-[#161916]">
+    <div className="rt-home min-h-svh overflow-x-clip bg-page text-ink">
       <EditorialMotion intro introName={content.header.brand || "Rahul Tanwar"} />
       <EditorialHeader content={content} />
       <main>

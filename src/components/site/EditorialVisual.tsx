@@ -142,7 +142,7 @@ export function EditorialVisual({
   if (image.url) {
     return (
       <div
-        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-[#e7dfd3] md:min-h-[410px] rt-art-${venture.id}`}
+        className={`rt-venture-art h-full min-h-80 overflow-hidden bg-sand md:min-h-[410px] rt-art-${venture.id}`}
       >
         <img
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -158,7 +158,7 @@ export function EditorialVisual({
   }
   return (
     <div
-      className={`rt-venture-art relative flex h-full min-h-80 flex-col justify-between overflow-hidden p-7 md:min-h-[410px] md:p-12 ${venture.art === "volt" ? "bg-[#273c3c] text-[#edf3e4]" : "bg-[#bcb4a6] text-[#292b25]"}`}
+      className={`rt-venture-art relative flex h-full min-h-80 flex-col justify-between overflow-hidden p-7 md:min-h-[410px] md:p-12 ${venture.art === "volt" ? "bg-chapter text-chapter-text" : "bg-hairline text-ink"}`}
       role="img"
       aria-label={image.alt}
       title={venture.title}

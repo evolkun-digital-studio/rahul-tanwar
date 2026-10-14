@@ -1,11 +1,6 @@
 /* Rahul Tanwar / Homepage motion edition
    One quiet canvas, one consistent easing language, no animation-only content. */
 .rt-home {
-  --rt-page: #f5f2eb;
-  --rt-ink: #1a1c19;
-  --rt-hairline: #d5d4cb;
-  --rt-copy: #646a62;
-  --rt-muted: #8e9189;
   background: var(--rt-page);
 }
 
@@ -69,7 +64,7 @@
 .rt-home .rt-belief {
   margin-top: 0;
   border-radius: 0;
-  background: #20241f;
+  background: var(--rt-chapter);
   padding-top: clamp(145px, 13vw, 220px);
 }
 .rt-home .rt-belief-quote {
@@ -82,7 +77,7 @@
   will-change: opacity;
 }
 .rt-home .rt-contact {
-  background: #20241f !important;
+  background: var(--rt-chapter) !important;
 }
 .rt-home footer {
   border-radius: 0;
